@@ -1,0 +1,19 @@
+services:
+  - type: web
+    name: tokengo
+    runtime: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /
+    autoDeploy: true
+    envVars:
+      - key: PORT
+        value: 8000
+      - key: TURSO_DATABASE_URL
+        sync: false
+      - key: TURSO_AUTH_TOKEN
+        sync: false
+      - key: UPLOAD_DIR
+        value: /tmp/uploads
+      - key: DB_PATH
+        value: /tmp/token_proxy.db

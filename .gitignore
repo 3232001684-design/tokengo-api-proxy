@@ -1,0 +1,39 @@
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/
+
+# 本地数据库（云端用 Turso，不需要本地 db）
+token_proxy.db
+token_proxy.db-journal
+token_proxy.db-wal
+token_proxy.db-shm
+
+# 上传文件（云端用 /tmp）
+uploads/
+
+# 隧道文件（本地专用）
+tunnel_log.txt
+tunnel_url.txt
+public_url.txt
+
+# 参考文件
+ccvibe_ref/
+
+# 测试文件
+test_proof.png
+real_payment_test.py
+_cleanup.py
+
+# IDE
+.vscode/
+.idea/
+
+# 系统
+.DS_Store
+Thumbs.db
+
+# 环境变量
+.env
+.env.local
