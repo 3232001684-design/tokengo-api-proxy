@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TokenGo - 一个密钥，畅用多个 AI 模型</title>
+  <link rel="stylesheet" href="/static/css/vendor.css" />
+  <link rel="stylesheet" href="/static/css/ccvibe.css" />
+  <style>
+    .hero-gradient {
+      background: radial-gradient(circle at 30% 20%, rgba(20,184,166,.15), transparent 50%),
+                  radial-gradient(circle at 70% 80%, rgba(245,158,11,.12), transparent 50%);
+    }
+    .gradient-text {
+      background: linear-gradient(90deg, #14b8a6, #0d9488, #f59e0b);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .announce-bar {
+      background: linear-gradient(90deg, #f59e0b, #fb923c);
+    }
+    .tech-card {
+      transition: all 0.3s ease;
+    }
+    .tech-card:hover {
+      transform: translateY(-4px);
+    }
+    .nav-link {
+      position: relative;
+      padding: 0.5rem 0.75rem;
+      border-radius: 0.5rem;
+      transition: all 0.2s ease;
+    }
+    .nav-link:hover {
+      background-color: rgba(20, 184, 166, 0.1);
+    }
+    .feature-card {
+      transition: all 0.3s ease;
+    }
+    .feature-card:hover {
+      transform: translateY(-6px);
+    }
+  </style>
+</head>
+<body class="bg-gray-50">
+  <div class="announce-bar text-white text-center py-2.5 text-sm font-semibold tracking-wide">
+    🔥 限时优惠 ¥1 RMB = $12 USD 美金额度
+  </div>
+  
+  <nav class="fixed top-0 left-0 right-0 z-50 bg-white/85 backdrop-blur-xl border-b border-gray-200">
+    <div class="container mx-auto px-6 h-16 flex items-center justify-between">
+      <a href="/" class="text-2xl font-extrabold text-teal-600 flex items-center gap-2">🚀 TokenGo</a>
+      
+      <div class="hidden md:flex items-center gap-6">
+        <a href="#features" class="nav-link text-gray-600 hover:text-teal-600 transition-colors text-sm font-medium">功能特色</a>
+        <a href="#models" class="nav-link text-gray-600 hover:text-teal-600 transition-colors text-sm font-medium">支持模型</a>
+        <a href="#pricing" class="nav-link text-gray-600 hover:text-teal-600 transition-colors text-sm font-medium">价格方案</a>
+        <a href="/help" class="nav-link text-gray-600 hover:text-teal-600 transition-colors text-sm font-medium">使用教程</a>
+        <a href="#contact" class="nav-link text-gray-600 hover:text-teal-600 transition-colors text-sm font-medium">联系客服</a>
+      </div>
+      
+      <div class="flex items-center gap-3">
+        <span id="navUserArea" class="flex items-center gap-3">
+          <a href="/login" class="btn btn-secondary">登录</a>
+          <a href="/login?mode=register" class="btn btn-primary">注册</a>
+        </span>
+      </div>
+      
+      <button class="md:hidden btn btn-secondary p-2" onclick="toggleMobileMenu()">☰</button>
+    </div>
+    
+    <div id="mobileMenu" class="md:hidden hidden bg-white border-t border-gray-200 py-4 px-6 space-y-3">
+      <a href="#features" class="block py-2 text-gray-600 hover:text-teal-600">功能特色</a>
+      <a href="#models" class="block py-2 text-gray-600 hover:text-teal-600">支持模型</a>
+      <a href="#pricing" class="block py-2 text-gray-600 hover:text-teal-600">价格方案</a>
+      <a href="/help" class="block py-2 text-gray-600 hover:text-teal-600">使用教程</a>
+      <a href="#contact" class="block py-2 text-gray-600 hover:text-teal-600">联系客服</a>
+    </div>
+  </nav>
+
+  <section class="hero-gradient pt-32 pb-24 relative overflow-hidden">
+    <div class="container mx-auto px-6 text-center">
+      <div class="max-w-4xl mx-auto">
+        <div class="inline-flex items-center gap-2 text-sm text-teal-600 bg-teal-50 px-4 py-2 rounded-full mb-6 font-medium">
+          <span class="live-dot"></span> 服务在线，API 稳定可用
+        </div>
+        
+        <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight mb-8">
+          一个密钥，畅用 <span class="gradient-text">多个 AI 模型</span>
+        </h1>
+        
+        <p class="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto mb-10 leading-relaxed">
+          无需管理多个订阅账号，一站式接入 Claude、GPT、Gemini 等主流 AI 服务
+        </p>
+        
+        <div class="flex flex-col sm:flex-row gap-4 justify-center mb-12">
+          <a href="/login?mode=register" class="btn btn-primary btn-lg px-8 py-4 text-base">🚀 免费注册</a>
+          <a href="/dashboard" class="btn btn-secondary btn-lg px-8 py-4 text-base">📖 进入控制台</a>
+        </div>
+        
+        <div class="flex flex-wrap gap-3 justify-center mb-10">
+          <span class="inline-flex items-center gap-2 text-sm text-gray-600 bg-white px-4 py-2 rounded-full border border-gray-200 shadow-sm">
+            <span class="live-dot"></span>🎁 注册即送 $1 试用额度，无需信用卡
+          </span>
+          <span class="inline-flex items-center gap-2 text-sm text-gray-600 bg-white px-4 py-2 rounded-full border border-gray-200 shadow-sm">
+            <span class="live-dot"></span>订阅 API
+          </span>
+          <span class="inline-flex items-center gap-2 text-sm text-gray-600 bg-white px-4 py-2 rounded-full border border-gray-200 shadow-sm">
+            <span class="live-dot"></span>会话持久化
+          </span>
+          <span class="inline-flex items-center gap-2 text-sm text-gray-600 bg-white px-4 py-2 rounded-full border border-gray-200 shadow-sm">
+            <span class="live-dot"></span>按量付费
+          </span>
+        </div>
+        
+        <div class="flex flex-wrap gap-3 justify-center items-center">
+          <span class="inline-flex items-center gap-2 text-sm text-gray-600 bg-white px-4 py-2.5 rounded-lg border border-gray-200 shadow-sm transition-all hover:-translate-y-0.5 hover:border-teal-500">💚 支付宝</span>
+          <span class="inline-flex items-center gap-2 text-sm text-gray-600 bg-white px-4 py-2.5 rounded-lg border border-gray-200 shadow-sm transition-all hover:-translate-y-0.5 hover:border-teal-500">💙 微信支付</span>
+          <span class="inline-flex items-center gap-2 text-sm text-gray-600 bg-white px-4 py-2.5 rounded-lg border border-gray-200 shadow-sm transition-all hover:-translate-y-0.5 hover:border-teal-500">💳 MasterCard</span>
+          <span class="inline-flex items-center gap-2 text-sm text-gray-600 bg-white px-4 py-2.5 rounded-lg border border-gray-200 shadow-sm transition-all hover:-translate-y-0.5 hover:border-teal-500">₮ USDT (TRC20)</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="features" class="py-20 bg-white">
+    <div class="container mx-auto px-6">
+      <div class="text-center mb-12">
+        <h2 class="text-3xl md:text-4xl font-extrabold mb-4">为什么选择 TokenGo</h2>
+        <p class="text-gray-600 text-lg max-w-2xl mx-auto">专业、稳定、高性价比的 AI API 中转服务</p>
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div class="feature-card card p-8 text-center hover:-translate-y-2 transition-all">
+          <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-teal-500 to-teal-700 text-white flex items-center justify-center text-3xl mx-auto mb-6 shadow-lg shadow-teal-500/30">🔑</div>
+          <h3 class="text-xl font-semibold mb-4">一键接入</h3>
+          <p class="text-gray-600 text-sm leading-relaxed">一个 API Key 即可调用所有已接入的 AI 模型，无需单独申请多个账号，开箱即用。</p>
+        </div>
+        <div class="feature-card card p-8 text-center hover:-translate-y-2 transition-all">
+          <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-teal-500 to-teal-700 text-white flex items-center justify-center text-3xl mx-auto mb-6 shadow-lg shadow-teal-500/30">🛡️</div>
+          <h3 class="text-xl font-semibold mb-4">稳定可靠</h3>
+          <p class="text-gray-600 text-sm leading-relaxed">多上游账号智能路由 + 自动故障转移，告别报错与超时，让您的应用始终在线。</p>
+        </div>
+        <div class="feature-card card p-8 text-center hover:-translate-y-2 transition-all">
+          <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-teal-500 to-teal-700 text-white flex items-center justify-center text-3xl mx-auto mb-6 shadow-lg shadow-teal-500/30">💎</div>
+          <h3 class="text-xl font-semibold mb-4">按量付费</h3>
+          <p class="text-gray-600 text-sm leading-relaxed">基于用量的计费与额度上限，团队消耗全透明。¥1 RMB = $12 USD 额度，远低于官方价格。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="models" class="py-20 bg-gray-50">
+    <div class="container mx-auto px-6">
+      <div class="text-center mb-12">
+        <h2 class="text-3xl md:text-4xl font-extrabold mb-4">支持的主流 AI 模型</h2>
+        <p class="text-gray-600 text-lg max-w-2xl mx-auto">一个 API Key 即可调用以下全部模型，开箱即用</p>
+      </div>
+      
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" id="modelGrid"></div>
+    </div>
+  </section>
+
+  <section id="pricing" class="py-20 bg-white">
+    <div class="container mx-auto px-6">
+      <div class="text-center mb-12">
+        <h2 class="text-3xl md:text-4xl font-extrabold mb-4">🎫 卡密兑换 · 即买即用</h2>
+        <p class="text-gray-600 text-lg max-w-2xl mx-auto">购买卡密后无需注册，输入卡密和邮箱即可领取 API 密钥与额度</p>
+      </div>
+      
+      <div class="bg-gradient-to-br from-teal-500 to-teal-700 rounded-2xl p-8 md:p-12 text-white grid grid-cols-1 lg:grid-cols-2 gap-10 items-center shadow-xl shadow-teal-500/25">
+        <div>
+          <h3 class="text-2xl md:text-3xl font-bold mb-5">输入卡密，立即获取 API 密钥</h3>
+          <p class="text-white/90 mb-8 leading-relaxed">
+            卡密格式：<b>TG-XXXX-XXXX-XXXX</b><br>
+            面值 $12 / $60 / $120 任选，售价低至 ¥1/$12 额度
+          </p>
+          <a href="/redeem" class="btn btn-warning inline-flex items-center gap-2 px-6 py-3">🚀 前往卡密兑换</a>
+        </div>
+        <div class="bg-white/10 backdrop-blur-md rounded-xl p-6 md:p-8">
+          <div class="text-sm text-white/80 mb-3">卡密示例</div>
+          <div class="font-mono text-xl md:text-2xl font-bold tracking-wider bg-black/20 p-4 rounded-lg border border-white/30 text-center mb-6">TG-A1B2-C3D4-E5F6</div>
+          <div class="text-sm text-white/90 space-y-2">
+            <div class="flex items-center gap-2">✅ 无需注册，邮箱即可领取</div>
+            <div class="flex items-center gap-2">✅ 自动开通 API 密钥</div>
+            <div class="flex items-center gap-2">✅ 即时到账，立即可用</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer id="contact" class="bg-gray-50 border-t border-gray-200 py-10">
+    <div class="container mx-auto px-6">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+        <div>
+          <a href="/" class="text-xl font-extrabold text-teal-600 flex items-center gap-2 mb-4">🚀 TokenGo</a>
+          <p class="text-gray-500 text-sm">一个密钥，畅用多个 AI 模型</p>
+        </div>
+        <div>
+          <h4 class="font-semibold text-gray-900 mb-4">快速链接</h4>
+          <ul class="space-y-2 text-sm text-gray-500">
+            <li><a href="/help" class="hover:text-teal-600">使用教程</a></li>
+            <li><a href="/dashboard" class="hover:text-teal-600">控制台</a></li>
+            <li><a href="/redeem" class="hover:text-teal-600">卡密兑换</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="font-semibold text-gray-900 mb-4">联系我们</h4>
+          <ul class="space-y-2 text-sm text-gray-500">
+            <li>邮箱：Commecy2014@gmail.com</li>
+            <li>服务时间：24/7</li>
+          </ul>
+        </div>
+      </div>
+      <div class="text-center text-gray-500 text-sm pt-6 border-t border-gray-200">
+        © 2026 TokenGo. 保留所有权利。
+      </div>
+    </div>
+  </footer>
+
+  <div id="supportModal" class="modal-overlay" style="display:none">
+    <div class="modal-content p-8 max-w-md w-full text-center">
+      <h3 class="text-xl font-bold mb-4">联系客服</h3>
+      <p class="text-gray-600 mb-6">邮箱：Commecy2014@gmail.com</p>
+      <button class="btn btn-primary" onclick="document.getElementById('supportModal').style.display='none'">关闭</button>
+    </div>
+  </div>
+
+  <script>
+    const MODELS=[
+      {n:'GPT-5.6',d:'最强推理能力',i:'🧠',c:'#10a37f',b:'推荐'},
+      {n:'GPT-5.5',d:'均衡高性能',i:'⚡',c:'#10a37f',b:''},
+      {n:'GPT-5.4',d:'快速响应',i:'🚀',c:'#10a37f',b:''},
+      {n:'GPT-5.4-mini',d:'轻量低价',i:'💨',c:'#10a37f',b:'低价'},
+      {n:'GPT-5.2',d:'稳定可靠',i:'✨',c:'#10a37f',b:''},
+      {n:'Codex',d:'代码专精',i:'💻',c:'#6e56cf',b:'代码'},
+      {n:'GPT-Image-1',d:'AI 图像生成',i:'🎨',c:'#ff6b6b',b:'图像'},
+      {n:'GPT-Image-2',d:'高清图像',i:'🖼️',c:'#ff6b6b',b:'新'},
+      {n:'Claude Sonnet 4.6',d:'长文创作之王',i:'🎭',c:'#d97757',b:'Claude'},
+    ];
+    const grid=document.getElementById('modelGrid');
+    MODELS.forEach(m=>{
+      const el=document.createElement('div');
+      el.className='card p-6 hover:-translate-y-2 transition-all tech-card';
+      el.innerHTML=`<div class="w-12 h-12 rounded-xl flex items-center justify-center text-2xl mb-4" style="background:${m.c}22;color:${m.c}">${m.i}</div>
+        <h3 class="text-lg font-semibold mb-1">${m.n}</h3>
+        <p class="text-gray-500 text-sm mb-3">${m.d}</p>
+        ${m.b?`<span class="badge badge-primary">${m.b}</span>`:''}`;
+      grid.appendChild(el);
+    });
+    
+    function toggleMobileMenu() {
+      const menu = document.getElementById('mobileMenu');
+      menu.classList.toggle('hidden');
+    }
+    
+    function contactSupport(e){e.preventDefault();document.getElementById('supportModal').style.display='flex';}
+    
+    async function renderNavUser(){
+      const area=document.getElementById('navUserArea');
+      if(!area)return;
+      const token=localStorage.getItem('tg_session');
+      if(!token){area.innerHTML='<a href="/login" class="btn btn-secondary">登录</a><a href="/login?mode=register" class="btn btn-primary">注册</a>';return;}
+      try{
+        const r=await fetch('/api/auth/me',{headers:{'Authorization':'Bearer '+token}});
+        if(!r.ok){localStorage.removeItem('tg_session');area.innerHTML='<a href="/login" class="btn btn-secondary">登录</a><a href="/login?mode=register" class="btn btn-primary">注册</a>';return;}
+        const u=await r.json();
+        area.innerHTML=`<span class="text-sm text-gray-600 mr-2">👋 ${u.username||u.email}</span><a href="/dashboard" class="btn btn-primary">控制台</a><button class="btn btn-secondary" onclick="logout()">退出</button>`;
+      }catch(e){area.innerHTML='<a href="/login" class="btn btn-secondary">登录</a><a href="/login?mode=register" class="btn btn-primary">注册</a>';}
+    }
+    
+    async function logout(){
+      const token=localStorage.getItem('tg_session');
+      if(token){try{await fetch('/api/auth/logout',{method:'POST',headers:{'Authorization':'Bearer '+token}});}catch(e){}}
+      localStorage.removeItem('tg_session');
+      location.href='/';
+    }
+    
+    renderNavUser();
+  </script>
+</body>
+</html>
