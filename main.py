@@ -3,6 +3,7 @@ TokenGo - AI API 中转服务
 一个密钥，畅用多个 AI 模型
 FastAPI + SQLite 实现，OpenAI / Anthropic 兼容协议。
 """
+import asyncio
 from fastapi import FastAPI, HTTPException, Header, Request, Query, UploadFile, File, Form
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import HTMLResponse, JSONResponse, StreamingResponse, PlainTextResponse
@@ -1625,6 +1626,29 @@ def admin_account_info(authorization: Optional[str] = Header(None)):
         "username": row["username"],
         "role": row["role"],
     }
+
+
+@app.get("/health")
+async def health_check():
+    return {"status": "ok", "service": "tokengo"}
+
+
+async def keep_alive():
+    while True:
+        try:
+            url = get_public_url()
+            if url and url.startswith("http"):
+                async with httpx.AsyncClient(timeout=10.0) as client:
+                    await client.get(f"{url}/health")
+                    print(f"[保活] 已 ping {url}/health")
+        except Exception as e:
+            print(f"[保活] ping 失败: {e}")
+        await asyncio.sleep(600)
+
+
+@app.on_event("startup")
+async def startup_event():
+    asyncio.create_task(keep_alive())
 
 
 init_db()
