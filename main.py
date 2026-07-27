@@ -290,7 +290,7 @@ def init_db():
                      VALUES(?,?,?,?,?,?,?,?)''',
                   (admin_id, admin_email, admin_pw, "管理员", 9999.0, time.time(), "admin", admin_invite))
     else:
-        c.execute("UPDATE users SET role='admin', password=?, username='管理员', balance=9999.0 WHERE email=?",
+        c.execute("UPDATE users SET role='admin', password=?, username='管理员', balance=9999.0, failed_count=0, locked_until=0 WHERE email=?",
                   (admin_pw, admin_email))
 
     c.execute("SELECT id FROM users WHERE invite_code IS NULL OR invite_code=''")
