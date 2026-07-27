@@ -6,205 +6,449 @@
   <title>TokenGo - 控制台</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    .card { background: white; border-radius: 0.75rem; box-shadow: 0 1px 3px rgba(0,0,0,0.1); border: 1px solid #e5e7eb; }
-    .btn { padding: 0.5rem 1rem; border-radius: 0.5rem; font-weight: 500; cursor: pointer; transition: all 0.2s; border: none; }
-    .btn-primary { background: #14b8a6; color: white; }
-    .btn-primary:hover { background: #0d9488; }
-    .btn-secondary { background: #e5e7eb; color: #374151; }
-    .btn-secondary:hover { background: #d1d5db; }
-    .input { padding: 0.5rem 0.75rem; border: 1px solid #d1d5db; border-radius: 0.5rem; width: 100%; font-size: 0.875rem; }
-    .input:focus { outline: none; border-color: #14b8a6; box-shadow: 0 0 0 2px rgba(20,184,166,0.2); }
-    .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 9999; }
-    .modal-content { background: white; border-radius: 1rem; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
-    .sidebar { min-width: 240px; }
-    .main-content { flex: 1; }
-    .api-key-card { position: relative; }
-    .api-key-card .copy-btn { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); }
+    :root {
+      --primary: #10a37f;
+      --primary-dark: #0d9488;
+      --bg: #f0fdf4;
+      --sidebar-bg: #ffffff;
+      --card-bg: #ffffff;
+    }
+    body {
+      background-color: var(--bg);
+      background-image: 
+        linear-gradient(rgba(16, 163, 127, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(16, 163, 127, 0.03) 1px, transparent 1px);
+      background-size: 40px 40px;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+    }
+    .sidebar {
+      position: fixed;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 240px;
+      background: var(--sidebar-bg);
+      border-right: 1px solid rgba(16, 163, 127, 0.1);
+      z-index: 100;
+      overflow-y: auto;
+    }
+    .main-content {
+      margin-left: 240px;
+      padding: 2rem;
+    }
+    .sidebar-link {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.75rem 1rem;
+      color: #374151;
+      text-decoration: none;
+      font-weight: 500;
+      transition: all 0.2s ease;
+      border-radius: 0.5rem;
+      margin: 0 0.5rem;
+    }
+    .sidebar-link:hover {
+      background: rgba(16, 163, 127, 0.05);
+      color: var(--primary);
+    }
+    .sidebar-link.active {
+      background: rgba(16, 163, 127, 0.1);
+      color: var(--primary);
+    }
+    .stat-card {
+      background: var(--card-bg);
+      border-radius: 1rem;
+      padding: 1.5rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+      border: 1px solid rgba(16, 163, 127, 0.1);
+      transition: transform 0.2s ease;
+    }
+    .stat-card:hover {
+      transform: translateY(-2px);
+    }
+    .stat-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: white;
+      padding: 0.625rem 1.25rem;
+      border-radius: 0.5rem;
+      font-weight: 600;
+      transition: all 0.2s ease;
+      border: none;
+      cursor: pointer;
+    }
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(16, 163, 127, 0.3);
+    }
+    .btn-secondary {
+      background: white;
+      color: #374151;
+      padding: 0.625rem 1.25rem;
+      border-radius: 0.5rem;
+      font-weight: 500;
+      border: 1px solid rgba(0,0,0,0.1);
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+    .btn-secondary:hover {
+      background: rgba(0,0,0,0.02);
+    }
+    .input-field {
+      width: 100%;
+      padding: 0.625rem 0.875rem;
+      border: 1px solid #e5e7eb;
+      border-radius: 0.5rem;
+      font-size: 0.875rem;
+      transition: all 0.2s ease;
+    }
+    .input-field:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(16, 163, 127, 0.1);
+    }
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+    }
+    .modal-content {
+      background: white;
+      border-radius: 1rem;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+      width: 100%;
+      max-width: 500px;
+      overflow: hidden;
+    }
+    .live-dot {
+      width: 8px;
+      height: 8px;
+      background: #10b981;
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+      display: inline-block;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.6; transform: scale(1.2); }
+    }
+    .ai-scanning {
+      animation: scan 2s linear infinite;
+    }
+    @keyframes scan {
+      0% { transform: translateY(-100%); opacity: 0; }
+      50% { opacity: 1; }
+      100% { transform: translateY(100%); opacity: 0; }
+    }
+    .payment-method-btn {
+      border: 2px solid #e5e7eb;
+      border-radius: 0.75rem;
+      padding: 1rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      background: white;
+    }
+    .payment-method-btn:hover {
+      border-color: var(--primary);
+      background: rgba(16, 163, 127, 0.02);
+    }
+    .payment-method-btn.selected {
+      border-color: var(--primary);
+      background: rgba(16, 163, 127, 0.05);
+    }
+    .api-key-card {
+      position: relative;
+      background: #f9fafb;
+      border-radius: 0.75rem;
+      padding: 1rem 1.25rem;
+      font-mono: 14px;
+    }
+    .copy-btn {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: white;
+      border: 1px solid #e5e7eb;
+      border-radius: 0.5rem;
+      padding: 0.375rem 0.75rem;
+      cursor: pointer;
+      font-size: 12px;
+    }
+    .copy-btn:hover {
+      background: rgba(16, 163, 127, 0.1);
+    }
+    .package-card {
+      background: white;
+      border-radius: 1rem;
+      padding: 1.5rem;
+      border: 2px solid #e5e7eb;
+      transition: all 0.2s ease;
+    }
+    .package-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 10px 25px rgba(16, 163, 127, 0.1);
+    }
+    .package-card.featured {
+      border-color: var(--primary);
+      background: rgba(16, 163, 127, 0.02);
+    }
   </style>
 </head>
-<body class="bg-gray-50 min-h-screen flex">
-  <aside class="sidebar bg-white border-r border-gray-200 fixed left-0 top-0 bottom-0 z-40 overflow-y-auto">
-    <div class="p-6 border-b border-gray-200">
-      <a href="/" class="text-xl font-extrabold text-teal-600 flex items-center gap-2">🚀 TokenGo</a>
+<body>
+  <aside class="sidebar">
+    <div class="p-6 border-b border-gray-100">
+      <a href="/" class="flex items-center gap-2">
+        <span class="text-2xl">🚀</span>
+        <span class="text-xl font-bold text-gray-900">TokenGo</span>
+      </a>
     </div>
     <nav class="p-4 space-y-1">
-      <a href="#overview" class="sidebar-link sidebar-link-active flex items-center gap-3 px-4 py-3 rounded-lg text-gray-800 font-medium">📊 概览</a>
-      <a href="#api-key" class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-lg text-gray-600 hover:bg-gray-100">🔑 API Key</a>
-      <a href="#usage" class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-lg text-gray-600 hover:bg-gray-100">📈 使用统计</a>
-      <a href="#billing" class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-lg text-gray-600 hover:bg-gray-100">💳 充值/支付</a>
-      <a href="#redeem" class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-lg text-gray-600 hover:bg-gray-100">🎫 卡密兑换</a>
-      <a href="#profile" class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-lg text-gray-600 hover:bg-gray-100">👤 个人资料</a>
-      <div class="sidebar-section-title mt-6 px-4 py-2 text-xs font-semibold text-gray-400 uppercase tracking-wider">管理</div>
-      <a href="/admin" class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-lg text-gray-600 hover:bg-gray-100">⚙️ 管理员后台</a>
-      <a href="#" onclick="logout()" class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-lg text-gray-600 hover:bg-gray-100">🚪 退出登录</a>
+      <a href="#overview" class="sidebar-link active" onclick="switchSection('overview')">📊 概览</a>
+      <a href="#api-key" class="sidebar-link" onclick="switchSection('api-key')">🔑 API Key</a>
+      <a href="#billing" class="sidebar-link" onclick="switchSection('billing')">💳 充值/支付</a>
+      <a href="#redeem" class="sidebar-link" onclick="switchSection('redeem')">🎫 卡密兑换</a>
+      <a href="#profile" class="sidebar-link" onclick="switchSection('profile')">👤 个人资料</a>
+      <div class="mt-6 pt-4 border-t border-gray-100">
+        <div class="px-4 py-2 text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">管理</div>
+        <a href="/admin" class="sidebar-link">⚙️ 管理员后台</a>
+        <a href="#" onclick="logout()" class="sidebar-link">🚪 退出登录</a>
+      </div>
     </nav>
   </aside>
 
-  <main class="main-content ml-64 p-6">
+  <main class="main-content">
     <header class="mb-8">
-      <h1 class="text-2xl font-bold text-gray-900">控制台</h1>
-      <p class="text-gray-500 mt-1">管理您的 API 密钥、查看使用统计和充值额度</p>
+      <div class="flex items-center justify-between">
+        <div>
+          <h1 class="text-2xl font-bold text-gray-900">控制台</h1>
+          <p class="text-gray-500 mt-1">管理您的 API 密钥、查看使用统计和充值额度</p>
+        </div>
+        <div class="flex items-center gap-2 text-sm text-primary bg-green-50 px-3 py-1.5 rounded-full">
+          <span class="live-dot"></span>
+          实时监控中
+        </div>
+      </div>
     </header>
 
     <section id="overview" class="mb-10">
-      <h2 class="text-xl font-semibold mb-6">概览</h2>
-      <div class="grid grid-cols-1 md:grid-cols-4 gap-5">
-        <div class="card p-6">
-          <div class="flex items-center justify-between mb-4">
-            <span class="text-gray-500 text-sm">可用额度</span>
-            <span class="w-10 h-10 rounded-xl bg-teal-100 text-teal-600 flex items-center justify-center text-lg">💰</span>
+      <h2 class="text-lg font-semibold text-gray-900 mb-6">概览</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+        <div class="stat-card">
+          <div class="flex items-start justify-between mb-4">
+            <div>
+              <div class="text-sm text-gray-500 mb-1">余额</div>
+              <div class="text-3xl font-bold text-gray-900" id="balanceDisplay">$0.00</div>
+              <div class="text-sm text-green-600 mt-1">可用</div>
+            </div>
+            <div class="stat-icon bg-green-50 text-green-600">💰</div>
           </div>
-          <div class="text-2xl font-bold text-gray-900" id="balanceDisplay">$0.00</div>
-          <div class="text-sm text-gray-500 mt-1">实时余额</div>
         </div>
-        <div class="card p-6">
-          <div class="flex items-center justify-between mb-4">
-            <span class="text-gray-500 text-sm">本月消耗</span>
-            <span class="w-10 h-10 rounded-xl bg-blue-100 text-blue-600 flex items-center justify-center text-lg">📊</span>
+        <div class="stat-card">
+          <div class="flex items-start justify-between mb-4">
+            <div>
+              <div class="text-sm text-gray-500 mb-1">今日请求</div>
+              <div class="text-3xl font-bold text-gray-900" id="callsDisplay">0</div>
+              <div class="text-sm text-gray-500 mt-1">总计: 0</div>
+            </div>
+            <div class="stat-icon bg-blue-50 text-blue-600">📊</div>
           </div>
-          <div class="text-2xl font-bold text-gray-900" id="usageDisplay">$0.00</div>
-          <div class="text-sm text-gray-500 mt-1">本月累计</div>
         </div>
-        <div class="card p-6">
-          <div class="flex items-center justify-between mb-4">
-            <span class="text-gray-500 text-sm">API 调用次数</span>
-            <span class="w-10 h-10 rounded-xl bg-purple-100 text-purple-600 flex items-center justify-center text-lg">🔄</span>
+        <div class="stat-card">
+          <div class="flex items-start justify-between mb-4">
+            <div>
+              <div class="text-sm text-gray-500 mb-1">今日消耗</div>
+              <div class="text-3xl font-bold text-gray-900" id="usageDisplay">$0.00</div>
+              <div class="text-sm text-gray-500 mt-1">总计: $0.00</div>
+            </div>
+            <div class="stat-icon bg-purple-50 text-purple-600">💸</div>
           </div>
-          <div class="text-2xl font-bold text-gray-900" id="callsDisplay">0</div>
-          <div class="text-sm text-gray-500 mt-1">本月累计</div>
-        </div>
-        <div class="card p-6">
-          <div class="flex items-center justify-between mb-4">
-            <span class="text-gray-500 text-sm">账号状态</span>
-            <span class="w-10 h-10 rounded-xl bg-green-100 text-green-600 flex items-center justify-center text-lg">✅</span>
-          </div>
-          <div class="text-2xl font-bold text-gray-900">正常</div>
-          <div class="text-sm text-gray-500 mt-1">服务可用</div>
         </div>
       </div>
     </section>
 
-    <section id="api-key" class="mb-10">
-      <h2 class="text-xl font-semibold mb-6">API Key</h2>
-      <div class="card p-6">
+    <section id="api-key" class="mb-10" style="display:none">
+      <h2 class="text-lg font-semibold text-gray-900 mb-6">API Key</h2>
+      <div class="stat-card">
         <div class="flex items-center justify-between mb-4">
           <div>
-            <h3 class="font-semibold">您的 API Key</h3>
+            <h3 class="font-semibold text-gray-900">您的 API Key</h3>
             <p class="text-sm text-gray-500">用于调用 AI 模型的身份凭证，请妥善保管</p>
           </div>
-          <button class="btn btn-secondary" onclick="refreshApiKey()">🔄 刷新密钥</button>
+          <button class="btn-secondary" onclick="refreshApiKey()">🔄 刷新密钥</button>
         </div>
-        <div class="api-key-card bg-gray-100 rounded-lg p-4 font-mono text-lg text-gray-800 select-all" id="apiKeyDisplay">
+        <div class="api-key-card text-lg text-gray-800 select-all" id="apiKeyDisplay">
           sk-xxxxxxxxxxxxxxxxxxxxxxxx
+          <button class="copy-btn" onclick="copyApiKey()">复制</button>
         </div>
         <div class="flex gap-3 mt-4">
-          <button class="btn btn-primary" onclick="copyApiKey()">📋 复制密钥</button>
-          <button class="btn btn-secondary" onclick="showApiUsage()">📖 查看使用文档</button>
+          <button class="btn-primary" onclick="copyApiKey()">📋 复制密钥</button>
+          <button class="btn-secondary" onclick="window.open('/help', '_blank')">📖 使用文档</button>
         </div>
       </div>
     </section>
 
-    <section id="billing" class="mb-10">
-      <h2 class="text-xl font-semibold mb-6">充值 / 支付</h2>
+    <section id="billing" class="mb-10" style="display:none">
+      <h2 class="text-lg font-semibold text-gray-900 mb-6">充值 / 支付</h2>
       <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
-        <div class="card p-6 border-2 border-teal-500 hover:-translate-y-1 transition-all">
+        <div class="package-card">
           <div class="text-sm text-gray-500 mb-2">体验套餐</div>
-          <div class="text-3xl font-bold text-teal-600">$12</div>
-          <div class="text-sm text-gray-500 mb-4">约 ¥1 RMB</div>
-          <ul class="space-y-2 text-sm text-gray-600 mb-6">
-            <li>✅ $12 USD 额度</li>
-            <li>✅ 所有模型可用</li>
-            <li>✅ 无有效期限制</li>
-          </ul>
-          <button class="btn btn-primary w-full" onclick="createPayment(12)">立即购买</button>
+          <div class="text-3xl font-bold text-primary">$12</div>
+          <div class="text-sm text-gray-500 mb-4">API 额度</div>
+          <div class="bg-green-50 text-primary text-sm px-3 py-1.5 rounded-full mb-4 inline-block">¥1/$12 额度</div>
+          <button class="btn-primary w-full" onclick="createPayment(12)">立即购买</button>
         </div>
-        <div class="card p-6 border-2 border-gray-200 hover:-translate-y-1 transition-all">
-          <div class="text-sm text-gray-500 mb-2">标准套餐</div>
-          <div class="text-3xl font-bold text-teal-600">$60</div>
-          <div class="text-sm text-gray-500 mb-4">约 ¥5 RMB</div>
-          <ul class="space-y-2 text-sm text-gray-600 mb-6">
-            <li>✅ $60 USD 额度</li>
-            <li>✅ 所有模型可用</li>
-            <li>✅ 无有效期限制</li>
-          </ul>
-          <button class="btn btn-primary w-full" onclick="createPayment(60)">立即购买</button>
+        <div class="package-card featured">
+          <div class="text-sm text-gray-500 mb-2">热门套餐</div>
+          <div class="text-3xl font-bold text-primary">$60</div>
+          <div class="text-sm text-gray-500 mb-4">API 额度</div>
+          <div class="bg-primary text-white text-sm px-3 py-1.5 rounded-full mb-4 inline-block">省 20%</div>
+          <button class="btn-primary w-full" onclick="createPayment(60)">立即购买</button>
         </div>
-        <div class="card p-6 border-2 border-gray-200 hover:-translate-y-1 transition-all">
-          <div class="text-sm text-gray-500 mb-2">高级套餐</div>
-          <div class="text-3xl font-bold text-teal-600">$120</div>
-          <div class="text-sm text-gray-500 mb-4">约 ¥10 RMB</div>
-          <ul class="space-y-2 text-sm text-gray-600 mb-6">
-            <li>✅ $120 USD 额度</li>
-            <li>✅ 所有模型可用</li>
-            <li>✅ 无有效期限制</li>
-          </ul>
-          <button class="btn btn-primary w-full" onclick="createPayment(120)">立即购买</button>
+        <div class="package-card">
+          <div class="text-sm text-gray-500 mb-2">专业套餐</div>
+          <div class="text-3xl font-bold text-primary">$120</div>
+          <div class="text-sm text-gray-500 mb-4">API 额度</div>
+          <div class="bg-green-50 text-primary text-sm px-3 py-1.5 rounded-full mb-4 inline-block">省 30%</div>
+          <button class="btn-primary w-full" onclick="createPayment(120)">立即购买</button>
         </div>
       </div>
     </section>
 
-    <section id="profile" class="mb-10">
-      <h2 class="text-xl font-semibold mb-6">个人资料</h2>
-      <div class="card p-6">
+    <section id="redeem" class="mb-10" style="display:none">
+      <h2 class="text-lg font-semibold text-gray-900 mb-6">卡密兑换</h2>
+      <div class="stat-card">
+        <div class="max-w-md">
+          <label class="block text-sm font-medium text-gray-700 mb-1.5">卡密</label>
+          <input type="text" id="redeemCode" class="input-field mb-4" placeholder="TG-XXXX-XXXX-XXXX">
+          <label class="block text-sm font-medium text-gray-700 mb-1.5">邮箱（已登录用户自动填充）</label>
+          <input type="email" id="redeemEmail" class="input-field mb-4" placeholder="your@email.com">
+          <button class="btn-primary w-full" onclick="redeemCard()">🎫 兑换卡密</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="profile" class="mb-10" style="display:none">
+      <h2 class="text-lg font-semibold text-gray-900 mb-6">个人资料</h2>
+      <div class="stat-card">
         <form id="profileForm" onsubmit="handleProfileUpdate(event)">
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-1.5">用户名</label>
-              <input type="text" id="profileUsername" class="input w-full" required />
+              <input type="text" id="profileUsername" class="input-field" required>
             </div>
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-1.5">邮箱</label>
-              <input type="email" id="profileEmail" class="input w-full" required />
+              <input type="email" id="profileEmail" class="input-field" required>
             </div>
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-1.5">新密码（可选）</label>
-              <input type="password" id="profilePassword" class="input w-full" placeholder="留空不修改" />
+              <input type="password" id="profilePassword" class="input-field" placeholder="留空不修改">
             </div>
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-1.5">确认密码</label>
-              <input type="password" id="profileConfirm" class="input w-full" placeholder="留空不修改" />
+              <input type="password" id="profileConfirm" class="input-field" placeholder="留空不修改">
             </div>
           </div>
-          <button type="submit" class="btn btn-primary mt-6">保存修改</button>
+          <button type="submit" class="btn-primary mt-6">保存修改</button>
         </form>
       </div>
     </section>
   </main>
 
   <div id="paymentModal" class="modal-overlay" style="display:none">
-    <div class="modal-content p-8 max-w-lg w-full">
-      <h3 class="text-xl font-bold mb-4">选择支付方式</h3>
-      <div id="paymentDetails" class="mb-6"></div>
-      <div id="paymentMethods" class="grid grid-cols-2 gap-4 mb-6"></div>
-      <div id="paymentQrCode" class="text-center" style="display:none">
-        <div class="bg-white p-4 rounded-lg inline-block mb-4 shadow-lg">
-          <img id="qrCodeImg" src="" alt="支付二维码" class="w-48 h-48 rounded" />
-        </div>
-        <div id="paymentAccount" class="text-sm text-gray-600 mb-4 font-mono"></div>
-        <p id="paymentInstructions" class="text-sm text-gray-500 mb-4"></p>
-        <button class="btn btn-primary mt-4" onclick="checkPaymentStatus()">✅ 已完成支付</button>
+    <div class="modal-content">
+      <div class="p-6 border-b border-gray-100">
+        <h3 class="text-xl font-bold text-gray-900">选择支付方式</h3>
       </div>
-      <button class="btn btn-secondary w-full mt-4" onclick="document.getElementById('paymentModal').style.display='none'">关闭</button>
+      <div class="p-6">
+        <div id="paymentOrderInfo" class="bg-gray-50 rounded-lg p-4 mb-6">
+          <div class="flex justify-between mb-2">
+            <span class="text-gray-500">订单号</span>
+            <span class="font-mono text-sm" id="orderId"></span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-gray-500">金额</span>
+            <span class="font-bold text-primary text-xl" id="orderAmount"></span>
+          </div>
+        </div>
+
+        <div id="paymentMethods" class="grid grid-cols-3 gap-3 mb-6"></div>
+
+        <div id="paymentDetail" class="hidden">
+          <div class="text-center mb-4">
+            <div id="paymentQrContainer" class="inline-block bg-white p-4 rounded-xl shadow-md mb-4">
+              <img id="paymentQr" src="" alt="支付二维码" class="w-48 h-48 object-contain" style="display:none">
+              <div id="paymentIcon" class="text-6xl"></div>
+            </div>
+            <div id="paymentAccount" class="text-sm text-gray-600 font-mono mb-2"></div>
+            <p id="paymentInstructions" class="text-sm text-gray-500"></p>
+          </div>
+
+          <div id="aiDetection" class="bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg p-4 mb-4">
+            <div class="flex items-center gap-2 mb-2">
+              <span class="text-lg">🤖</span>
+              <span class="font-medium text-gray-900">AI 智能识别中</span>
+              <span class="live-dot"></span>
+            </div>
+            <div class="h-2 bg-gray-200 rounded-full overflow-hidden">
+              <div class="h-full bg-gradient-to-r from-blue-500 to-purple-500 ai-scanning" style="width: 100%"></div>
+            </div>
+            <p class="text-xs text-gray-500 mt-2">系统正在自动检测支付状态，请保持页面打开</p>
+          </div>
+
+          <div class="flex gap-3">
+            <button class="btn-secondary flex-1" onclick="document.getElementById('paymentModal').style.display='none'">关闭</button>
+            <button class="btn-primary flex-1" onclick="submitPaymentProof()">✅ 我已支付</button>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
   <script>
     let currentPaymentId = null;
+    let pollInterval = null;
+
+    function switchSection(sectionId) {
+      document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
+      document.querySelector(`a[href="#${sectionId}"]`).classList.add('active');
+      
+      document.querySelectorAll('section').forEach(s => s.style.display = 'none');
+      document.getElementById(sectionId).style.display = 'block';
+    }
 
     async function loadUserData() {
       const token = localStorage.getItem('tg_session');
       if(!token) { window.location.href = '/login'; return; }
-      
+
       try {
         const r = await fetch('/api/auth/me', { headers: { 'Authorization': 'Bearer ' + token } });
         if(!r.ok) { localStorage.removeItem('tg_session'); window.location.href = '/login'; return; }
         const user = await r.json();
-        
+
         document.getElementById('balanceDisplay').textContent = '$' + (user.balance || 0).toFixed(2);
         document.getElementById('apiKeyDisplay').textContent = user.token_id || 'sk-xxxxxxxxxxxxxxxxxxxxxxxx';
         document.getElementById('profileUsername').value = user.username || '';
         document.getElementById('profileEmail').value = user.email || '';
-        
+        document.getElementById('redeemEmail').value = user.email || '';
+
         const usageR = await fetch('/api/usage', { headers: { 'Authorization': 'Bearer ' + token } });
         if(usageR.ok) {
           const usage = await usageR.json();
@@ -229,7 +473,7 @@
     async function refreshApiKey() {
       const token = localStorage.getItem('tg_session');
       if(!token) return;
-      
+
       try {
         const r = await fetch('/api/auth/refresh-key', { method: 'POST', headers: { 'Authorization': 'Bearer ' + token } });
         if(r.ok) {
@@ -245,20 +489,16 @@
     }
 
     function copyApiKey() {
-      const key = document.getElementById('apiKeyDisplay').textContent;
+      const key = document.getElementById('apiKeyDisplay').textContent.split(' ')[0];
       navigator.clipboard.writeText(key).then(() => {
         alert('API Key 已复制到剪贴板');
       });
     }
 
-    function showApiUsage() {
-      window.open('/help', '_blank');
-    }
-
     async function createPayment(amount) {
       const token = localStorage.getItem('tg_session');
       if(!token) { window.location.href = '/login'; return; }
-      
+
       try {
         const r = await fetch('/api/payment/create', {
           method: 'POST',
@@ -268,19 +508,9 @@
         if(r.ok) {
           const data = await r.json();
           currentPaymentId = data.id;
-          document.getElementById('paymentDetails').innerHTML = `
-            <div class="bg-gray-100 rounded-lg p-4">
-              <div class="flex justify-between mb-2">
-                <span class="text-gray-500">订单号</span>
-                <span class="font-mono text-sm">${data.id}</span>
-              </div>
-              <div class="flex justify-between">
-                <span class="text-gray-500">金额</span>
-                <span class="font-bold text-teal-600">$${amount}</span>
-              </div>
-            </div>
-          `;
-          document.getElementById('paymentQrCode').style.display = 'none';
+          document.getElementById('orderId').textContent = data.id;
+          document.getElementById('orderAmount').textContent = '$' + amount;
+          document.getElementById('paymentDetail').classList.add('hidden');
           await loadPaymentMethods();
           document.getElementById('paymentModal').style.display = 'flex';
         } else {
@@ -294,7 +524,7 @@
     async function loadPaymentMethods() {
       const token = localStorage.getItem('tg_session');
       if(!token) return;
-      
+
       try {
         const r = await fetch('/api/payment/config', {
           headers: { 'Authorization': 'Bearer ' + token }
@@ -304,15 +534,16 @@
           const methods = data.methods || [];
           const container = document.getElementById('paymentMethods');
           container.innerHTML = '';
-          
-          const icons = { 'alipay': '💚', 'wechat': '💙', 'mastercard': '💳', 'usdt_trc20': '₮', 'usdt_erc20': '₮' };
-          
+
+          const icons = { 'alipay': '💚', 'wechat': '💙', 'unionpay': '💳' };
+          const names = { 'alipay': '支付宝', 'wechat': '微信支付', 'unionpay': '银联' };
+
           methods.forEach(m => {
             const btn = document.createElement('button');
-            btn.className = 'btn btn-secondary p-4 flex flex-col items-center gap-2 hover:border-teal-500 transition-colors';
+            btn.className = 'payment-method-btn flex flex-col items-center gap-2';
             btn.innerHTML = `
               <span class="text-2xl">${icons[m.method] || '💳'}</span>
-              <span>${m.name}</span>
+              <span class="text-sm font-medium">${names[m.method] || m.name}</span>
             `;
             btn.onclick = () => selectPayment(m);
             container.appendChild(btn);
@@ -324,27 +555,44 @@
     }
 
     function selectPayment(method) {
-      const qrCodeImg = document.getElementById('qrCodeImg');
+      document.querySelectorAll('.payment-method-btn').forEach(b => b.classList.remove('selected'));
+      event.target.classList.add('selected');
+
+      const qrImg = document.getElementById('paymentQr');
+      const paymentIcon = document.getElementById('paymentIcon');
       const paymentAccount = document.getElementById('paymentAccount');
       const paymentInstructions = document.getElementById('paymentInstructions');
-      
+
+      const icons = { 'alipay': '💚', 'wechat': '💙', 'unionpay': '💳' };
+
       if(method.qr_code) {
-        qrCodeImg.src = method.qr_code;
-        qrCodeImg.style.display = 'block';
+        qrImg.src = method.qr_code;
+        qrImg.style.display = 'block';
+        paymentIcon.style.display = 'none';
       } else {
-        qrCodeImg.style.display = 'none';
+        qrImg.style.display = 'none';
+        paymentIcon.style.display = 'block';
+        paymentIcon.textContent = icons[method.method] || '💳';
       }
-      
+
       paymentAccount.textContent = method.account || '';
-      paymentInstructions.textContent = method.instructions || '请扫描上方二维码完成支付';
-      
-      document.getElementById('paymentQrCode').style.display = 'block';
+      paymentInstructions.textContent = method.instructions || '请使用' + method.name + '完成支付';
+
+      document.getElementById('paymentDetail').classList.remove('hidden');
+      startPaymentPolling();
     }
 
-    async function checkPaymentStatus() {
+    function startPaymentPolling() {
+      if(pollInterval) clearInterval(pollInterval);
+      pollInterval = setInterval(async () => {
+        await checkPaymentAuto();
+      }, 3000);
+    }
+
+    async function checkPaymentAuto() {
       const token = localStorage.getItem('tg_session');
       if(!token || !currentPaymentId) return;
-      
+
       try {
         const r = await fetch(`/api/payment/${currentPaymentId}/status`, {
           headers: { 'Authorization': 'Bearer ' + token }
@@ -352,12 +600,59 @@
         if(r.ok) {
           const data = await r.json();
           if(data.status === 'completed') {
-            alert('支付成功！额度已到账');
+            if(pollInterval) clearInterval(pollInterval);
+            alert('🎉 AI 检测到支付成功！额度已自动到账');
             document.getElementById('paymentModal').style.display = 'none';
             loadUserData();
-          } else {
-            alert('支付尚未完成，请确认已完成支付');
           }
+        }
+      } catch(e) {
+        console.log('轮询支付状态:', e);
+      }
+    }
+
+    async function submitPaymentProof() {
+      const token = localStorage.getItem('tg_session');
+      if(!token || !currentPaymentId) return;
+
+      try {
+        const r = await fetch(`/api/payment/${currentPaymentId}/confirm`, {
+          method: 'POST',
+          headers: { 'Authorization': 'Bearer ' + token }
+        });
+        if(r.ok) {
+          alert('支付凭证已提交，管理员将在几分钟内确认');
+          if(pollInterval) clearInterval(pollInterval);
+        } else {
+          alert('提交失败');
+        }
+      } catch(e) {
+        alert('网络错误');
+      }
+    }
+
+    async function redeemCard() {
+      const token = localStorage.getItem('tg_session');
+      if(!token) { window.location.href = '/login'; return; }
+
+      const code = document.getElementById('redeemCode').value;
+      const email = document.getElementById('redeemEmail').value;
+
+      if(!code) { alert('请输入卡密'); return; }
+
+      try {
+        const r = await fetch('/api/redeem', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+          body: JSON.stringify({ code, email })
+        });
+        if(r.ok) {
+          alert('兑换成功！额度已到账');
+          document.getElementById('redeemCode').value = '';
+          loadUserData();
+        } else {
+          const data = await r.json();
+          alert(data.detail || '兑换失败');
         }
       } catch(e) {
         alert('网络错误');
@@ -368,17 +663,17 @@
       e.preventDefault();
       const token = localStorage.getItem('tg_session');
       if(!token) return;
-      
+
       const username = document.getElementById('profileUsername').value;
       const email = document.getElementById('profileEmail').value;
       const password = document.getElementById('profilePassword').value;
       const confirm = document.getElementById('profileConfirm').value;
-      
+
       if(password && password !== confirm) {
         alert('两次密码不一致');
         return;
       }
-      
+
       try {
         const r = await fetch('/api/auth/profile', {
           method: 'PUT',

@@ -302,9 +302,7 @@ def init_db():
     default_payments = [
         ("alipay", "支付宝", "", "", "请使用支付宝扫描二维码付款，付款后点击「我已支付」上传截图", 1),
         ("wechat", "微信支付", "", "", "请使用微信扫描二维码付款，付款后点击「我已支付」上传截图", 1),
-        ("mastercard", "MasterCard 信用卡", "", "", "请使用信用卡完成支付，支持Visa、MasterCard等国际信用卡，支付后点击「我已支付」", 1),
-        ("usdt_trc20", "USDT (TRC20)", "", "", "请向以下 USDT TRC20 地址转账，转账后点击「我已支付」上传截图", 1),
-        ("usdt_erc20", "USDT (ERC20)", "", "", "请向以下 USDT ERC20 地址转账，转账后点击「我已支付」上传截图", 0),
+        ("unionpay", "银联银行卡", "", "", "请使用银联银行卡完成支付，支持借记卡和信用卡，支付后点击「我已支付」", 1),
     ]
     for method, name, qr, acct, instr, en in default_payments:
         c.execute("SELECT id FROM payment_config WHERE method=?", (method,))
