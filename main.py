@@ -1486,13 +1486,14 @@ def api_login(body: UserLogin, request: Request):
     conn.commit()
     conn.close()
 
+    row_dict = dict(row)
     return {
         "session_token": session_token,
-        "email": row["email"],
-        "username": row.get("username") or row["email"],
-        "role": row.get("role") or "user",
-        "token_id": row.get("token_id") or "",
-        "balance": row.get("balance") or 0.0,
+        "email": row_dict["email"],
+        "username": row_dict.get("username") or row_dict["email"],
+        "role": row_dict.get("role") or "user",
+        "token_id": row_dict.get("token_id") or "",
+        "balance": row_dict.get("balance") or 0.0,
     }
 
 
