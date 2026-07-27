@@ -21,7 +21,7 @@ import hashlib
 import uuid
 from datetime import datetime, timedelta
 
-PUBLIC_BASE_URL = "https://tokengo.serveo.net"
+PUBLIC_BASE_URL = "https://tokengo-d0cb.onrender.com"
 PUBLIC_URL_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "public_url.txt")
 
 _public_url_cache = {"value": None, "mtime": 0.0}
