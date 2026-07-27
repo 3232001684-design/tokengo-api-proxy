@@ -711,12 +711,7 @@ async def index():
 
 @app.get("/dashboard", response_class=HTMLResponse)
 async def dashboard(request: Request):
-    session_token = request.cookies.get("tg_session") or request.headers.get("Authorization", "").replace("Bearer ", "").strip()
-    if session_token:
-        user = get_user_by_session(f"Bearer {session_token}")
-        if user:
-            return load_template("dashboard")
-    return HTMLResponse(content=load_template("login"), status_code=302, headers={"Location": "/login?redirect=" + request.url.path})
+    return load_template("dashboard")
 
 
 @app.get("/help", response_class=HTMLResponse)
@@ -736,12 +731,7 @@ async def redeem_page():
 
 @app.get("/admin", response_class=HTMLResponse)
 async def admin_page(request: Request):
-    session_token = request.cookies.get("tg_session") or request.headers.get("Authorization", "").replace("Bearer ", "").strip()
-    if session_token:
-        user = get_user_by_session(f"Bearer {session_token}")
-        if user and is_admin(user):
-            return load_template("admin")
-    return HTMLResponse(content=load_template("login"), status_code=302, headers={"Location": "/login?redirect=/admin"})
+    return load_template("admin")
 
 
 @app.get("/v1/models")

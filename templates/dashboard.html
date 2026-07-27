@@ -201,15 +201,15 @@
         const user = await r.json();
         
         document.getElementById('balanceDisplay').textContent = '$' + (user.balance || 0).toFixed(2);
-        document.getElementById('apiKeyDisplay').textContent = user.api_key || 'sk-xxxxxxxxxxxxxxxxxxxxxxxx';
+        document.getElementById('apiKeyDisplay').textContent = user.token_id || 'sk-xxxxxxxxxxxxxxxxxxxxxxxx';
         document.getElementById('profileUsername').value = user.username || '';
         document.getElementById('profileEmail').value = user.email || '';
         
         const usageR = await fetch('/api/usage', { headers: { 'Authorization': 'Bearer ' + token } });
         if(usageR.ok) {
           const usage = await usageR.json();
-          document.getElementById('usageDisplay').textContent = '$' + (usage.total_cost || 0).toFixed(2);
-          document.getElementById('callsDisplay').textContent = usage.total_calls || 0;
+          document.getElementById('usageDisplay').textContent = '$' + (usage.today_cost || 0).toFixed(2);
+          document.getElementById('callsDisplay').textContent = usage.today_requests || 0;
         }
       } catch(e) {
         console.error('加载数据失败:', e);
