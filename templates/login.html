@@ -4,9 +4,16 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>TokenGo - 登录 / 注册</title>
-  <link rel="stylesheet" href="/static/css/vendor.css" />
-  <link rel="stylesheet" href="/static/css/ccvibe.css" />
+  <script src="https://cdn.tailwindcss.com"></script>
   <style>
+    .card { background: white; border-radius: 0.75rem; box-shadow: 0 10px 25px rgba(0,0,0,0.1); border: 1px solid #e5e7eb; }
+    .btn { padding: 0.5rem 1rem; border-radius: 0.5rem; font-weight: 500; cursor: pointer; transition: all 0.2s; border: none; }
+    .btn-primary { background: #14b8a6; color: white; }
+    .btn-primary:hover { background: #0d9488; }
+    .btn-secondary { background: #e5e7eb; color: #374151; }
+    .btn-secondary:hover { background: #d1d5db; }
+    .input { padding: 0.5rem 0.75rem; border: 1px solid #d1d5db; border-radius: 0.5rem; width: 100%; font-size: 0.875rem; }
+    .input:focus { outline: none; border-color: #14b8a6; box-shadow: 0 0 0 2px rgba(20,184,166,0.2); }
     body {
       display: flex;
       align-items: center;

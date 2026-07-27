@@ -4,8 +4,34 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>TokenGo - 管理员后台</title>
-  <link rel="stylesheet" href="/static/css/vendor.css" />
-  <link rel="stylesheet" href="/static/css/ccvibe.css" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .card { background: white; border-radius: 0.75rem; box-shadow: 0 1px 3px rgba(0,0,0,0.1); border: 1px solid #e5e7eb; }
+    .btn { padding: 0.5rem 1rem; border-radius: 0.5rem; font-weight: 500; cursor: pointer; transition: all 0.2s; border: none; }
+    .btn-primary { background: #14b8a6; color: white; }
+    .btn-primary:hover { background: #0d9488; }
+    .btn-secondary { background: #e5e7eb; color: #374151; }
+    .btn-secondary:hover { background: #d1d5db; }
+    .btn-sm { padding: 0.25rem 0.5rem; font-size: 0.75rem; }
+    .btn-success { background: #10b981; color: white; }
+    .btn-danger { background: #ef4444; color: white; }
+    .input { padding: 0.5rem 0.75rem; border: 1px solid #d1d5db; border-radius: 0.5rem; width: 100%; font-size: 0.875rem; }
+    .input:focus { outline: none; border-color: #14b8a6; box-shadow: 0 0 0 2px rgba(20,184,166,0.2); }
+    .badge { display: inline-block; padding: 0.25rem 0.5rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 500; }
+    .badge-primary { background: #14b8a6; color: white; }
+    .badge-success { background: #10b981; color: white; }
+    .badge-warning { background: #f59e0b; color: white; }
+    .badge-danger { background: #ef4444; color: white; }
+    .badge-gray { background: #9ca3af; color: white; }
+    .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 9999; }
+    .modal-content { background: white; border-radius: 1rem; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+    .table-container { overflow-x: auto; }
+    table { border-collapse: collapse; }
+    th, td { border-bottom: 1px solid #e5e7eb; }
+    .sidebar-link { transition: all 0.2s; }
+    .sidebar-link-active { background: #14b8a6; color: white; }
+    .sidebar-link-active:hover { background: #0d9488; }
+  </style>
 </head>
 <body class="bg-gray-50 min-h-screen flex">
   <aside class="sidebar bg-white border-r border-gray-200 fixed left-0 top-0 bottom-0 z-40 overflow-y-auto">
