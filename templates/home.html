@@ -3,32 +3,62 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>TokenGo - 一个密钥，畅用多个 AI 模型</title>
+  <title>TokenGo - 多模型 AI 网关</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     :root {
       --primary: #10a37f;
-      --primary-dark: #0d9488;
-      --secondary: #f59e0b;
-      --accent: #3b82f6;
-      --bg: #f0fdf4;
-      --card-bg: #ffffff;
-      --text: #1f2937;
-      --text-muted: #6b7280;
+      --primary-hover: #0d9488;
+      --bg-dark: #0f172a;
+      --bg-card: #1e293b;
+      --bg-card-hover: #334155;
+      --text-primary: #f1f5f9;
+      --text-secondary: #94a3b8;
+      --border: #334155;
     }
     body {
-      background-color: var(--bg);
-      background-image: 
-        linear-gradient(rgba(16, 163, 127, 0.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(16, 163, 127, 0.03) 1px, transparent 1px);
-      background-size: 40px 40px;
+      background-color: var(--bg-dark);
+      color: var(--text-primary);
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
     }
-    .announce-bar {
-      background: linear-gradient(90deg, #f97316, #ef4444);
+    .glass-card {
+      background: rgba(30, 41, 59, 0.8);
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--border);
     }
-    .nav-shadow {
-      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+      transition: all 0.2s ease;
+    }
+    .btn-primary:hover {
+      background: var(--primary-hover);
+      transform: translateY(-1px);
+    }
+    .btn-secondary {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text-primary);
+      transition: all 0.2s ease;
+    }
+    .btn-secondary:hover {
+      background: var(--bg-card);
+    }
+    .stat-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      transition: all 0.2s ease;
+    }
+    .stat-card:hover {
+      background: var(--bg-card-hover);
+      transform: translateY(-2px);
+    }
+    .model-badge {
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      padding: 2px 8px;
+      border-radius: 4px;
     }
     .live-dot {
       width: 8px;
@@ -39,336 +69,310 @@
       display: inline-block;
     }
     @keyframes pulse {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.6; transform: scale(1.2); }
-    }
-    .card-hover {
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-    .card-hover:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 10px 25px rgba(16, 163, 127, 0.15);
-    }
-    .support-btn {
-      position: fixed;
-      bottom: 24px;
-      right: 24px;
-      width: 56px;
-      height: 56px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, #3b82f6, #2563eb);
-      color: white;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 20px;
-      box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
-      cursor: pointer;
-      transition: transform 0.2s ease;
-      z-index: 1000;
-    }
-    .support-btn:hover {
-      transform: scale(1.1);
-    }
-    .stat-card {
-      background: white;
-      border-radius: 1rem;
-      padding: 1.5rem;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-      border: 1px solid rgba(16, 163, 127, 0.1);
-    }
-    .feature-icon {
-      width: 48px;
-      height: 48px;
-      border-radius: 1rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 20px;
-      margin-bottom: 1rem;
-    }
-    .model-card {
-      background: white;
-      border-radius: 0.75rem;
-      padding: 1.25rem;
-      border: 1px solid rgba(0,0,0,0.05);
-      transition: all 0.2s ease;
-    }
-    .model-card:hover {
-      border-color: var(--primary);
-      background: rgba(16, 163, 127, 0.02);
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
     }
     .gradient-text {
-      background: linear-gradient(90deg, var(--primary), #059669);
+      background: linear-gradient(90deg, var(--primary), #06b6d4);
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
     }
-    .btn-primary {
-      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-      color: white;
-      padding: 0.75rem 1.5rem;
-      border-radius: 0.5rem;
-      font-weight: 600;
-      transition: all 0.2s ease;
-      border: none;
-      cursor: pointer;
+    .feature-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      transition: all 0.3s ease;
     }
-    .btn-primary:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 4px 12px rgba(16, 163, 127, 0.3);
-    }
-    .btn-secondary {
-      background: white;
-      color: var(--text);
-      padding: 0.75rem 1.5rem;
-      border-radius: 0.5rem;
-      font-weight: 500;
-      border: 1px solid rgba(0,0,0,0.1);
-      transition: all 0.2s ease;
-      cursor: pointer;
-    }
-    .btn-secondary:hover {
-      background: rgba(0,0,0,0.02);
+    .feature-card:hover {
+      border-color: var(--primary);
+      background: rgba(16, 163, 127, 0.05);
     }
   </style>
 </head>
 <body>
-  <div class="announce-bar text-white text-center py-3 text-sm font-semibold">
-    <span class="inline-flex items-center gap-2">
-      <span class="live-dot"></span>
-      限时优惠 $1 USD = $85 USD API 额度
-    </span>
-  </div>
-
-  <nav class="fixed top-12 left-0 right-0 z-50 bg-white/90 backdrop-blur-lg nav-shadow">
+  <nav class="fixed top-0 left-0 right-0 z-50 glass-card">
     <div class="container mx-auto px-6 h-16 flex items-center justify-between">
-      <a href="/" class="flex items-center gap-2">
-        <span class="text-2xl">🚀</span>
-        <span class="text-xl font-bold text-gray-900">TokenGo</span>
+      <a href="/" class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-green-500 to-teal-600 flex items-center justify-center text-xl">🚀</div>
+        <span class="text-xl font-bold text-white">TokenGo</span>
       </a>
 
-      <div class="hidden md:flex items-center gap-4">
-        <a href="#features" class="text-sm text-gray-600 hover:text-primary font-medium transition-colors">功能特色</a>
-        <a href="#models" class="text-sm text-gray-600 hover:text-primary font-medium transition-colors">AI 模型</a>
-        <a href="#pricing" class="text-sm text-gray-600 hover:text-primary font-medium transition-colors">价格方案</a>
-        <a href="/help" class="text-sm text-gray-600 hover:text-primary font-medium transition-colors">使用教程</a>
+      <div class="hidden md:flex items-center gap-8">
+        <a href="#features" class="text-sm text-gray-400 hover:text-white transition-colors">功能特色</a>
+        <a href="#models" class="text-sm text-gray-400 hover:text-white transition-colors">AI 模型</a>
+        <a href="#pricing" class="text-sm text-gray-400 hover:text-white transition-colors">价格方案</a>
+        <a href="/help" class="text-sm text-gray-400 hover:text-white transition-colors">使用教程</a>
       </div>
 
       <div class="flex items-center gap-3">
         <span id="navUserArea">
-          <a href="/login" class="btn-secondary text-sm px-4 py-2">登录</a>
-          <a href="/login?mode=register" class="btn-primary text-sm px-4 py-2">注册</a>
+          <a href="/login" class="btn-secondary px-5 py-2 rounded-lg text-sm font-medium">登录</a>
+          <a href="/login?mode=register" class="btn-primary px-5 py-2 rounded-lg text-sm font-medium">免费注册</a>
         </span>
       </div>
-
-      <button class="md:hidden p-2" onclick="toggleMobileMenu()">☰</button>
-    </div>
-
-    <div id="mobileMenu" class="md:hidden hidden bg-white border-t border-gray-100 py-4 px-6 space-y-3">
-      <a href="#features" class="block py-2 text-gray-600 hover:text-primary">功能特色</a>
-      <a href="#models" class="block py-2 text-gray-600 hover:text-primary">AI 模型</a>
-      <a href="#pricing" class="block py-2 text-gray-600 hover:text-primary">价格方案</a>
-      <a href="/help" class="block py-2 text-gray-600 hover:text-primary">使用教程</a>
     </div>
   </nav>
 
-  <section class="pt-36 pb-24">
+  <section class="pt-24 pb-20">
     <div class="container mx-auto px-6 text-center">
-      <div class="max-w-3xl mx-auto">
-        <div class="inline-flex items-center gap-2 text-sm text-primary bg-green-50 px-4 py-2 rounded-full mb-8 font-medium">
-          <span class="live-dot"></span>
-          多模态 AI 网关
-        </div>
+      <div class="inline-flex items-center gap-2 text-sm text-green-400 bg-green-500/10 px-4 py-2 rounded-full mb-8">
+        <span class="live-dot"></span>
+        多模态 AI 网关
+      </div>
 
-        <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-gray-900">
-          TokenGo
-        </h1>
+      <h1 class="text-5xl md:text-6xl lg:text-7xl font-bold mb-6">
+        <span class="gradient-text">TokenGo</span>
+      </h1>
 
-        <p class="text-xl md:text-2xl text-gray-700 mb-4">
-          一个密钥 — 所有 AI 模型
-        </p>
+      <p class="text-xl md:text-2xl text-gray-300 mb-4">
+        一个密钥 — 所有 AI 模型
+      </p>
 
-        <p class="text-gray-600 text-lg mb-10 max-w-2xl mx-auto leading-relaxed">
-          无需管理多个订阅账号，一站式接入 Claude、GPT、Gemini 等主流 AI 服务
-        </p>
+      <p class="text-gray-400 text-lg mb-12 max-w-2xl mx-auto">
+        无需管理多个订阅账号，一站式接入 Claude、GPT、Gemini 等主流 AI 服务
+      </p>
 
-        <div class="flex flex-col sm:flex-row gap-4 justify-center mb-12">
-          <a href="/login?mode=register" class="btn-primary text-base px-8 py-3.5">🚀 免费注册</a>
-          <a href="/dashboard" class="btn-secondary text-base px-8 py-3.5">📖 进入控制台</a>
-        </div>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center mb-12">
+        <a href="/login?mode=register" class="btn-primary text-base px-10 py-4 rounded-xl font-semibold">🚀 免费注册</a>
+        <a href="/dashboard" class="btn-secondary text-base px-10 py-4 rounded-xl font-semibold">📖 进入控制台</a>
+      </div>
 
-        <div class="flex flex-wrap gap-4 justify-center mb-12">
-          <span class="inline-flex items-center gap-2 text-sm text-gray-600 bg-white px-4 py-2.5 rounded-full border border-gray-100 shadow-sm">
-            <span class="live-dot"></span> 🎁 注册即送 $1 试用额度
-          </span>
-          <span class="inline-flex items-center gap-2 text-sm text-gray-600 bg-white px-4 py-2.5 rounded-full border border-gray-100 shadow-sm">
-            <span class="live-dot"></span> 多模型支持
-          </span>
-          <span class="inline-flex items-center gap-2 text-sm text-gray-600 bg-white px-4 py-2.5 rounded-full border border-gray-100 shadow-sm">
-            <span class="live-dot"></span> 智能路由
-          </span>
-          <span class="inline-flex items-center gap-2 text-sm text-gray-600 bg-white px-4 py-2.5 rounded-full border border-gray-100 shadow-sm">
-            <span class="live-dot"></span> 实时监控
-          </span>
-        </div>
+      <div class="flex flex-wrap gap-4 justify-center mb-16">
+        <span class="inline-flex items-center gap-2 text-sm text-gray-400 bg-slate-800 px-5 py-3 rounded-full border border-slate-700">
+          <span class="live-dot"></span> 🎁 注册即送 $1 试用额度
+        </span>
+        <span class="inline-flex items-center gap-2 text-sm text-gray-400 bg-slate-800 px-5 py-3 rounded-full border border-slate-700">
+          <span class="live-dot"></span> 多模型支持
+        </span>
+        <span class="inline-flex items-center gap-2 text-sm text-gray-400 bg-slate-800 px-5 py-3 rounded-full border border-slate-700">
+          <span class="live-dot"></span> 智能路由
+        </span>
+        <span class="inline-flex items-center gap-2 text-sm text-gray-400 bg-slate-800 px-5 py-3 rounded-full border border-slate-700">
+          <span class="live-dot"></span> 实时监控
+        </span>
+      </div>
 
-        <div class="flex flex-wrap gap-3 justify-center">
-          <span class="inline-flex items-center gap-2 bg-white px-5 py-3 rounded-lg border border-gray-100 shadow-sm text-sm font-medium text-gray-700 transition-all hover:border-primary hover:-translate-y-0.5">💚 支付宝</span>
-          <span class="inline-flex items-center gap-2 bg-white px-5 py-3 rounded-lg border border-gray-100 shadow-sm text-sm font-medium text-gray-700 transition-all hover:border-primary hover:-translate-y-0.5">💙 微信支付</span>
-          <span class="inline-flex items-center gap-2 bg-white px-5 py-3 rounded-lg border border-gray-100 shadow-sm text-sm font-medium text-gray-700 transition-all hover:border-primary hover:-translate-y-0.5">💳 银联银行卡</span>
+      <div class="max-w-4xl mx-auto">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div class="stat-card p-6 rounded-xl">
+            <div class="flex items-center justify-between">
+              <div class="text-left">
+                <div class="text-sm text-gray-400 mb-1">API Keys</div>
+                <div class="text-3xl font-bold text-white">999+</div>
+              </div>
+              <div class="w-12 h-12 rounded-xl bg-green-500/10 flex items-center justify-center text-green-400 text-xl">🔑</div>
+            </div>
+          </div>
+          <div class="stat-card p-6 rounded-xl">
+            <div class="flex items-center justify-between">
+              <div class="text-left">
+                <div class="text-sm text-gray-400 mb-1">今日请求</div>
+                <div class="text-3xl font-bold text-white">99K+</div>
+              </div>
+              <div class="w-12 h-12 rounded-xl bg-blue-500/10 flex items-center justify-center text-blue-400 text-xl">📊</div>
+            </div>
+          </div>
+          <div class="stat-card p-6 rounded-xl">
+            <div class="flex items-center justify-between">
+              <div class="text-left">
+                <div class="text-sm text-gray-400 mb-1">响应时间</div>
+                <div class="text-3xl font-bold text-white">200ms</div>
+              </div>
+              <div class="w-12 h-12 rounded-xl bg-purple-500/10 flex items-center justify-center text-purple-400 text-xl">⚡</div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </section>
 
-  <section id="features" class="py-20 bg-white">
+  <section id="features" class="py-20 bg-slate-900/50">
     <div class="container mx-auto px-6">
-      <div class="text-center mb-12">
-        <h2 class="text-3xl font-bold text-gray-900 mb-4">为什么选择 TokenGo</h2>
-        <p class="text-gray-600">专业、稳定、高性价比的 AI API 中转服务</p>
+      <div class="text-center mb-16">
+        <h2 class="text-3xl font-bold text-white mb-4">为什么选择 TokenGo</h2>
+        <p class="text-gray-400">专业、稳定、高性价比的 AI API 中转服务</p>
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div class="stat-card card-hover text-center p-8">
-          <div class="feature-icon mx-auto bg-green-50 text-primary">🔑</div>
-          <h3 class="text-lg font-semibold text-gray-900 mb-2">一键接入</h3>
-          <p class="text-sm text-gray-600">一个 API Key 即可调用所有已接入的 AI 模型</p>
+        <div class="feature-card p-8 rounded-xl text-center">
+          <div class="w-14 h-14 rounded-xl bg-green-500/10 flex items-center justify-center text-green-400 text-2xl mx-auto mb-6">🔑</div>
+          <h3 class="text-lg font-semibold text-white mb-3">一键接入</h3>
+          <p class="text-sm text-gray-400">一个 API Key 即可调用所有已接入的 AI 模型，无需单独申请</p>
         </div>
-        <div class="stat-card card-hover text-center p-8">
-          <div class="feature-icon mx-auto bg-green-50 text-primary">🛡️</div>
-          <h3 class="text-lg font-semibold text-gray-900 mb-2">稳定可靠</h3>
-          <p class="text-sm text-gray-600">多上游账号智能路由 + 自动故障转移</p>
+        <div class="feature-card p-8 rounded-xl text-center">
+          <div class="w-14 h-14 rounded-xl bg-green-500/10 flex items-center justify-center text-green-400 text-2xl mx-auto mb-6">🛡️</div>
+          <h3 class="text-lg font-semibold text-white mb-3">稳定可靠</h3>
+          <p class="text-sm text-gray-400">多上游账号智能路由 + 自动故障转移，告别错误</p>
         </div>
-        <div class="stat-card card-hover text-center p-8">
-          <div class="feature-icon mx-auto bg-green-50 text-primary">💎</div>
-          <h3 class="text-lg font-semibold text-gray-900 mb-2">按量付费</h3>
-          <p class="text-sm text-gray-600">基于用量的计费与额度上限，团队消耗全透明</p>
+        <div class="feature-card p-8 rounded-xl text-center">
+          <div class="w-14 h-14 rounded-xl bg-green-500/10 flex items-center justify-center text-green-400 text-2xl mx-auto mb-6">💎</div>
+          <h3 class="text-lg font-semibold text-white mb-3">按量付费</h3>
+          <p class="text-sm text-gray-400">基于用量的计费与额度上限，团队消耗全透明</p>
         </div>
       </div>
     </div>
   </section>
 
-  <section id="models" class="py-20 bg-gray-50">
+  <section id="models" class="py-20">
     <div class="container mx-auto px-6">
-      <div class="text-center mb-12">
-        <h2 class="text-3xl font-bold text-gray-900 mb-4">支持的 AI 模型</h2>
-        <p class="text-gray-600">一个 API Key 即可调用以下全部模型</p>
+      <div class="text-center mb-16">
+        <h2 class="text-3xl font-bold text-white mb-4">支持的 AI 模型</h2>
+        <p class="text-gray-400">一个 API Key 即可调用以下全部模型</p>
       </div>
 
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5" id="modelGrid"></div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5" id="modelGrid"></div>
     </div>
   </section>
 
-  <section id="pricing" class="py-20 bg-white">
+  <section id="pricing" class="py-20 bg-slate-900/50">
     <div class="container mx-auto px-6">
-      <div class="text-center mb-12">
-        <h2 class="text-3xl font-bold text-gray-900 mb-4">充值方案</h2>
-        <p class="text-gray-600">灵活的充值选项，满足不同需求</p>
+      <div class="text-center mb-16">
+        <h2 class="text-3xl font-bold text-white mb-4">充值方案</h2>
+        <p class="text-gray-400">灵活的充值选项，满足不同需求</p>
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
-        <div class="stat-card p-6 text-center border-2 border-green-100 hover:border-primary transition-colors">
-          <div class="text-sm text-gray-500 mb-2">入门套餐</div>
-          <div class="text-3xl font-bold text-primary mb-1">$12</div>
-          <div class="text-sm text-gray-500 mb-4">API 额度</div>
-          <div class="bg-green-50 text-primary text-sm px-4 py-2 rounded-full mb-4">¥1/$12 额度</div>
-          <a href="/dashboard" class="btn-primary text-sm w-full inline-block">立即充值</a>
+        <div class="stat-card p-8 rounded-xl border-slate-700">
+          <div class="text-sm text-gray-400 mb-2">入门套餐</div>
+          <div class="text-4xl font-bold text-green-400 mb-1">$12</div>
+          <div class="text-sm text-gray-400 mb-6">API 额度</div>
+          <ul class="space-y-3 mb-8 text-sm text-gray-300">
+            <li>✅ 全部模型访问</li>
+            <li>✅ 标准响应速度</li>
+            <li>✅ 基础技术支持</li>
+          </ul>
+          <a href="/dashboard" class="btn-secondary w-full py-3 rounded-lg font-medium">立即充值</a>
         </div>
-        <div class="stat-card p-6 text-center border-2 border-primary bg-green-50">
-          <div class="text-sm text-gray-500 mb-2">热门套餐</div>
-          <div class="text-3xl font-bold text-primary mb-1">$60</div>
-          <div class="text-sm text-gray-500 mb-4">API 额度</div>
-          <div class="bg-primary text-white text-sm px-4 py-2 rounded-full mb-4">省 20%</div>
-          <a href="/dashboard" class="btn-primary text-sm w-full inline-block">立即充值</a>
+        <div class="stat-card p-8 rounded-xl border-green-500 bg-green-500/5">
+          <div class="inline-block bg-green-500 text-white text-xs font-semibold px-3 py-1 rounded-full mb-4">热门推荐</div>
+          <div class="text-sm text-gray-400 mb-2">专业套餐</div>
+          <div class="text-4xl font-bold text-green-400 mb-1">$60</div>
+          <div class="text-sm text-gray-400 mb-6">API 额度</div>
+          <ul class="space-y-3 mb-8 text-sm text-gray-300">
+            <li>✅ 全部模型访问</li>
+            <li>✅ 优先响应速度</li>
+            <li>✅ 专属技术支持</li>
+            <li>✅ 自定义额度</li>
+          </ul>
+          <a href="/dashboard" class="btn-primary w-full py-3 rounded-lg font-medium">立即充值</a>
         </div>
-        <div class="stat-card p-6 text-center border-2 border-green-100 hover:border-primary transition-colors">
-          <div class="text-sm text-gray-500 mb-2">专业套餐</div>
-          <div class="text-3xl font-bold text-primary mb-1">$120</div>
-          <div class="text-sm text-gray-500 mb-4">API 额度</div>
-          <div class="bg-green-50 text-primary text-sm px-4 py-2 rounded-full mb-4">省 30%</div>
-          <a href="/dashboard" class="btn-primary text-sm w-full inline-block">立即充值</a>
+        <div class="stat-card p-8 rounded-xl border-slate-700">
+          <div class="text-sm text-gray-400 mb-2">企业套餐</div>
+          <div class="text-4xl font-bold text-green-400 mb-1">$120</div>
+          <div class="text-sm text-gray-400 mb-6">API 额度</div>
+          <ul class="space-y-3 mb-8 text-sm text-gray-300">
+            <li>✅ 全部模型访问</li>
+            <li>✅ 最快响应速度</li>
+            <li>✅ 7x24 技术支持</li>
+            <li>✅ 无限额度</li>
+            <li>✅ SLA 保障</li>
+          </ul>
+          <a href="/dashboard" class="btn-secondary w-full py-3 rounded-lg font-medium">立即充值</a>
         </div>
       </div>
     </div>
   </section>
 
-  <footer class="bg-gray-50 border-t border-gray-200 py-10">
+  <footer class="bg-slate-900 border-t border-slate-800 py-12">
     <div class="container mx-auto px-6">
-      <div class="flex flex-col md:flex-row justify-between items-center gap-6">
-        <div class="flex items-center gap-2">
-          <span class="text-xl">🚀</span>
-          <span class="font-bold text-gray-900">TokenGo</span>
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+        <div>
+          <div class="flex items-center gap-3 mb-4">
+            <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-green-500 to-teal-600 flex items-center justify-center text-xl">🚀</div>
+            <span class="text-xl font-bold text-white">TokenGo</span>
+          </div>
+          <p class="text-sm text-gray-400">多模型 AI 网关，一个密钥畅用所有 AI 服务</p>
         </div>
-        <div class="text-sm text-gray-500">© 2026 TokenGo. All rights reserved.</div>
-        <div class="flex gap-4 text-sm text-gray-500">
-          <a href="/help" class="hover:text-primary">使用教程</a>
-          <a href="/dashboard" class="hover:text-primary">控制台</a>
-          <a href="#contact" class="hover:text-primary">联系我们</a>
+        <div>
+          <h4 class="text-white font-semibold mb-4">产品</h4>
+          <ul class="space-y-2 text-sm text-gray-400">
+            <li><a href="#features" class="hover:text-green-400 transition-colors">功能特色</a></li>
+            <li><a href="#models" class="hover:text-green-400 transition-colors">AI 模型</a></li>
+            <li><a href="#pricing" class="hover:text-green-400 transition-colors">价格方案</a></li>
+          </ul>
         </div>
+        <div>
+          <h4 class="text-white font-semibold mb-4">资源</h4>
+          <ul class="space-y-2 text-sm text-gray-400">
+            <li><a href="/help" class="hover:text-green-400 transition-colors">使用教程</a></li>
+            <li><a href="/dashboard" class="hover:text-green-400 transition-colors">控制台</a></li>
+            <li><a href="/redeem" class="hover:text-green-400 transition-colors">卡密兑换</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="text-white font-semibold mb-4">联系我们</h4>
+          <ul class="space-y-2 text-sm text-gray-400">
+            <li>📧 Commecy2014@gmail.com</li>
+          </ul>
+        </div>
+      </div>
+      <div class="border-t border-slate-800 mt-8 pt-8 text-center text-sm text-gray-500">
+        © 2026 TokenGo. All rights reserved.
       </div>
     </div>
   </footer>
 
-  <div class="support-btn" onclick="contactSupport()">✈️</div>
-
-  <div id="supportModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);display:flex;align-items:center;justify-content:center;z-index:9999">
-    <div class="bg-white rounded-xl p-8 max-w-md w-full mx-4">
-      <h3 class="text-xl font-bold mb-4 text-center">联系客服</h3>
-      <p class="text-gray-600 text-center mb-6">邮箱：Commecy2014@gmail.com</p>
-      <button class="btn-primary w-full" onclick="document.getElementById('supportModal').style.display='none'">关闭</button>
-    </div>
-  </div>
-
   <script>
-    const MODELS=[
-      {n:'Claude Fable 5',d:'最强推理能力',i:'🧠',c:'#10a37f',b:'推荐'},
-      {n:'Claude Sonnet 4.6',d:'均衡高性能',i:'⚡',c:'#10a37f',b:''},
-      {n:'Claude Haiku 4.5',d:'快速响应',i:'🚀',c:'#10a37f',b:''},
-      {n:'GPT-5',d:'新世代模型',i:'💫',c:'#6e56cf',b:'新'},
-      {n:'GPT-4.1',d:'高可靠',i:'✨',c:'#6e56cf',b:''},
-      {n:'GPT-Image-2',d:'图像生成',i:'🎨',c:'#ff6b6b',b:'图像'},
-      {n:'Gemini 2.5 Pro',d:'多模态',i:'🤖',c:'#f59e0b',b:'多模态'},
-      {n:'Gemini 2.5 Flash',d:'快速经济',i:'💨',c:'#f59e0b',b:''},
-      {n:'Antigravity',d:'智能开发',i:'🔧',c:'#3b82f6',b:'新'},
+    const MODELS = [
+      { name: 'Claude Fable 5', desc: '最强推理能力', icon: '🧠', color: '#10a37f', badge: '推荐' },
+      { name: 'Claude Sonnet 4.6', desc: '均衡高性能', icon: '⚡', color: '#10a37f', badge: '' },
+      { name: 'Claude Haiku 4.5', desc: '快速响应', icon: '🚀', color: '#10a37f', badge: '' },
+      { name: 'GPT-5', desc: '新世代模型', icon: '💫', color: '#6e56cf', badge: '新' },
+      { name: 'GPT-4.1', desc: '高可靠', icon: '✨', color: '#6e56cf', badge: '' },
+      { name: 'GPT-Image-2', desc: '图像生成', icon: '🎨', color: '#ff6b6b', badge: '图像' },
+      { name: 'Gemini 2.5 Pro', desc: '多模态', icon: '🤖', color: '#f59e0b', badge: '多模态' },
+      { name: 'Gemini 2.5 Flash', desc: '快速经济', icon: '💨', color: '#f59e0b', badge: '' },
+      { name: 'Antigravity', desc: '智能开发', icon: '🔧', color: '#3b82f6', badge: '新' },
+      { name: 'GLM-5.2', desc: '智谱旗舰', icon: '🌐', color: '#ec4899', badge: '' },
+      { name: 'Kimi', desc: '长文本', icon: '📖', color: '#8b5cf6', badge: '' },
+      { name: 'Seedance', desc: '视频生成', icon: '🎬', color: '#06b6d4', badge: '视频' },
     ];
-    const grid=document.getElementById('modelGrid');
-    MODELS.forEach(m=>{
-      const el=document.createElement('div');
-      el.className='model-card';
-      el.innerHTML=`<div class="w-12 h-12 rounded-xl flex items-center justify-center text-2xl mb-4" style="background:${m.c}15;color:${m.c}">${m.i}</div>
-        <h3 class="text-base font-semibold text-gray-900 mb-1">${m.n}</h3>
-        <p class="text-sm text-gray-500">${m.d}</p>`;
+    
+    const grid = document.getElementById('modelGrid');
+    MODELS.forEach(m => {
+      const el = document.createElement('div');
+      el.className = 'stat-card p-5 rounded-xl';
+      el.innerHTML = `
+        <div class="flex items-start justify-between mb-4">
+          <div class="w-12 h-12 rounded-xl flex items-center justify-center text-2xl" style="background:${m.color}20;color:${m.color}">${m.icon}</div>
+          ${m.badge ? `<span class="model-badge" style="background:${m.color}20;color:${m.color}">${m.badge}</span>` : ''}
+        </div>
+        <h3 class="text-base font-semibold text-white mb-1">${m.name}</h3>
+        <p class="text-sm text-gray-400">${m.desc}</p>
+      `;
       grid.appendChild(el);
     });
 
-    function toggleMobileMenu() {
-      const menu=document.getElementById('mobileMenu');
-      menu.classList.toggle('hidden');
+    async function renderNavUser() {
+      const area = document.getElementById('navUserArea');
+      if(!area) return;
+      const token = localStorage.getItem('tg_session');
+      if(!token) {
+        area.innerHTML = '<a href="/login" class="btn-secondary px-5 py-2 rounded-lg text-sm font-medium">登录</a><a href="/login?mode=register" class="btn-primary px-5 py-2 rounded-lg text-sm font-medium">免费注册</a>';
+        return;
+      }
+      try {
+        const r = await fetch('/api/auth/me', { headers: { 'Authorization': 'Bearer ' + token } });
+        if(!r.ok) {
+          localStorage.removeItem('tg_session');
+          area.innerHTML = '<a href="/login" class="btn-secondary px-5 py-2 rounded-lg text-sm font-medium">登录</a><a href="/login?mode=register" class="btn-primary px-5 py-2 rounded-lg text-sm font-medium">免费注册</a>';
+          return;
+        }
+        const u = await r.json();
+        area.innerHTML = `<span class="text-sm text-gray-300 mr-2">👋 ${u.username || u.email}</span><a href="/dashboard" class="btn-primary px-5 py-2 rounded-lg text-sm font-medium">控制台</a><button class="btn-secondary px-5 py-2 rounded-lg text-sm font-medium" onclick="logout()">退出</button>`;
+      } catch(e) {
+        area.innerHTML = '<a href="/login" class="btn-secondary px-5 py-2 rounded-lg text-sm font-medium">登录</a><a href="/login?mode=register" class="btn-primary px-5 py-2 rounded-lg text-sm font-medium">免费注册</a>';
+      }
     }
 
-    function contactSupport() {
-      document.getElementById('supportModal').style.display='flex';
-    }
-
-    async function renderNavUser(){
-      const area=document.getElementById('navUserArea');
-      if(!area)return;
-      const token=localStorage.getItem('tg_session');
-      if(!token){area.innerHTML='<a href="/login" class="btn-secondary text-sm px-4 py-2">登录</a><a href="/login?mode=register" class="btn-primary text-sm px-4 py-2">注册</a>';return;}
-      try{
-        const r=await fetch('/api/auth/me',{headers:{'Authorization':'Bearer '+token}});
-        if(!r.ok){localStorage.removeItem('tg_session');area.innerHTML='<a href="/login" class="btn-secondary text-sm px-4 py-2">登录</a><a href="/login?mode=register" class="btn-primary text-sm px-4 py-2">注册</a>';return;}
-        const u=await r.json();
-        area.innerHTML=`<span class="text-sm text-gray-600 mr-2">👋 ${u.username||u.email}</span><a href="/dashboard" class="btn-primary text-sm px-4 py-2">控制台</a><button class="btn-secondary text-sm px-4 py-2" onclick="logout()">退出</button>`;
-      }catch(e){area.innerHTML='<a href="/login" class="btn-secondary text-sm px-4 py-2">登录</a><a href="/login?mode=register" class="btn-primary text-sm px-4 py-2">注册</a>';}
-    }
-
-    async function logout(){
-      const token=localStorage.getItem('tg_session');
-      if(token){try{await fetch('/api/auth/logout',{method:'POST',headers:{'Authorization':'Bearer '+token}});}catch(e){}}
+    async function logout() {
+      const token = localStorage.getItem('tg_session');
+      if(token) {
+        try { await fetch('/api/auth/logout', { method: 'POST', headers: { 'Authorization': 'Bearer ' + token } }); }
+        catch(e) {}
+      }
       localStorage.removeItem('tg_session');
-      location.href='/';
+      location.href = '/';
     }
 
     renderNavUser();

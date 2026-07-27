@@ -8,45 +8,37 @@
   <style>
     :root {
       --primary: #10a37f;
-      --primary-dark: #0d9488;
-      --bg: #f0fdf4;
+      --primary-hover: #0d9488;
+      --bg-dark: #0f172a;
+      --bg-card: #1e293b;
+      --text-primary: #f1f5f9;
+      --text-secondary: #94a3b8;
+      --border: #334155;
     }
     body {
+      background-color: var(--bg-dark);
       display: flex;
       align-items: center;
       justify-content: center;
       min-height: 100vh;
-      background-color: var(--bg);
-      background-image: 
-        linear-gradient(rgba(16, 163, 127, 0.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(16, 163, 127, 0.03) 1px, transparent 1px);
-      background-size: 40px 40px;
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
     }
     .login-card {
-      background: white;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
       border-radius: 1.25rem;
-      box-shadow: 0 10px 40px rgba(16, 163, 127, 0.1);
-      border: 1px solid rgba(16, 163, 127, 0.1);
       width: 100%;
       max-width: 420px;
       overflow: hidden;
     }
-    .tab-active {
-      color: var(--primary);
-      border-bottom: 2px solid var(--primary);
-      font-weight: 600;
-    }
-    .tab-inactive {
-      color: #6b7280;
-      border-bottom: 2px solid transparent;
-    }
     .input-field {
       width: 100%;
-      padding: 0.75rem 1rem;
-      border: 1px solid #e5e7eb;
+      padding: 0.875rem 1rem;
+      border: 1px solid var(--border);
       border-radius: 0.5rem;
       font-size: 0.875rem;
+      background: var(--bg-dark);
+      color: var(--text-primary);
       transition: all 0.2s ease;
     }
     .input-field:focus {
@@ -54,10 +46,13 @@
       border-color: var(--primary);
       box-shadow: 0 0 0 3px rgba(16, 163, 127, 0.1);
     }
+    .input-field::placeholder {
+      color: var(--text-secondary);
+    }
     .btn-primary {
-      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      background: var(--primary);
       color: white;
-      padding: 0.75rem 1.5rem;
+      padding: 0.875rem 1.5rem;
       border-radius: 0.5rem;
       font-weight: 600;
       transition: all 0.2s ease;
@@ -66,8 +61,8 @@
       width: 100%;
     }
     .btn-primary:hover {
+      background: var(--primary-hover);
       transform: translateY(-1px);
-      box-shadow: 0 4px 12px rgba(16, 163, 127, 0.3);
     }
     .btn-primary:disabled {
       opacity: 0.7;
@@ -95,27 +90,37 @@
       50% { opacity: 0.5; }
     }
     .alert-error {
-      background: #fee2e2;
-      color: #dc2626;
+      background: #ef444415;
+      color: #ef4444;
       padding: 0.75rem;
       border-radius: 0.5rem;
       font-size: 0.875rem;
       margin-bottom: 1rem;
       display: none;
+      border: 1px solid #ef444430;
+    }
+    .tab-active {
+      color: var(--primary);
+      border-bottom: 2px solid var(--primary);
+      font-weight: 600;
+    }
+    .tab-inactive {
+      color: var(--text-secondary);
+      border-bottom: 2px solid transparent;
     }
   </style>
 </head>
 <body>
   <div class="login-card p-8">
     <div class="text-center mb-8">
-      <div class="flex items-center justify-center gap-2 mb-3">
-        <span class="text-3xl">🚀</span>
-        <span class="text-2xl font-bold text-gray-900">TokenGo</span>
+      <div class="flex items-center justify-center gap-3 mb-4">
+        <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-green-500 to-teal-600 flex items-center justify-center text-2xl">🚀</div>
+        <span class="text-2xl font-bold text-white">TokenGo</span>
       </div>
-      <p class="text-gray-500 text-sm">一个密钥，畅用多个 AI 模型</p>
+      <p class="text-gray-400 text-sm">一个密钥，畅用多个 AI 模型</p>
     </div>
 
-    <div class="flex border-b border-gray-200 mb-6">
+    <div class="flex border-b border-slate-700 mb-6">
       <button id="tabLogin" class="flex-1 py-3 text-center tab-active" onclick="switchTab('login')">登录</button>
       <button id="tabRegister" class="flex-1 py-3 text-center tab-inactive" onclick="switchTab('register')">注册</button>
     </div>
@@ -124,28 +129,22 @@
       <div id="loginError" class="alert-error"></div>
       <form onsubmit="handleLogin(event)">
         <div class="mb-4">
-          <label class="block text-sm font-medium text-gray-700 mb-1.5">邮箱</label>
+          <label class="block text-sm font-medium text-gray-300 mb-2">邮箱</label>
           <input type="email" id="loginEmail" class="input-field" placeholder="your@email.com" required>
         </div>
-        <div class="mb-4">
-          <label class="block text-sm font-medium text-gray-700 mb-1.5">密码</label>
+        <div class="mb-6">
+          <label class="block text-sm font-medium text-gray-300 mb-2">密码</label>
           <input type="password" id="loginPassword" class="input-field" placeholder="••••••••" required>
-        </div>
-        <div class="flex items-center justify-between mb-6">
-          <label class="flex items-center gap-2 text-sm text-gray-600">
-            <input type="checkbox" id="rememberMe"> 记住我
-          </label>
-          <a href="#" class="link-text text-sm">忘记密码?</a>
         </div>
         <button type="submit" id="loginBtn" class="btn-primary">登录</button>
       </form>
       <div class="mt-6 text-center">
-        <p class="text-sm text-gray-500 mb-3">或</p>
+        <p class="text-sm text-gray-400 mb-3">或</p>
         <a href="/redeem" class="link-text text-sm inline-flex items-center gap-1">🎫 使用卡密兑换（无需注册）</a>
       </div>
       <div class="mt-6 text-center">
-        <p class="text-sm text-gray-500">
-          已有账号? <a href="#" class="link-text" onclick="switchTab('login')">立即登录</a>
+        <p class="text-sm text-gray-400">
+          还没有账号? <a href="#" class="link-text" onclick="switchTab('register')">立即注册</a>
         </p>
       </div>
     </div>
@@ -154,32 +153,28 @@
       <div id="registerError" class="alert-error"></div>
       <form onsubmit="handleRegister(event)">
         <div class="mb-4">
-          <label class="block text-sm font-medium text-gray-700 mb-1.5">邮箱</label>
+          <label class="block text-sm font-medium text-gray-300 mb-2">邮箱</label>
           <input type="email" id="registerEmail" class="input-field" placeholder="your@email.com" required>
         </div>
         <div class="mb-4">
-          <label class="block text-sm font-medium text-gray-700 mb-1.5">用户名</label>
+          <label class="block text-sm font-medium text-gray-300 mb-2">用户名</label>
           <input type="text" id="registerUsername" class="input-field" placeholder="username" required>
         </div>
-        <div class="mb-4">
-          <label class="block text-sm font-medium text-gray-700 mb-1.5">密码</label>
-          <input type="password" id="registerPassword" class="input-field" placeholder="••••••••" required>
-        </div>
         <div class="mb-6">
-          <label class="block text-sm font-medium text-gray-700 mb-1.5">确认密码</label>
-          <input type="password" id="registerConfirmPassword" class="input-field" placeholder="••••••••" required>
+          <label class="block text-sm font-medium text-gray-300 mb-2">密码</label>
+          <input type="password" id="registerPassword" class="input-field" placeholder="••••••••" required>
         </div>
         <button type="submit" id="registerBtn" class="btn-primary">注册</button>
       </form>
       <div class="mt-6 text-center">
-        <p class="text-sm text-gray-500">
+        <p class="text-sm text-gray-400">
           已有账号? <a href="#" class="link-text" onclick="switchTab('login')">立即登录</a>
         </p>
       </div>
     </div>
 
-    <div class="mt-8 pt-6 border-t border-gray-100 text-center">
-      <div class="flex items-center justify-center gap-2 text-sm text-gray-500">
+    <div class="mt-8 pt-6 border-t border-slate-700 text-center">
+      <div class="flex items-center justify-center gap-2 text-sm text-gray-400">
         <span class="live-dot"></span> 服务在线，API 稳定可用
       </div>
     </div>
@@ -239,7 +234,7 @@
         }
       } catch(err) {
         const errEl = document.getElementById('loginError');
-        errEl.textContent = '网络错误，请稍后重试: ' + err.message;
+        errEl.textContent = '网络错误，请稍后重试';
         errEl.style.display = 'block';
       } finally {
         btn.disabled = false;
@@ -253,14 +248,6 @@
       const email = document.getElementById('registerEmail').value;
       const username = document.getElementById('registerUsername').value;
       const password = document.getElementById('registerPassword').value;
-      const confirmPassword = document.getElementById('registerConfirmPassword').value;
-
-      if(password !== confirmPassword) {
-        const errEl = document.getElementById('registerError');
-        errEl.textContent = '两次输入的密码不一致';
-        errEl.style.display = 'block';
-        return;
-      }
 
       btn.disabled = true;
       btn.innerHTML = '注册中...';
@@ -284,7 +271,7 @@
         }
       } catch(err) {
         const errEl = document.getElementById('registerError');
-        errEl.textContent = '网络错误，请稍后重试: ' + err.message;
+        errEl.textContent = '网络错误，请稍后重试';
         errEl.style.display = 'block';
       } finally {
         btn.disabled = false;

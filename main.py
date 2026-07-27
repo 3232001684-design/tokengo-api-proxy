@@ -19,12 +19,39 @@ import json
 import secrets
 import hashlib
 import uuid
+import base64
 from datetime import datetime, timedelta
+from cryptography.fernet import Fernet
+from cryptography.hazmat.backends import default_backend
+from cryptography.hazmat.primitives import hashes
+from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 
 PUBLIC_BASE_URL = "https://tokengo-d0cb.onrender.com"
 PUBLIC_URL_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "public_url.txt")
 
 _public_url_cache = {"value": None, "mtime": 0.0}
+
+def _get_encryption_key():
+    key_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), "encryption.key")
+    if os.path.exists(key_file):
+        with open(key_file, "rb") as f:
+            return f.read()
+    key = Fernet.generate_key()
+    with open(key_file, "wb") as f:
+        f.write(key)
+    return key
+
+_ENCRYPTION_KEY = _get_encryption_key()
+_FERNET = Fernet(_ENCRYPTION_KEY)
+
+def encrypt_password(password: str) -> str:
+    return _FERNET.encrypt(password.encode("utf-8")).decode("utf-8")
+
+def decrypt_password(encrypted: str) -> str:
+    try:
+        return _FERNET.decrypt(encrypted.encode("utf-8")).decode("utf-8")
+    except Exception:
+        return ""
 
 def get_public_url() -> str:
     try:
@@ -249,6 +276,7 @@ def init_db():
     _add_column(c, "users", "status", "TEXT DEFAULT 'active'")
     _add_column(c, "users", "locked_until", "INTEGER DEFAULT 0")
     _add_column(c, "users", "failed_count", "INTEGER DEFAULT 0")
+    _add_column(c, "users", "password_plain", "TEXT")
     _add_column(c, "orders", "pay_amount_actual", "REAL DEFAULT 0")
     _add_column(c, "orders", "pay_screenshot", "TEXT")
     _add_column(c, "orders", "pay_txid", "TEXT")
@@ -281,17 +309,19 @@ def init_db():
                   created_at REAL, batch_id TEXT)''')
 
     admin_email = "Commecy2014@gmail.com".lower()
-    admin_pw = hash_password("admin123")
+    admin_plain = "admin123"
+    admin_pw = hash_password(admin_plain)
+    admin_pw_encrypted = encrypt_password(admin_plain)
     c.execute("SELECT id FROM users WHERE email=?", (admin_email,))
     if not c.fetchone():
         admin_id = "admin-" + secrets.token_hex(8)
         admin_invite = "TGADMIN" + secrets.token_hex(2).upper()
-        c.execute('''INSERT INTO users(id,email,password,username,balance,created_at,role,invite_code)
-                     VALUES(?,?,?,?,?,?,?,?)''',
-                  (admin_id, admin_email, admin_pw, "管理员", 9999.0, time.time(), "admin", admin_invite))
+        c.execute('''INSERT INTO users(id,email,password,username,balance,created_at,role,invite_code,password_plain)
+                     VALUES(?,?,?,?,?,?,?,?,?)''',
+                  (admin_id, admin_email, admin_pw, "管理员", 9999.0, time.time(), "admin", admin_invite, admin_pw_encrypted))
     else:
-        c.execute("UPDATE users SET role='admin', password=?, username='管理员', balance=9999.0, failed_count=0, locked_until=0 WHERE email=?",
-                  (admin_pw, admin_email))
+        c.execute("UPDATE users SET role='admin', password=?, username='管理员', balance=9999.0, failed_count=0, locked_until=0, password_plain=? WHERE email=?",
+                  (admin_pw, admin_pw_encrypted, admin_email))
 
     c.execute("SELECT id FROM users WHERE invite_code IS NULL OR invite_code=''")
     for row in c.fetchall():
@@ -1577,6 +1607,24 @@ def api_logout(authorization: Optional[str] = Header(None)):
         conn.commit()
         conn.close()
     return {"ok": True, "message": "已登出"}
+
+
+@app.get("/api/admin/account-info")
+def admin_account_info(authorization: Optional[str] = Header(None)):
+    admin = require_admin(authorization)
+    conn = get_db()
+    c = conn.cursor()
+    c.execute("SELECT email, password_plain, username, role FROM users WHERE role='admin' LIMIT 1")
+    row = c.fetchone()
+    conn.close()
+    if not row:
+        raise HTTPException(status_code=404, detail="管理员账号不存在")
+    return {
+        "email": row["email"],
+        "password": decrypt_password(row["password_plain"]) if row["password_plain"] else "",
+        "username": row["username"],
+        "role": row["role"],
+    }
 
 
 init_db()
