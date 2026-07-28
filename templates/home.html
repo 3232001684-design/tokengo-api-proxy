@@ -3,210 +3,90 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>TokenGo - 多模型统一接口网关</title>
-  <meta name="description" content="TokenGo 提供稳定、快速、低成本的大模型 API 服务，支持 GPT、Claude、Gemini 等多种模型">
+  <title>TokenGo - 统一的大模型接口网关</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    * { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
-    :root {
-      --primary: #10b981;
-      --bg: #09090b;
-      --card: #18181b;
-      --border: #27272a;
-      --text: #fafafa;
-      --muted: #a1a1aa;
-    }
-    body { background: var(--bg); color: var(--text); min-height: 100vh; }
-    .btn-primary { background: var(--primary); color: white; padding: 10px 20px; border-radius: 8px; font-weight: 500; border: none; cursor: pointer; transition: all 0.2s; }
+    * { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; background: #000; color: #fff; min-height: 100vh; }
+    a { color: inherit; text-decoration: none; }
+    a:hover { opacity: 0.8; }
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+    .btn { display: inline-block; padding: 8px 20px; border-radius: 6px; font-size: 14px; cursor: pointer; border: none; transition: all 0.2s; }
+    .btn-primary { background: #10b981; color: #fff; }
     .btn-primary:hover { background: #059669; }
-    .btn-outline { background: transparent; border: 1px solid var(--border); color: var(--text); padding: 10px 20px; border-radius: 8px; font-weight: 500; cursor: pointer; transition: all 0.2s; }
-    .btn-outline:hover { border-color: var(--primary); color: var(--primary); }
-    .card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; }
-    .text-muted { color: var(--muted); }
-    .live-dot { width: 8px; height: 8px; background: var(--primary); border-radius: 50%; animation: pulse 2s infinite; }
-    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
-    .model-tag { display: inline-block; padding: 4px 10px; background: rgba(16,185,129,0.1); color: var(--primary); border-radius: 6px; font-size: 12px; font-weight: 500; }
-    .endpoint { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 12px 16px; font-family: monospace; font-size: 13px; transition: all 0.2s; }
-    .endpoint:hover { border-color: var(--primary); }
-    .price-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 24px; }
-    .price-card:hover { border-color: var(--primary); }
-    .nav-link { color: var(--muted); text-decoration: none; transition: color 0.2s; font-size: 14px; }
-    .nav-link:hover { color: var(--text); }
-    .gradient-text { background: linear-gradient(135deg, var(--primary), #34d399); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .btn-outline { background: transparent; border: 1px solid #333; color: #fff; }
+    .btn-outline:hover { border-color: #555; }
+    .endpoint { background: #111; border: 1px solid #222; border-radius: 6px; padding: 12px 16px; font-family: monospace; font-size: 13px; transition: all 0.2s; }
+    .endpoint:hover { border-color: #333; }
   </style>
 </head>
 <body>
   <!-- 导航栏 -->
-  <nav class="fixed top-0 left-0 right-0 z-50 border-b border-zinc-800 bg-black/80 backdrop-blur-md">
-    <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+  <nav class="fixed top-0 left-0 right-0 z-50 bg-black/90 backdrop-blur-md border-b border-zinc-800">
+    <div class="container flex items-center justify-between h-14">
       <a href="/" class="flex items-center gap-2">
-        <div class="w-8 h-8 rounded-lg bg-emerald-500 flex items-center justify-center text-lg">🚀</div>
-        <span class="text-lg font-semibold">TokenGo</span>
+        <div class="w-8 h-8 rounded-lg bg-emerald-500 flex items-center justify-center font-bold text-lg">T</div>
+        <span class="font-semibold">TokenGo</span>
       </a>
-      <div class="hidden md:flex items-center gap-8">
-        <a href="/" class="nav-link">首页</a>
-        <a href="/pricing" class="nav-link">模型广场</a>
-        <a href="/help" class="nav-link">文档</a>
-        <a href="/help#pricing" class="nav-link">价格</a>
+      <div class="flex items-center gap-6 text-sm">
+        <a href="/">首页</a>
+        <a href="/login">控制台</a>
+        <a href="/pricing">模型广场</a>
+        <a href="/help">文档</a>
       </div>
       <div class="flex items-center gap-3">
-        <a href="/login" class="btn-outline px-4 py-2 text-sm">登录</a>
-        <a href="/login?mode=register" class="btn-primary px-4 py-2 text-sm">立即开始</a>
+        <a href="/login" class="btn btn-outline">登录</a>
+        <a href="/login?mode=register" class="btn btn-primary">开始使用</a>
       </div>
     </div>
   </nav>
 
-  <!-- Hero 区域 -->
-  <section class="pt-32 pb-20">
-    <div class="max-w-6xl mx-auto px-6 text-center">
-      <div class="inline-flex items-center gap-2 bg-emerald-500/10 border border-emerald-500/20 px-3 py-1.5 rounded-full mb-6">
-        <span class="live-dot"></span>
-        <span class="text-emerald-400 text-sm">服务稳定运行中</span>
+  <!-- 主内容 -->
+  <main class="pt-20">
+    <div class="container py-16">
+      <!-- 标题区域 -->
+      <div class="text-center mb-16">
+        <h1 class="text-4xl md:text-5xl font-bold mb-6">
+          统一的大模型接口网关
+        </h1>
+        <p class="text-xl text-zinc-400 mb-8">
+          多模型统一接入，只需将基址替换为：
+        </p>
       </div>
-      <h1 class="text-4xl md:text-5xl font-bold mb-6">
-        <span class="gradient-text">统一的大模型接口网关</span>
-      </h1>
-      <p class="text-xl text-muted max-w-2xl mx-auto mb-8">
-        多模型统一接入，只需将基址替换为我们的地址，即可调用所有主流 AI 模型
-      </p>
-      <div class="flex flex-col sm:flex-row gap-4 justify-center mb-12">
-        <a href="/login?mode=register" class="btn-primary px-6 py-3 text-base">🚀 立即开始使用</a>
-        <a href="/help" class="btn-outline px-6 py-3 text-base">查看文档</a>
-      </div>
-    </div>
-  </section>
 
-  <!-- API 端点 -->
-  <section class="py-16 border-t border-zinc-800">
-    <div class="max-w-6xl mx-auto px-6">
-      <h2 class="text-2xl font-bold text-center mb-4">支持的 API 端点</h2>
-      <p class="text-muted text-center mb-10">兼容 OpenAI / Anthropic / Google 等主流接口格式</p>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div class="endpoint">POST /v1/chat/completions</div>
-        <div class="endpoint">POST /v1/responses</div>
-        <div class="endpoint">POST /v1/responses/compact</div>
-        <div class="endpoint">POST /v1/messages</div>
-        <div class="endpoint">POST /v1beta/models</div>
-        <div class="endpoint">POST /v1/embeddings</div>
-        <div class="endpoint">POST /v1/rerank</div>
-        <div class="endpoint">POST /v1/images/generations</div>
-        <div class="endpoint">POST /v1/images/edits</div>
-        <div class="endpoint">POST /v1/audio/speech</div>
-        <div class="endpoint">POST /v1/audio/transcriptions</div>
-        <div class="endpoint">GET /v1/models</div>
-      </div>
-    </div>
-  </section>
-
-  <!-- 模型列表 -->
-  <section class="py-16 border-t border-zinc-800">
-    <div class="max-w-6xl mx-auto px-6">
-      <h2 class="text-2xl font-bold text-center mb-4">支持的模型</h2>
-      <p class="text-muted text-center mb-10">覆盖 GPT、Claude、Gemini、DeepSeek 等 16+ 主流模型</p>
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-4" id="modelGrid">
-        <!-- 模型将通过 JS 动态渲染 -->
-      </div>
-    </div>
-  </section>
-
-  <!-- 价格预览 -->
-  <section class="py-16 border-t border-zinc-800">
-    <div class="max-w-6xl mx-auto px-6">
-      <h2 class="text-2xl font-bold text-center mb-4">价格方案</h2>
-      <p class="text-muted text-center mb-10">按量计费，透明公正</p>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div class="price-card">
-          <div class="text-sm text-emerald-400 mb-2">入门版</div>
-          <div class="text-3xl font-bold mb-4">¥0</div>
-          <p class="text-muted text-sm mb-6">注册即送 ¥1 试用额度</p>
-          <ul class="space-y-2 text-sm text-muted mb-6">
-            <li>✓ 16+ 模型访问</li>
-            <li>✓ 按量计费</li>
-            <li>✓ 基础技术支持</li>
-          </ul>
-          <a href="/login?mode=register" class="btn-outline w-full block text-center">免费注册</a>
-        </div>
-        <div class="price-card border-emerald-500/50">
-          <div class="text-sm text-emerald-400 mb-2">标准版</div>
-          <div class="text-3xl font-bold mb-4">¥50<span class="text-sm font-normal text-muted">/月起</span></div>
-          <p class="text-muted text-sm mb-6">适合个人开发者</p>
-          <ul class="space-y-2 text-sm text-muted mb-6">
-            <li>✓ 所有模型访问</li>
-            <li>✓ 优先响应</li>
-            <li>✓ 邮件支持</li>
-          </ul>
-          <a href="/login?mode=register" class="btn-primary w-full block text-center">立即升级</a>
-        </div>
-        <div class="price-card">
-          <div class="text-sm text-emerald-400 mb-2">企业版</div>
-          <div class="text-3xl font-bold mb-4">¥500<span class="text-sm font-normal text-muted">/月起</span></div>
-          <p class="text-muted text-sm mb-6">适合企业用户</p>
-          <ul class="space-y-2 text-sm text-muted mb-6">
-            <li>✓ 专属 API 端点</li>
-            <li>✓ 99.9% SLA</li>
-            <li>✓ 专属技术支持</li>
-          </ul>
-          <a href="/login?mode=register" class="btn-outline w-full block text-center">联系我们</a>
+      <!-- API 端点 -->
+      <div class="max-w-3xl mx-auto mb-16">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+          <div class="endpoint">/v1/chat/completions</div>
+          <div class="endpoint">/v1/responses</div>
+          <div class="endpoint">/v1/responses/compact</div>
+          <div class="endpoint">/v1/messages</div>
+          <div class="endpoint">/v1beta/models</div>
+          <div class="endpoint">/v1/embeddings</div>
+          <div class="endpoint">/v1/rerank</div>
+          <div class="endpoint">/v1/images/generations</div>
+          <div class="endpoint">/v1/images/edits</div>
+          <div class="endpoint">/v1/audio/speech</div>
+          <div class="endpoint">/v1/audio/transcriptions</div>
+          <div class="endpoint">/v1/audio/translations</div>
         </div>
       </div>
+
+      <!-- 底部信息 -->
+      <div class="text-center">
+        <p class="text-zinc-500">
+          支持众多的大模型供应商
+        </p>
+        <p class="text-3xl font-bold text-emerald-500 mt-2">16+</p>
+      </div>
     </div>
-  </section>
+  </main>
 
   <!-- 底部 -->
-  <footer class="py-12 border-t border-zinc-800">
-    <div class="max-w-6xl mx-auto px-6">
-      <div class="flex flex-col md:flex-row justify-between items-center gap-6">
-        <div class="flex items-center gap-2">
-          <div class="w-8 h-8 rounded-lg bg-emerald-500 flex items-center justify-center text-lg">🚀</div>
-          <span class="font-semibold">TokenGo</span>
-        </div>
-        <div class="flex gap-8 text-sm text-muted">
-          <a href="/help" class="hover:text-white">文档</a>
-          <a href="/help#pricing" class="hover:text-white">价格</a>
-          <a href="/redeem" class="hover:text-white">卡密兑换</a>
-          <a href="/login" class="hover:text-white">登录</a>
-        </div>
-        <div class="text-sm text-muted">© 2026 TokenGo. All rights reserved.</div>
-      </div>
+  <footer class="border-t border-zinc-800 py-8">
+    <div class="container text-center text-sm text-zinc-500">
+      © 2026 TokenGo. All rights reserved.
     </div>
   </footer>
-
-  <script>
-    const MODELS = [
-      { name: 'GPT-5.6', provider: 'openai', color: '#10a37f' },
-      { name: 'Claude Fable 5', provider: 'anthropic', color: '#d97706' },
-      { name: 'Claude Opus 4', provider: 'anthropic', color: '#d97706' },
-      { name: 'Gemini 2.5', provider: 'google', color: '#4285f4' },
-      { name: 'Claude V4', provider: 'claude', color: '#0066cc' },
-      { name: 'GLM-5', provider: 'zhipuai', color: '#00d4aa' },
-      { name: 'Kimi K2', provider: 'moonshot', color: '#6366f1' },
-      { name: 'Claude Opus', provider: 'claude', color: '#ec4899' },
-      { name: 'Claude 3', provider: 'alibaba', color: '#ff6b00' },
-      { name: 'Doubao Pro', provider: 'bytedance', color: '#fe2c55' },
-      { name: 'Yi Lightning', provider: '01ai', color: '#f59e0b' },
-      { name: 'Mistral Large', provider: 'mistral', color: '#fb923c' },
-      { name: 'Llama 4', provider: 'meta', color: '#3b82f6' },
-      { name: 'GPT-Image', provider: 'openai', color: '#10a37f' },
-      { name: 'Stable Diffusion', provider: 'stability', color: '#9333ea' },
-      { name: 'Gemini 2.0 Flash', provider: 'google', color: '#4285f4' },
-    ];
-
-    function renderModels() {
-      const grid = document.getElementById('modelGrid');
-      grid.innerHTML = MODELS.map(m => `
-        <div class="card p-4 flex items-center gap-3 cursor-pointer hover:border-emerald-500 transition-all">
-          <div class="w-10 h-10 rounded-lg flex items-center justify-center text-lg" style="background: ${m.color}20">
-            <span style="color: ${m.color}">AI</span>
-          </div>
-          <div>
-            <div class="font-medium text-sm">${m.name}</div>
-            <div class="text-xs text-muted capitalize">${m.provider}</div>
-          </div>
-        </div>
-      `).join('');
-    }
-
-    renderModels();
-  </script>
 </body>
 </html>

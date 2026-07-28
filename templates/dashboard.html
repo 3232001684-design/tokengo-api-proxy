@@ -6,72 +6,70 @@
   <title>控制台 - TokenGo</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    * { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
-    :root { --primary: #10b981; --bg: #09090b; --card: #18181b; --border: #27272a; --text: #fafafa; --muted: #a1a1aa; }
-    body { background: var(--bg); color: var(--text); min-height: 100vh; }
-    .card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; }
-    .btn-primary { background: var(--primary); color: white; padding: 10px 20px; border-radius: 8px; font-weight: 500; border: none; cursor: pointer; transition: all 0.2s; }
+    * { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; background: #000; color: #fff; min-height: 100vh; }
+    a { color: inherit; text-decoration: none; }
+    a:hover { opacity: 0.8; }
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+    .btn { display: inline-block; padding: 8px 16px; border-radius: 6px; font-size: 14px; cursor: pointer; border: none; transition: all 0.2s; }
+    .btn-primary { background: #10b981; color: #fff; }
     .btn-primary:hover { background: #059669; }
-    .btn-secondary { background: transparent; border: 1px solid var(--border); color: var(--text); padding: 10px 20px; border-radius: 8px; font-weight: 500; cursor: pointer; transition: all 0.2s; }
-    .btn-secondary:hover { border-color: var(--primary); color: var(--primary); }
-    .input-field { background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 10px 14px; color: var(--text); width: 100%; font-size: 14px; }
-    .input-field:focus { outline: none; border-color: var(--primary); }
-    .input-field::placeholder { color: var(--muted); }
-    .nav-link { color: var(--muted); text-decoration: none; transition: all 0.2s; padding: 10px 16px; border-radius: 8px; display: block; font-size: 14px; }
-    .nav-link:hover { color: var(--text); background: rgba(255,255,255,0.05); }
-    .nav-link.active { color: var(--primary); background: rgba(16,185,129,0.1); }
-    .live-dot { width: 8px; height: 8px; background: var(--primary); border-radius: 50%; animation: pulse 2s infinite; }
-    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+    .btn-secondary { background: #222; color: #fff; }
+    .btn-secondary:hover { background: #333; }
+    .btn-outline { background: transparent; border: 1px solid #333; color: #fff; }
+    .btn-outline:hover { border-color: #555; }
+    .input-field { background: #111; border: 1px solid #222; border-radius: 6px; padding: 10px 14px; color: #fff; width: 100%; font-size: 14px; }
+    .input-field:focus { outline: none; border-color: #333; }
+    .card { background: #111; border: 1px solid #222; border-radius: 8px; padding: 20px; }
+    .nav-link { color: #555; text-decoration: none; transition: all 0.2s; padding: 8px 12px; border-radius: 6px; display: block; font-size: 14px; }
+    .nav-link:hover { color: #fff; background: #111; }
+    .nav-link.active { color: #10b981; background: #10b98110; }
     .section { display: none; }
     .section.active { display: block; }
+    .code-block { background: #111; border: 1px solid #222; border-radius: 6px; padding: 16px; font-family: monospace; font-size: 13px; overflow-x: auto; }
     .table-style { width: 100%; border-collapse: collapse; }
-    .table-style th { text-align: left; padding: 12px 16px; border-bottom: 1px solid var(--border); color: var(--muted); font-weight: 500; font-size: 12px; text-transform: uppercase; }
-    .table-style td { padding: 12px 16px; border-bottom: 1px solid var(--border); font-size: 14px; }
-    .table-style tr:hover { background: rgba(255,255,255,0.02); }
-    .code-block { background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 16px; font-family: monospace; font-size: 13px; overflow-x: auto; }
-    .badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 12px; font-weight: 500; }
-    .badge-green { background: rgba(16,185,129,0.2); color: #10b981; }
-    .badge-yellow { background: rgba(234,179,8,0.2); color: #eab308; }
-    .badge-red { background: rgba(239,68,68,0.2); color: #ef4444; }
+    .table-style th { text-align: left; padding: 10px 12px; border-bottom: 1px solid #222; color: #555; font-weight: 500; font-size: 12px; }
+    .table-style td { padding: 10px 12px; border-bottom: 1px solid #222; font-size: 14px; }
+    .table-style tr:hover { background: #111; }
   </style>
 </head>
 <body>
-  <!-- 顶部导航 -->
-  <nav class="fixed top-0 left-0 right-0 z-50 border-b border-zinc-800 bg-black/80 backdrop-blur-md">
-    <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+  <!-- 导航栏 -->
+  <nav class="fixed top-0 left-0 right-0 z-50 bg-black/90 backdrop-blur-md border-b border-zinc-800">
+    <div class="container flex items-center justify-between h-14">
       <div class="flex items-center gap-6">
         <a href="/" class="flex items-center gap-2">
-          <div class="w-8 h-8 rounded-lg bg-emerald-500 flex items-center justify-center text-lg">🚀</div>
-          <span class="text-lg font-semibold">TokenGo</span>
+          <div class="w-8 h-8 rounded-lg bg-emerald-500 flex items-center justify-center font-bold text-lg">T</div>
+          <span class="font-semibold">TokenGo</span>
         </a>
-        <div class="hidden md:flex items-center gap-2 text-sm">
-          <span class="live-dot"></span>
-          <span class="text-emerald-400">服务正常</span>
+        <div class="flex items-center gap-6 text-sm">
+          <a href="/">首页</a>
+          <a href="/pricing">模型广场</a>
+          <a href="/help">文档</a>
         </div>
       </div>
       <div class="flex items-center gap-4">
-        <div class="text-right">
-          <div class="text-sm font-medium" id="userEmail">loading...</div>
-          <div class="text-xs text-zinc-500" id="userBalance">余额: --</div>
+        <div class="text-right text-sm">
+          <div id="userEmail">-</div>
+          <div class="text-zinc-500 text-xs" id="userBalance">余额: $0.00</div>
         </div>
-        <button onclick="logout()" class="btn-secondary px-3 py-2 text-sm">退出</button>
+        <button onclick="logout()" class="btn btn-secondary text-sm">退出</button>
       </div>
     </div>
   </nav>
 
   <!-- 主内容 -->
   <div class="pt-20 pb-12">
-    <div class="max-w-7xl mx-auto px-6">
+    <div class="container">
       <div class="flex gap-8">
         <!-- 侧边栏 -->
-        <aside class="w-56 shrink-0 hidden md:block">
-          <nav class="sticky top-24 space-y-1">
-            <a href="#" class="nav-link active" onclick="showSection('api-key', this)">🔑 API 密钥</a>
-            <a href="#" class="nav-link" onclick="showSection('usage', this)">📊 使用记录</a>
-            <a href="#" class="nav-link" onclick="showSection('billing', this)">💳 充值中心</a>
-            <a href="#" class="nav-link" onclick="showSection('redeem', this)">🎫 卡密兑换</a>
-            <a href="#" class="nav-link" onclick="showSection('settings', this)">⚙️ 个人设置</a>
-            <a href="#" class="nav-link" onclick="showSection('help', this)">❓ 帮助文档</a>
+        <aside class="w-48 shrink-0 hidden md:block">
+          <nav class="sticky top-20 space-y-1">
+            <a href="#" class="nav-link active" onclick="showSection('api-key', this)">API 密钥</a>
+            <a href="#" class="nav-link" onclick="showSection('usage', this)">使用记录</a>
+            <a href="#" class="nav-link" onclick="showSection('billing', this)">充值中心</a>
+            <a href="#" class="nav-link" onclick="showSection('redeem', this)">卡密兑换</a>
+            <a href="#" class="nav-link" onclick="showSection('settings', this)">个人设置</a>
           </nav>
         </aside>
 
@@ -79,170 +77,113 @@
         <main class="flex-1 min-w-0">
           <!-- API 密钥 -->
           <section id="section-api-key" class="section active">
-            <div class="card p-6">
-              <div class="flex items-center justify-between mb-6">
-                <h2 class="text-xl font-semibold">API 密钥</h2>
-                <button onclick="createApiKey()" class="btn-primary px-4 py-2 text-sm">+ 新建密钥</button>
-              </div>
-              <div id="apiKeyList" class="space-y-3"></div>
-              <div class="mt-6 p-4 bg-emerald-500/10 border border-emerald-500/20 rounded-lg">
-                <div class="text-sm text-emerald-400 mb-2">📌 Base URL</div>
-                <div class="code-block text-emerald-400" id="baseUrl">https://tokengo-d0cb.onrender.com</div>
-              </div>
+            <div class="flex items-center justify-between mb-6">
+              <h2 class="text-xl font-semibold">API 密钥</h2>
+              <button onclick="createApiKey()" class="btn btn-primary">+ 新建密钥</button>
             </div>
-
-            <!-- API 使用示例 -->
-            <div class="card p-6 mt-6">
-              <h3 class="text-lg font-semibold mb-4">API 调用示例</h3>
-              <div class="code-block">
-                <div class="text-zinc-500 mb-2"># cURL 示例</div>
-                <pre id="curlExample">curl https://tokengo-d0cb.onrender.com/v1/chat/completions \
+            <div id="apiKeyList" class="space-y-3 mb-6"></div>
+            <div class="card">
+              <div class="text-sm text-zinc-500 mb-2">Base URL</div>
+              <div class="code-block text-emerald-400" id="baseUrl">https://tokengo-d0cb.onrender.com</div>
+            </div>
+            <div class="card mt-4">
+              <h3 class="font-medium mb-3">调用示例</h3>
+              <div class="code-block mb-4">
+# cURL
+curl https://tokengo-d0cb.onrender.com/v1/chat/completions \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
-  -d '{"model": "gpt-5.6", "messages": [{"role": "user", "content": "Hello!"}]}'</pre>
+  -d '{"model": "gpt-5.6", "messages": [{"role": "user", "content": "Hello!"}]}'
               </div>
-              <div class="code-block mt-4">
-                <div class="text-zinc-500 mb-2"># Python 示例</div>
-                <pre>from openai import OpenAI
-client = OpenAI(
-  api_key="YOUR_API_KEY",
-  base_url="https://tokengo-d0cb.onrender.com"
-)
-response = client.chat.completions.create(
-  model="gpt-5.6",
-  messages=[{"role": "user", "content": "Hello!"}]
-)</pre>
+              <div class="code-block">
+# Python
+from openai import OpenAI
+client = OpenAI(api_key="YOUR_API_KEY", base_url="https://tokengo-d0cb.onrender.com")
+response = client.chat.completions.create(model="gpt-5.6", messages=[{"role": "user", "content": "Hello!"}])
               </div>
             </div>
           </section>
 
           <!-- 使用记录 -->
           <section id="section-usage" class="section">
-            <div class="card p-6">
-              <h2 class="text-xl font-semibold mb-6">使用记录</h2>
-              <div class="overflow-x-auto">
-                <table class="table-style">
-                  <thead>
-                    <tr>
-                      <th>时间</th>
-                      <th>模型</th>
-                      <th>输入 Tokens</th>
-                      <th>输出 Tokens</th>
-                      <th>金额</th>
-                      <th>状态</th>
-                    </tr>
-                  </thead>
-                  <tbody id="usageTable"></tbody>
-                </table>
-              </div>
+            <h2 class="text-xl font-semibold mb-6">使用记录</h2>
+            <div class="card">
+              <table class="table-style">
+                <thead>
+                  <tr>
+                    <th>时间</th>
+                    <th>模型</th>
+                    <th>输入</th>
+                    <th>输出</th>
+                    <th>金额</th>
+                  </tr>
+                </thead>
+                <tbody id="usageTable"></tbody>
+              </table>
             </div>
           </section>
 
           <!-- 充值中心 -->
           <section id="section-billing" class="section">
-            <div class="card p-6">
-              <h2 class="text-xl font-semibold mb-6">充值中心</h2>
-              <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-                <div class="p-6 border border-zinc-700 rounded-lg text-center hover:border-emerald-500 cursor-pointer transition-all" onclick="selectAmount(10)">
-                  <div class="text-2xl font-bold">¥10</div>
-                  <div class="text-sm text-zinc-500 mt-1">$10 额度</div>
-                </div>
-                <div class="p-6 border border-zinc-700 rounded-lg text-center hover:border-emerald-500 cursor-pointer transition-all" onclick="selectAmount(50)">
-                  <div class="text-2xl font-bold">¥50</div>
-                  <div class="text-sm text-zinc-500 mt-1">$50 额度</div>
-                  <span class="badge badge-green mt-2">赠送 5%</span>
-                </div>
-                <div class="p-6 border border-zinc-700 rounded-lg text-center hover:border-emerald-500 cursor-pointer transition-all" onclick="selectAmount(100)">
-                  <div class="text-2xl font-bold">¥100</div>
-                  <div class="text-sm text-zinc-500 mt-1">$100 额度</div>
-                  <span class="badge badge-green mt-2">赠送 10%</span>
-                </div>
+            <h2 class="text-xl font-semibold mb-6">充值中心</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+              <div class="card text-center cursor-pointer hover:border-emerald-500 transition-all" onclick="selectAmount(10)">
+                <div class="text-2xl font-bold">¥10</div>
+                <div class="text-sm text-zinc-500 mt-1">$10 额度</div>
               </div>
-              <div class="border-t border-zinc-800 pt-6">
-                <h3 class="font-semibold mb-4">选择支付方式</h3>
-                <div class="flex gap-4 mb-6">
-                  <button id="payWechat" class="btn-secondary px-6 py-3 flex items-center gap-2" onclick="selectPayment('wechat')">
-                    <span class="text-xl">💬</span> 微信支付
-                  </button>
-                  <button id="payAlipay" class="btn-secondary px-6 py-3 flex items-center gap-2" onclick="selectPayment('alipay')">
-                    <span class="text-xl">💰</span> 支付宝
-                  </button>
-                </div>
-                <div id="qrCodeArea" class="hidden p-6 bg-zinc-900 rounded-lg text-center">
-                  <div class="text-lg font-medium mb-4" id="qrTitle">请扫描下方二维码支付</div>
-                  <div id="qrCode" class="inline-block p-4 bg-white rounded-lg"></div>
-                  <div class="text-sm text-zinc-500 mt-4">支付完成后点击"已完成支付"按钮</div>
-                  <button onclick="confirmPayment()" class="btn-primary mt-4">已完成支付</button>
-                </div>
+              <div class="card text-center cursor-pointer hover:border-emerald-500 transition-all" onclick="selectAmount(50)">
+                <div class="text-2xl font-bold">¥50</div>
+                <div class="text-sm text-zinc-500 mt-1">$50 额度</div>
+                <div class="text-xs text-emerald-500 mt-1">赠送 5%</div>
+              </div>
+              <div class="card text-center cursor-pointer hover:border-emerald-500 transition-all" onclick="selectAmount(100)">
+                <div class="text-2xl font-bold">¥100</div>
+                <div class="text-sm text-zinc-500 mt-1">$100 额度</div>
+                <div class="text-xs text-emerald-500 mt-1">赠送 10%</div>
+              </div>
+            </div>
+            <div class="card">
+              <h3 class="font-medium mb-4">支付方式</h3>
+              <div class="flex gap-4 mb-6">
+                <button id="payWechat" class="btn btn-outline" onclick="selectPayment('wechat')">💬 微信支付</button>
+                <button id="payAlipay" class="btn btn-outline" onclick="selectPayment('alipay')">💰 支付宝</button>
+              </div>
+              <div id="qrCodeArea" class="hidden p-6 bg-zinc-900 rounded-lg text-center">
+                <div class="mb-4">请联系管理员获取收款码</div>
+                <button onclick="confirmPayment()" class="btn btn-primary">已完成支付</button>
               </div>
             </div>
           </section>
 
           <!-- 卡密兑换 -->
           <section id="section-redeem" class="section">
-            <div class="card p-6">
-              <h2 class="text-xl font-semibold mb-6">卡密兑换</h2>
-              <div class="max-w-md">
-                <div class="mb-4">
-                  <label class="block text-sm text-zinc-400 mb-2">卡密代码</label>
-                  <input type="text" id="redeemCode" class="input-field" placeholder="请输入卡密">
-                </div>
-                <button onclick="redeemCard()" class="btn-primary">兑换</button>
-                <div id="redeemResult" class="mt-4 hidden"></div>
+            <h2 class="text-xl font-semibold mb-6">卡密兑换</h2>
+            <div class="card max-w-md">
+              <div class="mb-4">
+                <input type="text" id="redeemCode" class="input-field" placeholder="请输入卡密">
               </div>
+              <button onclick="redeemCard()" class="btn btn-primary w-full">兑换</button>
+              <div id="redeemResult" class="mt-4 hidden"></div>
             </div>
           </section>
 
           <!-- 个人设置 -->
           <section id="section-settings" class="section">
-            <div class="card p-6">
-              <h2 class="text-xl font-semibold mb-6">个人设置</h2>
-              <div class="max-w-lg space-y-6">
-                <div>
-                  <label class="block text-sm text-zinc-400 mb-2">用户名</label>
-                  <input type="text" id="settingsUsername" class="input-field">
-                </div>
-                <div>
-                  <label class="block text-sm text-zinc-400 mb-2">邮箱</label>
-                  <input type="email" id="settingsEmail" class="input-field" disabled>
-                </div>
-                <div>
-                  <label class="block text-sm text-zinc-400 mb-2">新密码（留空则不修改）</label>
-                  <input type="password" id="settingsPassword" class="input-field" placeholder="输入新密码">
-                </div>
-                <button onclick="saveSettings()" class="btn-primary">保存设置</button>
+            <h2 class="text-xl font-semibold mb-6">个人设置</h2>
+            <div class="card max-w-lg space-y-4">
+              <div>
+                <label class="block text-sm text-zinc-500 mb-2">用户名</label>
+                <input type="text" id="settingsUsername" class="input-field">
               </div>
-            </div>
-          </section>
-
-          <!-- 帮助文档 -->
-          <section id="section-help" class="section">
-            <div class="card p-6">
-              <h2 class="text-xl font-semibold mb-6">帮助文档</h2>
-              <div class="space-y-6">
-                <div>
-                  <h3 class="font-medium mb-2">快速开始</h3>
-                  <p class="text-zinc-400 text-sm">1. 在 API 密钥页面创建您的密钥<br>2. 将 Base URL 设置为我们的服务地址<br>3. 使用您的密钥调用 API</p>
-                </div>
-                <div>
-                  <h3 class="font-medium mb-2">支持的模型</h3>
-                  <div class="flex flex-wrap gap-2 mt-2">
-                    <span class="badge badge-green">GPT-5.6</span>
-                    <span class="badge badge-green">Claude Fable 5</span>
-                    <span class="badge badge-green">Claude Opus 4</span>
-                    <span class="badge badge-green">Gemini 2.5</span>
-                    <span class="badge badge-green">GLM-5</span>
-                    <span class="badge badge-green">Kimi K2</span>
-                  </div>
-                </div>
-                <div>
-                  <h3 class="font-medium mb-2">常见问题</h3>
-                  <details class="mt-2 p-4 bg-zinc-900 rounded-lg">
-                    <summary class="cursor-pointer">Q: 如何查看我的使用量？</summary>
-                    <p class="mt-2 text-zinc-400 text-sm">A: 在使用记录页面可以查看详细的使用记录。</p>
-                  </details>
-                </div>
+              <div>
+                <label class="block text-sm text-zinc-500 mb-2">邮箱</label>
+                <input type="email" id="settingsEmail" class="input-field" disabled>
               </div>
+              <div>
+                <label class="block text-sm text-zinc-500 mb-2">新密码（留空不修改）</label>
+                <input type="password" id="settingsPassword" class="input-field" placeholder="输入新密码">
+              </div>
+              <button onclick="saveSettings()" class="btn btn-primary">保存</button>
             </div>
           </section>
         </main>
@@ -252,12 +193,7 @@ response = client.chat.completions.create(
 
   <script>
     let token = localStorage.getItem('token');
-    let currentPayment = null;
-    let selectedAmount = null;
-
-    if (!token) {
-      window.location.href = '/login';
-    }
+    if (!token) window.location.href = '/login';
 
     function getHeaders() {
       return { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' };
@@ -285,16 +221,13 @@ response = client.chat.completions.create(
       const list = document.getElementById('apiKeyList');
       if (data.keys && data.keys.length) {
         list.innerHTML = data.keys.map(k => `
-          <div class="flex items-center justify-between p-4 bg-zinc-900 rounded-lg">
-            <div>
-              <div class="font-mono text-sm">${k.key.substring(0, 8)}...${k.key.slice(-4)}</div>
-              <div class="text-xs text-zinc-500 mt-1">创建于 ${new Date(k.created * 1000).toLocaleDateString()}</div>
-            </div>
-            <button onclick="deleteKey('${k.id}')" class="text-red-400 hover:text-red-300 text-sm">删除</button>
+          <div class="card flex items-center justify-between">
+            <div class="font-mono text-sm">${k.key.substring(0, 8)}...${k.key.slice(-4)}</div>
+            <button onclick="deleteKey('${k.id}')" class="text-red-500 text-sm hover:text-red-400">删除</button>
           </div>
         `).join('');
       } else {
-        list.innerHTML = '<div class="text-center py-8 text-zinc-500">暂无 API 密钥，点击上方按钮创建</div>';
+        list.innerHTML = '<div class="text-center py-8 text-zinc-500">暂无 API 密钥</div>';
       }
     }
 
@@ -306,15 +239,14 @@ response = client.chat.completions.create(
         tbody.innerHTML = data.records.slice(0, 50).map(r => `
           <tr>
             <td>${new Date(r.created * 1000).toLocaleString()}</td>
-            <td><span class="badge badge-green">${r.model}</span></td>
+            <td>${r.model}</td>
             <td>${r.input_tokens}</td>
             <td>${r.output_tokens}</td>
             <td class="text-red-400">-$${r.cost?.toFixed(4)}</td>
-            <td><span class="badge badge-green">成功</span></td>
           </tr>
         `).join('');
       } else {
-        tbody.innerHTML = '<tr><td colspan="6" class="text-center py-8 text-zinc-500">暂无使用记录</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="5" class="text-center py-8 text-zinc-500">暂无记录</td></tr>';
       }
     }
 
@@ -323,16 +255,18 @@ response = client.chat.completions.create(
       const data = await res.json();
       if (data.key) {
         loadApiKeys();
-        alert('API 密钥已创建: ' + data.key);
+        alert('密钥: ' + data.key);
       }
     }
 
     async function deleteKey(id) {
-      if (confirm('确定要删除这个密钥吗？')) {
+      if (confirm('确定删除?')) {
         await fetch(`/api/auth/keys/${id}`, { method: 'DELETE', headers: getHeaders() });
         loadApiKeys();
       }
     }
+
+    let selectedAmount = null, currentPayment = null;
 
     function selectAmount(amount) {
       selectedAmount = amount;
@@ -345,43 +279,34 @@ response = client.chat.completions.create(
       document.getElementById('payWechat').classList.toggle('border-emerald-500', type === 'wechat');
       document.getElementById('payAlipay').classList.toggle('border-emerald-500', type === 'alipay');
       document.getElementById('qrCodeArea').classList.remove('hidden');
-      document.getElementById('qrCode').innerHTML = `<div class="text-zinc-500 p-8">${type === 'wechat' ? '💬' : '💰'} 请联系管理员获取${type === 'wechat' ? '微信' : '支付宝'}收款码</div>`;
     }
 
     async function confirmPayment() {
-      if (!selectedAmount || !currentPayment) {
-        alert('请先选择金额和支付方式');
-        return;
-      }
+      if (!selectedAmount || !currentPayment) return alert('请选择金额和支付方式');
       const res = await fetch('/api/payment/create', {
-        method: 'POST',
-        headers: getHeaders(),
+        method: 'POST', headers: getHeaders(),
         body: JSON.stringify({ amount: selectedAmount, method: currentPayment })
       });
       const data = await res.json();
-      if (data.order_id) {
-        alert(`订单已创建！订单号: ${data.order_id}\n请联系管理员完成支付`);
-      }
+      if (data.order_id) alert('订单: ' + data.order_id + '\n请联系管理员完成支付');
     }
 
     async function redeemCard() {
       const code = document.getElementById('redeemCode').value.trim();
-      if (!code) return alert('请输入卡密');
+      if (!code) return;
       const res = await fetch('/api/redeem', {
-        method: 'POST',
-        headers: getHeaders(),
-        body: JSON.stringify({ code })
+        method: 'POST', headers: getHeaders(), body: JSON.stringify({ code })
       });
       const data = await res.json();
       const result = document.getElementById('redeemResult');
       result.classList.remove('hidden');
       if (data.success) {
-        result.className = 'mt-4 p-4 bg-emerald-500/20 text-emerald-400 rounded-lg';
-        result.textContent = `兑换成功！获得 $${data.amount} 额度`;
+        result.className = 'mt-4 p-4 bg-emerald-900/50 text-emerald-400 rounded-lg';
+        result.textContent = `成功！获得 $${data.amount}`;
         loadUserInfo();
       } else {
-        result.className = 'mt-4 p-4 bg-red-500/20 text-red-400 rounded-lg';
-        result.textContent = data.detail || '兑换失败';
+        result.className = 'mt-4 p-4 bg-red-900/50 text-red-400 rounded-lg';
+        result.textContent = data.detail || '失败';
       }
     }
 
@@ -390,15 +315,10 @@ response = client.chat.completions.create(
         username: document.getElementById('settingsUsername').value,
         password: document.getElementById('settingsPassword').value || undefined
       };
-      const res = await fetch('/api/auth/profile', {
-        method: 'PUT',
-        headers: getHeaders(),
-        body: JSON.stringify(data)
+      await fetch('/api/auth/profile', {
+        method: 'PUT', headers: getHeaders(), body: JSON.stringify(data)
       });
-      if (res.ok) {
-        alert('设置已保存');
-        document.getElementById('settingsPassword').value = '';
-      }
+      alert('已保存');
     }
 
     function showSection(name, el) {

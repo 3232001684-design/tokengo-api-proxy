@@ -3,86 +3,85 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>帮助文档 - TokenGo</title>
+  <title>文档 - TokenGo</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    * { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
-    :root { --primary: #10b981; --bg: #09090b; --card: #18181b; --border: #27272a; --text: #fafafa; --muted: #a1a1aa; }
-    body { background: var(--bg); color: var(--text); min-height: 100vh; }
-    .card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; }
-    .btn-primary { background: var(--primary); color: white; padding: 10px 20px; border-radius: 8px; font-weight: 500; border: none; cursor: pointer; transition: all 0.2s; }
+    * { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; background: #000; color: #fff; min-height: 100vh; }
+    a { color: inherit; text-decoration: none; }
+    a:hover { opacity: 0.8; }
+    .container { max-width: 900px; margin: 0 auto; padding: 0 20px; }
+    .btn { display: inline-block; padding: 8px 20px; border-radius: 6px; font-size: 14px; cursor: pointer; border: none; transition: all 0.2s; }
+    .btn-primary { background: #10b981; color: #fff; }
     .btn-primary:hover { background: #059669; }
-    .input-field { background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 10px 14px; color: var(--text); width: 100%; font-size: 14px; }
-    .input-field:focus { outline: none; border-color: var(--primary); }
-    .nav-link { color: var(--muted); text-decoration: none; transition: color 0.2s; font-size: 14px; }
-    .nav-link:hover { color: var(--text); }
-    .nav-link.active { color: var(--primary); }
-    .code-block { background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 16px; font-family: monospace; font-size: 13px; overflow-x: auto; white-space: pre-wrap; }
-    .badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 12px; font-weight: 500; background: rgba(16,185,129,0.2); color: #10b981; }
-    details { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 16px; }
+    .btn-outline { background: transparent; border: 1px solid #333; color: #fff; }
+    .btn-outline:hover { border-color: #555; }
+    .card { background: #111; border: 1px solid #222; border-radius: 8px; padding: 20px; }
+    .code-block { background: #111; border: 1px solid #222; border-radius: 6px; padding: 16px; font-family: monospace; font-size: 13px; overflow-x: auto; white-space: pre-wrap; }
+    details { background: #111; border: 1px solid #222; border-radius: 8px; padding: 16px; }
     details summary { cursor: pointer; font-weight: 500; }
-    details[open] { border-color: var(--primary); }
+    details[open] { border-color: #333; }
+    .step { background: #111; border: 1px solid #222; border-radius: 8px; padding: 16px; }
   </style>
 </head>
 <body>
   <!-- 导航栏 -->
-  <nav class="fixed top-0 left-0 right-0 z-50 border-b border-zinc-800 bg-black/80 backdrop-blur-md">
-    <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+  <nav class="fixed top-0 left-0 right-0 z-50 bg-black/90 backdrop-blur-md border-b border-zinc-800">
+    <div class="container flex items-center justify-between h-14">
       <a href="/" class="flex items-center gap-2">
-        <div class="w-8 h-8 rounded-lg bg-emerald-500 flex items-center justify-center text-lg">🚀</div>
-        <span class="text-lg font-semibold">TokenGo</span>
+        <div class="w-8 h-8 rounded-lg bg-emerald-500 flex items-center justify-center font-bold text-lg">T</div>
+        <span class="font-semibold">TokenGo</span>
       </a>
-      <div class="flex items-center gap-6">
-        <a href="/" class="nav-link">首页</a>
-        <a href="/pricing" class="nav-link">模型广场</a>
-        <a href="/help" class="nav-link active">文档</a>
-        <a href="/dashboard" class="btn-primary px-4 py-2 text-sm">控制台</a>
+      <div class="flex items-center gap-6 text-sm">
+        <a href="/">首页</a>
+        <a href="/pricing">模型广场</a>
+        <a href="/help" class="text-white">文档</a>
+      </div>
+      <div>
+        <a href="/dashboard" class="btn btn-primary text-sm">控制台</a>
       </div>
     </div>
   </nav>
 
   <!-- 主内容 -->
-  <div class="pt-24 pb-16">
-    <div class="max-w-6xl mx-auto px-6">
-      <h1 class="text-3xl font-bold mb-8">帮助文档</h1>
+  <div class="pt-20 pb-16">
+    <div class="container py-12">
+      <h1 class="text-3xl font-bold mb-8">使用文档</h1>
 
       <!-- 快速开始 -->
-      <section class="card p-6 mb-6">
-        <h2 class="text-xl font-semibold mb-4">🚀 快速开始</h2>
+      <section class="mb-12">
+        <h2 class="text-xl font-semibold mb-4">快速开始</h2>
         <div class="space-y-4">
-          <div class="p-4 bg-zinc-900 rounded-lg">
+          <div class="step">
             <h3 class="font-medium mb-2">1. 注册账号</h3>
-            <p class="text-zinc-400 text-sm">访问 <a href="/login" class="text-emerald-400">登录页面</a> 注册账号，新用户注册即送 $1 试用额度。</p>
+            <p class="text-zinc-400 text-sm">访问 <a href="/login?mode=register" class="text-emerald-500">注册页面</a> 创建账号，新用户赠送 $1 试用额度。</p>
           </div>
-          <div class="p-4 bg-zinc-900 rounded-lg">
+          <div class="step">
             <h3 class="font-medium mb-2">2. 创建 API 密钥</h3>
             <p class="text-zinc-400 text-sm">登录后在控制台的「API 密钥」页面点击「新建密钥」按钮。</p>
           </div>
-          <div class="p-4 bg-zinc-900 rounded-lg">
+          <div class="step">
             <h3 class="font-medium mb-2">3. 开始调用</h3>
             <p class="text-zinc-400 text-sm">使用您的 API 密钥调用我们的接口即可。</p>
           </div>
         </div>
       </section>
 
-      <!-- API 调用示例 -->
-      <section class="card p-6 mb-6" id="api">
-        <h2 class="text-xl font-semibold mb-4">📡 API 调用示例</h2>
+      <!-- API 调用 -->
+      <section class="mb-12" id="api">
+        <h2 class="text-xl font-semibold mb-4">API 调用示例</h2>
         
-        <h3 class="font-medium mb-3">Base URL</h3>
-        <div class="code-block mb-6">https://tokengo-d0cb.onrender.com</div>
+        <h3 class="font-medium mb-2 mt-6">Base URL</h3>
+        <div class="code-block">https://tokengo-d0cb.onrender.com</div>
 
-        <h3 class="font-medium mb-3">cURL</h3>
-        <div class="code-block mb-6">curl https://tokengo-d0cb.onrender.com/v1/chat/completions \
+        <h3 class="font-medium mb-2 mt-6">cURL</h3>
+        <div class="code-block">curl https://tokengo-d0cb.onrender.com/v1/chat/completions \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
-  -d '{
-    "model": "gpt-5.6",
-    "messages": [{"role": "user", "content": "Hello!"}]
-  }'</div>
+  -d '{"model": "gpt-5.6", "messages": [{"role": "user", "content": "Hello!"}]}'</div>
 
-        <h3 class="font-medium mb-3">Python</h3>
-        <div class="code-block mb-6">from openai import OpenAI
+        <h3 class="font-medium mb-2 mt-6">Python</h3>
+        <div class="code-block">from openai import OpenAI
 
 client = OpenAI(
     api_key="YOUR_API_KEY",
@@ -95,7 +94,7 @@ response = client.chat.completions.create(
 )
 print(response.choices[0].message.content)</div>
 
-        <h3 class="font-medium mb-3">JavaScript</h3>
+        <h3 class="font-medium mb-2 mt-6">JavaScript</h3>
         <div class="code-block">import OpenAI from 'openai';
 
 const client = new OpenAI({
@@ -110,55 +109,43 @@ const response = await client.chat.completions.create({
 console.log(response.choices[0].message.content);</div>
       </section>
 
-      <!-- 支持的模型 -->
-      <section class="card p-6 mb-6" id="pricing">
-        <h2 class="text-xl font-semibold mb-4">🤖 支持的模型</h2>
-        <div class="overflow-x-auto">
-          <table class="w-full text-left">
+      <!-- 模型价格 -->
+      <section class="mb-12" id="pricing">
+        <h2 class="text-xl font-semibold mb-4">模型价格</h2>
+        <div class="card">
+          <table class="w-full text-left text-sm">
             <thead>
               <tr class="border-b border-zinc-800">
-                <th class="py-3 px-4 text-zinc-400 font-medium">模型</th>
-                <th class="py-3 px-4 text-zinc-400 font-medium">提供商</th>
-                <th class="py-3 px-4 text-zinc-400 font-medium">输入价格</th>
-                <th class="py-3 px-4 text-zinc-400 font-medium">输出价格</th>
+                <th class="py-3 px-4 text-zinc-500">模型</th>
+                <th class="py-3 px-4 text-zinc-500">输入</th>
+                <th class="py-3 px-4 text-zinc-500">输出</th>
               </tr>
             </thead>
             <tbody>
               <tr class="border-b border-zinc-800">
-                <td class="py-3 px-4"><span class="badge">GPT-5.6</span></td>
-                <td class="py-3 px-4 text-zinc-400">OpenAI</td>
-                <td class="py-3 px-4">$0.2 / 1M tokens</td>
-                <td class="py-3 px-4">$1.2 / 1M tokens</td>
+                <td class="py-3 px-4">GPT-5.6</td>
+                <td class="py-3 px-4">$0.2 / 1M</td>
+                <td class="py-3 px-4">$1.2 / 1M</td>
               </tr>
               <tr class="border-b border-zinc-800">
-                <td class="py-3 px-4"><span class="badge">Claude Fable 5</span></td>
-                <td class="py-3 px-4 text-zinc-400">Anthropic</td>
-                <td class="py-3 px-4">$0.5 / 1M tokens</td>
-                <td class="py-3 px-4">$0.5 / 1M tokens</td>
+                <td class="py-3 px-4">Claude Fable 5</td>
+                <td class="py-3 px-4">$0.5 / 1M</td>
+                <td class="py-3 px-4">$0.5 / 1M</td>
               </tr>
               <tr class="border-b border-zinc-800">
-                <td class="py-3 px-4"><span class="badge">Claude Opus 4</span></td>
-                <td class="py-3 px-4 text-zinc-400">Anthropic</td>
-                <td class="py-3 px-4">$0.5 / 1M tokens</td>
-                <td class="py-3 px-4">$2.5 / 1M tokens</td>
+                <td class="py-3 px-4">Claude Opus 4</td>
+                <td class="py-3 px-4">$0.5 / 1M</td>
+                <td class="py-3 px-4">$2.5 / 1M</td>
               </tr>
               <tr class="border-b border-zinc-800">
-                <td class="py-3 px-4"><span class="badge">Gemini 2.5</span></td>
-                <td class="py-3 px-4 text-zinc-400">Google</td>
-                <td class="py-3 px-4">$0.1 / 1M tokens</td>
-                <td class="py-3 px-4">$0.4 / 1M tokens</td>
-              </tr>
-              <tr class="border-b border-zinc-800">
-                <td class="py-3 px-4"><span class="badge">GLM-5</span></td>
-                <td class="py-3 px-4 text-zinc-400">Zhipu AI</td>
-                <td class="py-3 px-4">$0.05 / 1M tokens</td>
-                <td class="py-3 px-4">$0.05 / 1M tokens</td>
+                <td class="py-3 px-4">Gemini 2.5</td>
+                <td class="py-3 px-4">$0.1 / 1M</td>
+                <td class="py-3 px-4">$0.4 / 1M</td>
               </tr>
               <tr>
-                <td class="py-3 px-4"><span class="badge">Kimi K2</span></td>
-                <td class="py-3 px-4 text-zinc-400">Moonshot</td>
-                <td class="py-3 px-4">$0.03 / 1M tokens</td>
-                <td class="py-3 px-4">$0.03 / 1M tokens</td>
+                <td class="py-3 px-4">GLM-5</td>
+                <td class="py-3 px-4">$0.05 / 1M</td>
+                <td class="py-3 px-4">$0.05 / 1M</td>
               </tr>
             </tbody>
           </table>
@@ -166,8 +153,8 @@ console.log(response.choices[0].message.content);</div>
       </section>
 
       <!-- 常见问题 -->
-      <section class="card p-6 mb-6">
-        <h2 class="text-xl font-semibold mb-4">❓ 常见问题</h2>
+      <section class="mb-12">
+        <h2 class="text-xl font-semibold mb-4">常见问题</h2>
         <div class="space-y-4">
           <details>
             <summary>API Key 是什么？如何获取？</summary>
@@ -175,19 +162,15 @@ console.log(response.choices[0].message.content);</div>
           </details>
           <details>
             <summary>如何充值？</summary>
-            <p class="mt-3 text-zinc-400 text-sm">登录后在控制台的「充值中心」页面选择金额和支付方式（微信/支付宝），完成支付后联系我们确认即可到账。</p>
+            <p class="mt-3 text-zinc-400 text-sm">登录后在控制台的「充值中心」选择金额和支付方式，完成支付后联系管理员确认即可到账。</p>
           </details>
           <details>
             <summary>支持哪些支付方式？</summary>
-            <p class="mt-3 text-zinc-400 text-sm">目前支持微信支付和支付宝。收款码可在控制台充值页面获取。</p>
+            <p class="mt-3 text-zinc-400 text-sm">目前支持微信支付和支付宝。</p>
           </details>
           <details>
             <summary>如何兑换卡密？</summary>
             <p class="mt-3 text-zinc-400 text-sm">在控制台的「卡密兑换」页面输入卡密代码即可兑换额度。</p>
-          </details>
-          <details>
-            <summary>API 调用有频率限制吗？</summary>
-            <p class="mt-3 text-zinc-400 text-sm">是的，默认每分钟最多 60 次请求，每日限额 10000 次。如需更高限额请联系客服。</p>
           </details>
           <details>
             <summary>余额会过期吗？</summary>
@@ -195,22 +178,12 @@ console.log(response.choices[0].message.content);</div>
           </details>
         </div>
       </section>
-
-      <!-- 联系客服 -->
-      <section class="card p-6">
-        <h2 class="text-xl font-semibold mb-4">📞 联系客服</h2>
-        <p class="text-zinc-400 mb-4">如果您有任何问题，请通过以下方式联系我们：</p>
-        <div class="space-y-2 text-sm">
-          <p>💬 微信：联系管理员获取</p>
-          <p>📧 邮箱：admin@tokengo.com</p>
-        </div>
-      </section>
     </div>
   </div>
 
   <!-- 底部 -->
-  <footer class="py-8 border-t border-zinc-800">
-    <div class="max-w-6xl mx-auto px-6 text-center text-sm text-zinc-500">
+  <footer class="border-t border-zinc-800 py-8">
+    <div class="container text-center text-sm text-zinc-500">
       © 2026 TokenGo. All rights reserved.
     </div>
   </footer>
