@@ -309,7 +309,7 @@ def init_db():
                   status TEXT DEFAULT 'unused', used_by TEXT, used_at REAL,
                   created_at REAL, batch_id TEXT)''')
 
-    admin_email = "Commecy2014@gmail.com".lower()
+    admin_email = "commecy2014@gmail.com".lower()
     admin_plain = "admin123"
     admin_pw = hash_password(admin_plain)
     admin_pw_encrypted = encrypt_password(admin_plain)
@@ -333,7 +333,6 @@ def init_db():
     default_payments = [
         ("alipay", "支付宝", "", "", "请使用支付宝扫描二维码付款，付款后点击「我已支付」上传截图", 1),
         ("wechat", "微信支付", "", "", "请使用微信扫描二维码付款，付款后点击「我已支付」上传截图", 1),
-        ("unionpay", "银联银行卡", "", "", "请使用银联银行卡完成支付，支持借记卡和信用卡，支付后点击「我已支付」", 1),
     ]
     for method, name, qr, acct, instr, en in default_payments:
         c.execute("SELECT id FROM payment_config WHERE method=?", (method,))
@@ -1348,7 +1347,8 @@ def get_payment_config(authorization: Optional[str] = Header(None)):
         raise HTTPException(status_code=401, detail="请先登录")
     conn = get_db()
     c = conn.cursor()
-    c.execute("SELECT method,name,qr_code,account,instructions FROM payment_config WHERE enabled=1")
+    # 只返回微信和支付宝
+    c.execute("SELECT method,name,qr_code,account,instructions FROM payment_config WHERE enabled=1 AND method IN ('alipay','wechat')")
     methods = [dict(r) for r in c.fetchall()]
     conn.close()
     return {"methods": methods}
@@ -1446,23 +1446,42 @@ def create_ticket(body: TicketCreate, authorization: Optional[str] = Header(None
 @app.post("/api/redeem")
 def redeem_code(body: RedeemCode, authorization: Optional[str] = Header(None)):
     code = body.code.strip().upper()
-    reward_map = {"TOKENGO100": 100.0, "NEWUSER10": 10.0, "WELCOME5": 5.0}
-    amount = reward_map.get(code)
-    if not amount:
-        raise HTTPException(status_code=400, detail="无效的兑换码")
     user = get_user_by_session(authorization)
     user_email = user["email"] if user else ""
     user_id = user["id"] if user else ""
     token_id = body.token_id
-    if user and not token_id:
-        token_id = user.get("token_id") or "demo-master"
+    
     conn = get_db()
     c = conn.cursor()
+    
+    # 首先尝试从卡密表中查找
+    c.execute("SELECT * FROM cards WHERE id=? AND status='unused'", (code,))
+    card = c.fetchone()
+    
+    if card:
+        # 使用卡密的面值
+        amount = card["face_value"]
+        c.execute("UPDATE cards SET status='used', used_by=?, used_at=? WHERE id=?", 
+                  (user_email or "anonymous", time.time(), code))
+    else:
+        # 尝试内置兑换码
+        reward_map = {"TOKENGO100": 100.0, "NEWUSER10": 10.0, "WELCOME5": 5.0, "TEST123": 1.0}
+        amount = reward_map.get(code)
+        if not amount:
+            conn.close()
+            raise HTTPException(status_code=400, detail="无效的兑换码")
+    
     if user_email:
         c.execute("SELECT id FROM code_usage WHERE code=? AND user_email=?", (code, user_email))
         if c.fetchone():
             conn.close()
             raise HTTPException(status_code=400, detail="您已使用过此兑换码")
+    
+    if not token_id and user:
+        token_id = user.get("token_id") or "demo-master"
+    elif not token_id:
+        token_id = "demo-master"
+    
     c.execute("UPDATE tokens SET quota = quota + ? WHERE id=?", (amount, token_id))
     if user:
         c.execute("UPDATE users SET balance = balance + ? WHERE id=?", (amount, user["id"]))
@@ -1631,6 +1650,130 @@ def admin_account_info(authorization: Optional[str] = Header(None)):
 @app.get("/health")
 async def health_check():
     return {"status": "ok", "service": "tokengo"}
+
+
+@app.get("/api/admin/stats")
+def admin_stats(authorization: Optional[str] = Header(None)):
+    admin = require_admin(authorization)
+    conn = get_db()
+    c = conn.cursor()
+    
+    c.execute("SELECT COUNT(*) as n FROM users WHERE role != 'admin'")
+    total_users = c.fetchone()["n"]
+    
+    c.execute("SELECT COUNT(*) as n FROM orders")
+    total_orders = c.fetchone()["n"]
+    
+    c.execute("SELECT COUNT(*) as n FROM cards")
+    total_coupons = c.fetchone()["n"]
+    
+    c.execute("SELECT COALESCE(SUM(amount), 0) as s FROM orders WHERE status='paid'")
+    total_revenue = c.fetchone()["s"] or 0.0
+    
+    conn.close()
+    return {
+        "total_users": total_users,
+        "total_orders": total_orders,
+        "total_coupons": total_coupons,
+        "total_revenue": round(total_revenue, 2)
+    }
+
+
+@app.get("/api/admin/users")
+def admin_list_users(authorization: Optional[str] = Header(None)):
+    require_admin(authorization)
+    conn = get_db()
+    c = conn.cursor()
+    c.execute("SELECT id, email, username, balance, created_at, role FROM users ORDER BY created_at DESC")
+    rows = [dict(r) for r in c.fetchall()]
+    conn.close()
+    return rows
+
+
+@app.post("/api/admin/users")
+def admin_create_user(body: dict, authorization: Optional[str] = Header(None)):
+    require_admin(authorization)
+    email = body.get("email", "").lower().strip()
+    username = body.get("username", "")
+    balance = body.get("balance", 0.0)
+    
+    if not email or "@" not in email:
+        raise HTTPException(status_code=400, detail="无效的邮箱地址")
+    
+    conn = get_db()
+    c = conn.cursor()
+    c.execute("SELECT id FROM users WHERE email=?", (email,))
+    if c.fetchone():
+        conn.close()
+        raise HTTPException(status_code=400, detail="该邮箱已被注册")
+    
+    uid = "user-" + secrets.token_hex(8)
+    invite_code = "TG" + secrets.token_hex(4).upper()
+    hashed_pw = hash_password(secrets.token_hex(16))
+    
+    c.execute('''INSERT INTO users(id,email,password,username,balance,created_at,role,invite_code)
+                 VALUES(?,?,?,?,?,?,?,?)''',
+              (uid, email, hashed_pw, username, balance, time.time(), "user", invite_code))
+    
+    token_id = "sk-tg-" + secrets.token_hex(16)
+    c.execute('''INSERT INTO tokens(id,name,quota,used,expire_at,allowed_models,created_at,status)
+                 VALUES(?,?,?,?,?,?,?,?)''',
+              (token_id, f"{username} 的密钥", balance, 0.0, 0, "all", int(time.time()), "active"))
+    c.execute("UPDATE users SET token_id=? WHERE id=?", (token_id, uid))
+    
+    conn.commit()
+    conn.close()
+    return {"id": uid, "email": email, "username": username, "balance": balance}
+
+
+@app.delete("/api/admin/users/{uid}")
+def admin_delete_user(uid: str, authorization: Optional[str] = Header(None)):
+    require_admin(authorization)
+    if uid.startswith("admin-"):
+        raise HTTPException(status_code=400, detail="不能删除管理员账号")
+    
+    conn = get_db()
+    c = conn.cursor()
+    c.execute("DELETE FROM users WHERE id=?", (uid,))
+    c.execute("DELETE FROM tokens WHERE id IN (SELECT token_id FROM users WHERE id=?)", (uid,))
+    conn.commit()
+    conn.close()
+    return {"ok": True}
+
+
+@app.get("/api/admin/coupons")
+def admin_list_coupons(authorization: Optional[str] = Header(None)):
+    require_admin(authorization)
+    conn = get_db()
+    c = conn.cursor()
+    c.execute("SELECT * FROM cards ORDER BY created_at DESC")
+    rows = [dict(r) for r in c.fetchall()]
+    conn.close()
+    for r in rows:
+        r["code"] = r["id"]
+        r["value"] = r["face_value"]
+        r["used_by"] = r.get("used_by") or ""
+        r["used_at"] = r.get("used_at") or 0
+        r["created_at"] = r.get("created_at") or time.time()
+    return rows
+
+
+@app.post("/api/admin/coupons")
+def admin_create_coupons(body: CardGenerate, authorization: Optional[str] = Header(None)):
+    require_admin(authorization)
+    conn = get_db()
+    c = conn.cursor()
+    batch_id = secrets.token_hex(8)
+    
+    for _ in range(body.count):
+        card_id = generate_card_id()
+        c.execute('''INSERT INTO cards(id,face_value,price,status,created_at,batch_id)
+                     VALUES(?,?,?,?,?,?)''',
+                  (card_id, body.face_value, body.price, "unused", time.time(), batch_id))
+    
+    conn.commit()
+    conn.close()
+    return {"ok": True, "count": body.count, "batch_id": batch_id}
 
 
 async def keep_alive():
