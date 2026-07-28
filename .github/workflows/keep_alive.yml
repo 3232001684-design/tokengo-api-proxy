@@ -2,7 +2,7 @@ name: Keep TokenGo Alive
 
 on:
   schedule:
-    - cron: '*/5 * * * *'
+    - cron: '*/3 * * * *'
   workflow_dispatch:
 
 jobs:
@@ -11,6 +11,7 @@ jobs:
     steps:
       - name: Ping TokenGo
         run: |
-          curl -s -o /dev/null -w "HTTP Status: %{http_code}\n" https://tokengo-d0cb.onrender.com/health
-          curl -s -o /dev/null -w "HTTP Status: %{http_code}\n" https://tokengo-d0cb.onrender.com/
+          curl -s -o /dev/null -w "Health: %{http_code}\n" https://tokengo-d0cb.onrender.com/health --max-time 10 || echo "Health endpoint failed"
+          curl -s -o /dev/null -w "Root: %{http_code}\n" https://tokengo-d0cb.onrender.com/ --max-time 10 || echo "Root endpoint failed"
+          curl -s -o /dev/null -w "Models: %{http_code}\n" https://tokengo-d0cb.onrender.com/v1/models --max-time 10 || echo "Models endpoint failed"
         timeout-minutes: 2
