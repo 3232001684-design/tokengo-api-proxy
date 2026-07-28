@@ -3,7 +3,8 @@ import time
 import random
 import threading
 
-TARGET_URL = "https://tokengo-d0cb.onrender.com/health"
+BASE_URL = "https://tokengo-d0cb.onrender.com"
+ENDPOINTS = ["/", "/v1/models", "/health"]
 CHECK_INTERVAL = 120  
 MAX_RETRIES = 3
 
@@ -20,20 +21,26 @@ def ping(url):
         return None, str(e)
 
 def keep_alive_worker():
-    print(f"[外部保活] 开始监控 {TARGET_URL}")
+    print(f"[外部保活] 开始监控 {BASE_URL}")
     consecutive_failures = 0
     
     while True:
-        for attempt in range(MAX_RETRIES):
-            status, content = ping(TARGET_URL)
-            
-            if status == 200:
-                print(f"[外部保活] ✓ {time.strftime('%Y-%m-%d %H:%M:%S')} - 状态正常")
-                consecutive_failures = 0
-                break
-            else:
-                print(f"[外部保活] ✗ {time.strftime('%Y-%m-%d %H:%M:%S')} - 失败 ({status}): {content}")
-                time.sleep(5)
+        success_count = 0
+        for endpoint in ENDPOINTS:
+            url = BASE_URL + endpoint
+            for attempt in range(MAX_RETRIES):
+                status, content = ping(url)
+                
+                if status == 200:
+                    print(f"[外部保活] ✓ {time.strftime('%Y-%m-%d %H:%M:%S')} - {endpoint} 正常")
+                    success_count += 1
+                    break
+                else:
+                    print(f"[外部保活] ✗ {time.strftime('%Y-%m-%d %H:%M:%S')} - {endpoint} 失败 ({status})")
+                    time.sleep(2)
+        
+        if success_count > 0:
+            consecutive_failures = 0
         else:
             consecutive_failures += 1
             print(f"[外部保活] ⚠️ 连续失败 {consecutive_failures} 次")
