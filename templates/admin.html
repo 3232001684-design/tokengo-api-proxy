@@ -7,51 +7,48 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     * { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; box-sizing: border-box; }
-    html, body { margin: 0; padding: 0; background: #000; color: #fff; min-height: 100vh; }
+    html, body { margin: 0; padding: 0; background: #f9fafb; color: #1a1a1a; min-height: 100vh; }
     a { color: inherit; text-decoration: none; }
-    a:hover { opacity: 0.8; }
     .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
     .btn { display: inline-block; padding: 6px 12px; border-radius: 6px; font-size: 14px; cursor: pointer; border: none; transition: all 0.2s; }
     .btn-primary { background: #10b981; color: #fff; }
     .btn-primary:hover { background: #059669; }
-    .btn-secondary { background: #222; color: #fff; }
-    .btn-secondary:hover { background: #333; }
-    .btn-outline { background: transparent; border: 1px solid #333; color: #fff; }
-    .btn-outline:hover { border-color: #555; }
+    .btn-secondary { background: #fff; border: 1px solid #d1d5db; color: #1a1a1a; }
+    .btn-secondary:hover { background: #f3f4f6; }
     .btn-danger { background: #dc2626; color: #fff; }
-    .btn-danger:hover { background: #b91c1c; }
-    .input-field { background: #111; border: 1px solid #222; border-radius: 6px; padding: 8px 12px; color: #fff; font-size: 14px; }
-    .input-field:focus { outline: none; border-color: #333; }
-    .card { background: #111; border: 1px solid #222; border-radius: 8px; padding: 20px; }
-    .stat-box { background: #111; border: 1px solid #222; border-radius: 8px; padding: 16px; }
-    .nav-link { color: #555; text-decoration: none; transition: all 0.2s; padding: 8px 12px; border-radius: 6px; display: flex; align-items: center; gap: 8px; font-size: 14px; }
-    .nav-link:hover { color: #fff; background: #111; }
-    .nav-link.active { color: #10b981; background: #10b98110; }
+    .input-field { background: #fff; border: 1px solid #d1d5db; border-radius: 6px; padding: 8px 12px; color: #1a1a1a; font-size: 14px; }
+    .input-field:focus { outline: none; border-color: #10b981; }
+    .card { background: #fff; border: 1px solid #e5e7eb; border-radius: 8px; padding: 20px; }
+    .stat-box { background: #fff; border: 1px solid #e5e7eb; border-radius: 8px; padding: 16px; }
+    .nav-link { color: #6b7280; text-decoration: none; transition: all 0.2s; padding: 8px 12px; border-radius: 6px; display: flex; align-items: center; gap: 8px; font-size: 14px; }
+    .nav-link:hover { color: #10b981; background: #f0fdf4; }
+    .nav-link.active { color: #10b981; background: #f0fdf4; }
     .section { display: none; }
     .section.active { display: block; }
-    .table-style { width: 100%; border-collapse: collapse; }
-    .table-style th { text-align: left; padding: 10px 12px; border-bottom: 1px solid #222; color: #555; font-weight: 500; font-size: 12px; background: #111; }
-    .table-style td { padding: 10px 12px; border-bottom: 1px solid #222; font-size: 14px; }
-    .table-style tr:hover { background: #111; }
-    .badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 12px; background: #222; color: #888; }
-    .badge-green { background: #10b98120; color: #10b981; }
-    .badge-yellow { background: #eab30820; color: #eab308; }
-    .badge-red { background: #ef444420; color: #ef4444; }
-    .badge-blue { background: #3b82f620; color: #3b82f6; }
+    .table-style { width: 100%; border-collapse: collapse; background: #fff; border-radius: 8px; overflow: hidden; }
+    .table-style th { text-align: left; padding: 10px 12px; border-bottom: 1px solid #e5e7eb; color: #6b7280; font-weight: 500; font-size: 12px; background: #f9fafb; }
+    .table-style td { padding: 10px 12px; border-bottom: 1px solid #e5e7eb; font-size: 14px; }
+    .table-style tr:hover { background: #f9fafb; }
+    .badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 12px; background: #f3f4f6; color: #6b7280; }
+    .badge-green { background: #d1fae5; color: #10b981; }
+    .badge-yellow { background: #fef3c7; color: #d97706; }
+    .badge-red { background: #fee2e2; color: #dc2626; }
+    .badge-blue { background: #dbeafe; color: #2563eb; }
+    .text-muted { color: #6b7280; }
   </style>
 </head>
 <body>
   <!-- 导航栏 -->
-  <nav class="fixed top-0 left-0 right-0 z-50 bg-black/90 backdrop-blur-md border-b border-zinc-800">
+  <nav class="bg-white border-b border-gray-200 sticky top-0 z-50">
     <div class="container flex items-center justify-between h-14">
       <div class="flex items-center gap-4">
         <a href="/" class="flex items-center gap-2">
-          <div class="w-8 h-8 rounded-lg bg-emerald-500 flex items-center justify-center font-bold text-lg">T</div>
+          <div class="w-8 h-8 rounded-lg bg-emerald-500 flex items-center justify-center font-bold text-lg text-white">T</div>
           <span class="font-semibold">TokenGo</span>
         </a>
-        <span class="text-xs bg-emerald-500/20 text-emerald-400 px-2 py-0.5 rounded">管理后台</span>
+        <span class="text-xs bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded">管理后台</span>
       </div>
-      <div class="flex items-center gap-4">
+      <div class="flex items-center gap-3">
         <a href="/" class="btn btn-secondary text-sm">返回首页</a>
         <button onclick="logout()" class="btn btn-secondary text-sm">退出</button>
       </div>
@@ -59,12 +56,12 @@
   </nav>
 
   <!-- 主内容 -->
-  <div class="pt-20 pb-12">
+  <div class="py-8">
     <div class="container">
       <div class="flex gap-8">
         <!-- 侧边栏 -->
-        <aside class="w-52 shrink-0 hidden md:block">
-          <nav class="sticky top-20 space-y-1">
+        <aside class="w-48 shrink-0 hidden md:block">
+          <nav class="sticky top-20 space-y-1 bg-white rounded-lg border border-gray-200 p-2">
             <a href="#" class="nav-link active" onclick="showSection('dashboard', this)">数据概览</a>
             <a href="#" class="nav-link" onclick="showSection('users', this)">用户管理</a>
             <a href="#" class="nav-link" onclick="showSection('orders', this)">订单管理</a>
@@ -81,34 +78,26 @@
             <h2 class="text-xl font-semibold mb-6">数据概览</h2>
             <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
               <div class="stat-box">
-                <div class="text-sm text-zinc-500">总用户</div>
+                <div class="text-sm text-muted">总用户</div>
                 <div class="text-2xl font-bold text-emerald-500" id="statUsers">-</div>
               </div>
               <div class="stat-box">
-                <div class="text-sm text-zinc-500">总订单</div>
+                <div class="text-sm text-muted">总订单</div>
                 <div class="text-2xl font-bold text-blue-500" id="statOrders">-</div>
               </div>
               <div class="stat-box">
-                <div class="text-sm text-zinc-500">总收入</div>
+                <div class="text-sm text-muted">总收入</div>
                 <div class="text-2xl font-bold text-yellow-500" id="statRevenue">¥0</div>
               </div>
               <div class="stat-box">
-                <div class="text-sm text-zinc-500">API调用</div>
+                <div class="text-sm text-muted">API调用</div>
                 <div class="text-2xl font-bold text-purple-500" id="statCalls">-</div>
               </div>
             </div>
             <div class="card">
               <h3 class="font-medium mb-4">最近订单</h3>
               <table class="table-style">
-                <thead>
-                  <tr>
-                    <th>订单号</th>
-                    <th>用户</th>
-                    <th>金额</th>
-                    <th>状态</th>
-                    <th>时间</th>
-                  </tr>
-                </thead>
+                <thead><tr><th>订单号</th><th>用户</th><th>金额</th><th>状态</th><th>时间</th></tr></thead>
                 <tbody id="recentOrders"></tbody>
               </table>
             </div>
@@ -125,16 +114,7 @@
             </div>
             <div class="card">
               <table class="table-style">
-                <thead>
-                  <tr>
-                    <th>ID</th>
-                    <th>邮箱</th>
-                    <th>用户名</th>
-                    <th>余额</th>
-                    <th>角色</th>
-                    <th>操作</th>
-                  </tr>
-                </thead>
+                <thead><tr><th>ID</th><th>邮箱</th><th>用户名</th><th>余额</th><th>角色</th><th>操作</th></tr></thead>
                 <tbody id="usersTable"></tbody>
               </table>
             </div>
@@ -153,17 +133,7 @@
             </div>
             <div class="card">
               <table class="table-style">
-                <thead>
-                  <tr>
-                    <th>订单号</th>
-                    <th>用户</th>
-                    <th>金额</th>
-                    <th>支付方式</th>
-                    <th>状态</th>
-                    <th>时间</th>
-                    <th>操作</th>
-                  </tr>
-                </thead>
+                <thead><tr><th>订单号</th><th>用户</th><th>金额</th><th>支付方式</th><th>状态</th><th>时间</th><th>操作</th></tr></thead>
                 <tbody id="ordersTable"></tbody>
               </table>
             </div>
@@ -177,29 +147,21 @@
             </div>
             <div class="grid grid-cols-3 gap-4 mb-6">
               <div class="stat-box">
-                <div class="text-sm text-zinc-500">已生成</div>
+                <div class="text-sm text-muted">已生成</div>
                 <div class="text-2xl font-bold" id="cardTotal">0</div>
               </div>
               <div class="stat-box">
-                <div class="text-sm text-zinc-500">已使用</div>
+                <div class="text-sm text-muted">已使用</div>
                 <div class="text-2xl font-bold text-emerald-500" id="cardUsed">0</div>
               </div>
               <div class="stat-box">
-                <div class="text-sm text-zinc-500">未使用</div>
+                <div class="text-sm text-muted">未使用</div>
                 <div class="text-2xl font-bold text-blue-500" id="cardUnused">0</div>
               </div>
             </div>
             <div class="card">
               <table class="table-style">
-                <thead>
-                  <tr>
-                    <th>卡密</th>
-                    <th>面值</th>
-                    <th>状态</th>
-                    <th>使用者</th>
-                    <th>创建时间</th>
-                  </tr>
-                </thead>
+                <thead><tr><th>卡密</th><th>面值</th><th>状态</th><th>使用者</th><th>创建时间</th></tr></thead>
                 <tbody id="cardsTable"></tbody>
               </table>
             </div>
@@ -212,8 +174,8 @@
               <div class="card">
                 <h3 class="font-medium mb-4">💬 微信支付</h3>
                 <div class="space-y-4">
-                  <div class="border-2 border-dashed border-zinc-700 rounded-lg p-6 text-center cursor-pointer hover:border-emerald-500 transition-all" onclick="document.getElementById('wechatQr').click()">
-                    <div id="wechatPreview" class="text-zinc-500">点击上传收款码</div>
+                  <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center cursor-pointer hover:border-emerald-500 transition-all" onclick="document.getElementById('wechatQr').click()">
+                    <div id="wechatPreview" class="text-muted">点击上传收款码</div>
                     <input type="file" id="wechatQr" class="hidden" accept="image/*" onchange="previewImage(this, 'wechatPreview')">
                   </div>
                   <input type="text" class="input-field w-full" placeholder="备注信息">
@@ -223,8 +185,8 @@
               <div class="card">
                 <h3 class="font-medium mb-4">💰 支付宝</h3>
                 <div class="space-y-4">
-                  <div class="border-2 border-dashed border-zinc-700 rounded-lg p-6 text-center cursor-pointer hover:border-emerald-500 transition-all" onclick="document.getElementById('alipayQr').click()">
-                    <div id="alipayPreview" class="text-zinc-500">点击上传收款码</div>
+                  <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center cursor-pointer hover:border-emerald-500 transition-all" onclick="document.getElementById('alipayQr').click()">
+                    <div id="alipayPreview" class="text-muted">点击上传收款码</div>
                     <input type="file" id="alipayQr" class="hidden" accept="image/*" onchange="previewImage(this, 'alipayPreview')">
                   </div>
                   <input type="text" class="input-field w-full" placeholder="备注信息">
@@ -242,11 +204,11 @@
                 <h3 class="font-medium mb-4">基本设置</h3>
                 <div class="grid grid-cols-2 gap-4">
                   <div>
-                    <label class="block text-sm text-zinc-500 mb-2">网站名称</label>
+                    <label class="block text-sm text-muted mb-2">网站名称</label>
                     <input type="text" class="input-field w-full" value="TokenGo">
                   </div>
                   <div>
-                    <label class="block text-sm text-zinc-500 mb-2">网站地址</label>
+                    <label class="block text-sm text-muted mb-2">网站地址</label>
                     <input type="text" class="input-field w-full" value="https://tokengo-d0cb.onrender.com">
                   </div>
                 </div>
@@ -258,7 +220,7 @@
                   <span>允许新用户注册</span>
                 </label>
                 <div>
-                  <label class="block text-sm text-zinc-500 mb-2">新用户赠送额度</label>
+                  <label class="block text-sm text-muted mb-2">新用户赠送额度</label>
                   <input type="number" class="input-field w-32" value="1" step="0.1">
                 </div>
               </div>
@@ -272,18 +234,18 @@
 
   <!-- 生成卡密弹窗 -->
   <div id="cardModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden flex items-center justify-center">
-    <div class="bg-zinc-900 border border-zinc-800 rounded-xl p-6 w-full max-w-md">
+    <div class="bg-white rounded-xl p-6 w-full max-w-md">
       <div class="flex items-center justify-between mb-4">
         <h3 class="text-lg font-semibold">生成卡密</h3>
-        <button onclick="hideModal()" class="text-zinc-400 hover:text-white">✕</button>
+        <button onclick="hideModal()" class="text-muted hover:text-gray-800">✕</button>
       </div>
       <div class="space-y-4">
         <div>
-          <label class="block text-sm text-zinc-500 mb-2">数量</label>
+          <label class="block text-sm text-muted mb-2">数量</label>
           <input type="number" id="cardCount" class="input-field w-full" value="1" min="1">
         </div>
         <div>
-          <label class="block text-sm text-zinc-500 mb-2">面值 ($)</label>
+          <label class="block text-sm text-muted mb-2">面值 ($)</label>
           <input type="number" id="cardValue" class="input-field w-full" value="10" min="1">
         </div>
         <button onclick="generateCards()" class="btn btn-primary w-full">生成</button>
@@ -295,10 +257,7 @@
   <script>
     let token = localStorage.getItem('token');
     if (!token) window.location.href = '/login';
-
-    function getHeaders() {
-      return { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' };
-    }
+    function getHeaders() { return { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' }; }
 
     async function loadStats() {
       try {
@@ -310,15 +269,7 @@
         document.getElementById('statRevenue').textContent = '¥' + (data.total_revenue || 0).toFixed(2);
         document.getElementById('statCalls').textContent = (data.total_calls || 0).toLocaleString();
         if (data.recent_orders) {
-          document.getElementById('recentOrders').innerHTML = data.recent_orders.map(o => `
-            <tr>
-              <td class="font-mono text-xs">${o.id}</td>
-              <td>${o.email}</td>
-              <td>¥${o.amount}</td>
-              <td><span class="badge badge-${o.status === 'completed' ? 'green' : o.status === 'pending' ? 'yellow' : 'red'}">${o.status}</span></td>
-              <td>${new Date(o.created * 1000).toLocaleDateString()}</td>
-            </tr>
-          `).join('');
+          document.getElementById('recentOrders').innerHTML = data.recent_orders.map(o => `<tr><td class="font-mono text-xs">${o.id}</td><td>${o.email}</td><td>¥${o.amount}</td><td><span class="badge badge-${o.status === 'completed' ? 'green' : o.status === 'pending' ? 'yellow' : 'red'}">${o.status}</span></td><td>${new Date(o.created * 1000).toLocaleDateString()}</td></tr>`).join('');
         }
       } catch (e) { console.error(e); }
     }
@@ -328,19 +279,7 @@
         const res = await fetch('/api/admin/users', { headers: getHeaders() });
         const data = await res.json();
         if (data.users) {
-          document.getElementById('usersTable').innerHTML = data.users.map(u => `
-            <tr>
-              <td class="font-mono text-xs">${u.id}</td>
-              <td>${u.email}</td>
-              <td>${u.username || '-'}</td>
-              <td class="text-emerald-500">$${u.balance?.toFixed(2)}</td>
-              <td><span class="badge badge-${u.role === 'admin' ? 'yellow' : 'blue'}">${u.role}</span></td>
-              <td>
-                <button onclick="editUser('${u.id}')" class="text-emerald-500 hover:text-emerald-400 mr-2">编辑</button>
-                <button onclick="deleteUser('${u.id}')" class="text-red-500 hover:text-red-400">删除</button>
-              </td>
-            </tr>
-          `).join('');
+          document.getElementById('usersTable').innerHTML = data.users.map(u => `<tr><td class="font-mono text-xs">${u.id}</td><td>${u.email}</td><td>${u.username || '-'}</td><td class="text-emerald-500">$${u.balance?.toFixed(2)}</td><td><span class="badge badge-${u.role === 'admin' ? 'yellow' : 'blue'}">${u.role}</span></td><td><button onclick="editUser('${u.id}')" class="text-emerald-500 hover:text-emerald-600 mr-2">编辑</button><button onclick="deleteUser('${u.id}')" class="text-red-500 hover:text-red-600">删除</button></td></tr>`).join('');
         }
       } catch (e) { console.error(e); }
     }
@@ -352,20 +291,7 @@
         const res = await fetch(url, { headers: getHeaders() });
         const data = await res.json();
         if (data.orders) {
-          document.getElementById('ordersTable').innerHTML = data.orders.map(o => `
-            <tr>
-              <td class="font-mono text-xs">${o.id}</td>
-              <td>${o.email}</td>
-              <td>¥${o.amount}</td>
-              <td>${o.method}</td>
-              <td><span class="badge badge-${o.status === 'completed' ? 'green' : o.status === 'pending' ? 'yellow' : 'red'}">${o.status}</span></td>
-              <td>${new Date(o.created * 1000).toLocaleDateString()}</td>
-              <td>${o.status === 'pending' ? `
-                <button onclick="approveOrder('${o.id}')" class="text-emerald-500 hover:text-emerald-400 mr-2">通过</button>
-                <button onclick="rejectOrder('${o.id}')" class="text-red-500 hover:text-red-400">拒绝</button>
-              ` : '-'}</td>
-            </tr>
-          `).join('');
+          document.getElementById('ordersTable').innerHTML = data.orders.map(o => `<tr><td class="font-mono text-xs">${o.id}</td><td>${o.email}</td><td>¥${o.amount}</td><td>${o.method}</td><td><span class="badge badge-${o.status === 'completed' ? 'green' : o.status === 'pending' ? 'yellow' : 'red'}">${o.status}</span></td><td>${new Date(o.created * 1000).toLocaleDateString()}</td><td>${o.status === 'pending' ? `<button onclick="approveOrder('${o.id}')" class="text-emerald-500 hover:text-emerald-600 mr-2">通过</button><button onclick="rejectOrder('${o.id}')" class="text-red-500 hover:text-red-600">拒绝</button>` : '-'}</td></tr>`).join('');
         }
       } catch (e) { console.error(e); }
     }
@@ -378,15 +304,7 @@
         document.getElementById('cardUsed').textContent = data.used || 0;
         document.getElementById('cardUnused').textContent = (data.total || 0) - (data.used || 0);
         if (data.cards) {
-          document.getElementById('cardsTable').innerHTML = data.cards.map(c => `
-            <tr>
-              <td class="font-mono text-xs">${c.code}</td>
-              <td class="text-emerald-500">$${c.value}</td>
-              <td><span class="badge badge-${c.used ? 'green' : 'blue'}">${c.used ? '已使用' : '未使用'}</span></td>
-              <td>${c.used_by || '-'}</td>
-              <td>${new Date(c.created * 1000).toLocaleDateString()}</td>
-            </tr>
-          `).join('');
+          document.getElementById('cardsTable').innerHTML = data.cards.map(c => `<tr><td class="font-mono text-xs">${c.code}</td><td class="text-emerald-500">$${c.value}</td><td><span class="badge badge-${c.used ? 'green' : 'blue'}">${c.used ? '已使用' : '未使用'}</span></td><td>${c.used_by || '-'}</td><td>${new Date(c.created * 1000).toLocaleDateString()}</td></tr>`).join('');
         }
       } catch (e) { console.error(e); }
     }
@@ -409,18 +327,11 @@
       const count = parseInt(document.getElementById('cardCount').value);
       const value = parseFloat(document.getElementById('cardValue').value);
       try {
-        const res = await fetch('/api/admin/cards/generate', {
-          method: 'POST', headers: getHeaders(), body: JSON.stringify({ count, value })
-        });
+        const res = await fetch('/api/admin/cards/generate', { method: 'POST', headers: getHeaders(), body: JSON.stringify({ count, value }) });
         const data = await res.json();
         if (data.cards) {
           document.getElementById('generatedCards').classList.remove('hidden');
-          document.getElementById('generatedCards').innerHTML = data.cards.map(c => `
-            <div class="p-3 bg-zinc-800 rounded flex items-center justify-between">
-              <span class="font-mono text-sm">${c}</span>
-              <button onclick="copyText('${c}')" class="text-xs text-emerald-500">复制</button>
-            </div>
-          `).join('');
+          document.getElementById('generatedCards').innerHTML = data.cards.map(c => `<div class="p-3 bg-gray-100 rounded flex items-center justify-between"><span class="font-mono text-sm">${c}</span><button onclick="copyText('${c}')" class="text-xs text-emerald-500">复制</button></div>`).join('');
           loadCards();
         }
       } catch (e) { alert('生成失败'); }

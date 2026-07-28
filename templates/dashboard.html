@@ -7,51 +7,51 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     * { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; box-sizing: border-box; }
-    html, body { margin: 0; padding: 0; background: #000; color: #fff; min-height: 100vh; }
+    html, body { margin: 0; padding: 0; background: #fff; color: #1a1a1a; min-height: 100vh; }
     a { color: inherit; text-decoration: none; }
-    a:hover { opacity: 0.8; }
-    .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+    .container { max-width: 1000px; margin: 0 auto; padding: 0 20px; }
     .btn { display: inline-block; padding: 8px 16px; border-radius: 6px; font-size: 14px; cursor: pointer; border: none; transition: all 0.2s; }
     .btn-primary { background: #10b981; color: #fff; }
     .btn-primary:hover { background: #059669; }
-    .btn-secondary { background: #222; color: #fff; }
-    .btn-secondary:hover { background: #333; }
-    .btn-outline { background: transparent; border: 1px solid #333; color: #fff; }
-    .btn-outline:hover { border-color: #555; }
-    .input-field { background: #111; border: 1px solid #222; border-radius: 6px; padding: 10px 14px; color: #fff; width: 100%; font-size: 14px; }
-    .input-field:focus { outline: none; border-color: #333; }
-    .card { background: #111; border: 1px solid #222; border-radius: 8px; padding: 20px; }
-    .nav-link { color: #555; text-decoration: none; transition: all 0.2s; padding: 8px 12px; border-radius: 6px; display: block; font-size: 14px; }
-    .nav-link:hover { color: #fff; background: #111; }
-    .nav-link.active { color: #10b981; background: #10b98110; }
+    .btn-secondary { background: #f3f4f6; color: #1a1a1a; }
+    .btn-secondary:hover { background: #e5e7eb; }
+    .btn-outline { background: transparent; border: 1px solid #d1d5db; color: #1a1a1a; }
+    .btn-outline:hover { border-color: #10b981; color: #10b981; }
+    .input-field { background: #fff; border: 1px solid #d1d5db; border-radius: 6px; padding: 10px 14px; color: #1a1a1a; width: 100%; font-size: 14px; }
+    .input-field:focus { outline: none; border-color: #10b981; }
+    .card { background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 8px; padding: 20px; }
+    .nav-link { color: #6b7280; text-decoration: none; transition: all 0.2s; padding: 8px 12px; border-radius: 6px; display: block; font-size: 14px; }
+    .nav-link:hover { color: #10b981; background: #f0fdf4; }
+    .nav-link.active { color: #10b981; background: #f0fdf4; }
     .section { display: none; }
     .section.active { display: block; }
-    .code-block { background: #111; border: 1px solid #222; border-radius: 6px; padding: 16px; font-family: monospace; font-size: 13px; overflow-x: auto; }
+    .code-block { background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 6px; padding: 16px; font-family: monospace; font-size: 13px; overflow-x: auto; white-space: pre-wrap; }
     .table-style { width: 100%; border-collapse: collapse; }
-    .table-style th { text-align: left; padding: 10px 12px; border-bottom: 1px solid #222; color: #555; font-weight: 500; font-size: 12px; }
-    .table-style td { padding: 10px 12px; border-bottom: 1px solid #222; font-size: 14px; }
-    .table-style tr:hover { background: #111; }
+    .table-style th { text-align: left; padding: 10px 12px; border-bottom: 1px solid #e5e7eb; color: #6b7280; font-weight: 500; font-size: 12px; }
+    .table-style td { padding: 10px 12px; border-bottom: 1px solid #e5e7eb; font-size: 14px; }
+    .table-style tr:hover { background: #f9fafb; }
+    .text-muted { color: #6b7280; }
   </style>
 </head>
 <body>
   <!-- 导航栏 -->
-  <nav class="fixed top-0 left-0 right-0 z-50 bg-black/90 backdrop-blur-md border-b border-zinc-800">
+  <nav class="bg-white border-b border-gray-200 sticky top-0 z-50">
     <div class="container flex items-center justify-between h-14">
       <div class="flex items-center gap-6">
         <a href="/" class="flex items-center gap-2">
-          <div class="w-8 h-8 rounded-lg bg-emerald-500 flex items-center justify-center font-bold text-lg">T</div>
+          <div class="w-8 h-8 rounded-lg bg-emerald-500 flex items-center justify-center font-bold text-lg text-white">T</div>
           <span class="font-semibold">TokenGo</span>
         </a>
         <div class="flex items-center gap-6 text-sm">
-          <a href="/">首页</a>
-          <a href="/pricing">模型广场</a>
-          <a href="/help">文档</a>
+          <a href="/" class="text-muted hover:text-emerald-500">首页</a>
+          <a href="/pricing" class="text-muted hover:text-emerald-500">模型广场</a>
+          <a href="/help" class="text-muted hover:text-emerald-500">文档</a>
         </div>
       </div>
       <div class="flex items-center gap-4">
         <div class="text-right text-sm">
           <div id="userEmail">-</div>
-          <div class="text-zinc-500 text-xs" id="userBalance">余额: $0.00</div>
+          <div class="text-muted text-xs" id="userBalance">余额: $0.00</div>
         </div>
         <button onclick="logout()" class="btn btn-secondary text-sm">退出</button>
       </div>
@@ -59,11 +59,11 @@
   </nav>
 
   <!-- 主内容 -->
-  <div class="pt-20 pb-12">
+  <div class="py-8">
     <div class="container">
       <div class="flex gap-8">
         <!-- 侧边栏 -->
-        <aside class="w-48 shrink-0 hidden md:block">
+        <aside class="w-40 shrink-0 hidden md:block">
           <nav class="sticky top-20 space-y-1">
             <a href="#" class="nav-link active" onclick="showSection('api-key', this)">API 密钥</a>
             <a href="#" class="nav-link" onclick="showSection('usage', this)">使用记录</a>
@@ -83,8 +83,8 @@
             </div>
             <div id="apiKeyList" class="space-y-3 mb-6"></div>
             <div class="card">
-              <div class="text-sm text-zinc-500 mb-2">Base URL</div>
-              <div class="code-block text-emerald-400" id="baseUrl">https://tokengo-d0cb.onrender.com</div>
+              <div class="text-sm text-muted mb-2">Base URL</div>
+              <div class="code-block text-emerald-500" id="baseUrl">https://tokengo-d0cb.onrender.com</div>
             </div>
             <div class="card mt-4">
               <h3 class="font-medium mb-3">调用示例</h3>
@@ -92,15 +92,12 @@
 # cURL
 curl https://tokengo-d0cb.onrender.com/v1/chat/completions \
   -H "Authorization: Bearer YOUR_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{"model": "gpt-5.6", "messages": [{"role": "user", "content": "Hello!"}]}'
-              </div>
+  -d '{"model": "gpt-5.6", "messages": [{"role": "user", "content": "Hello!"}]}'</div>
               <div class="code-block">
 # Python
 from openai import OpenAI
 client = OpenAI(api_key="YOUR_API_KEY", base_url="https://tokengo-d0cb.onrender.com")
-response = client.chat.completions.create(model="gpt-5.6", messages=[{"role": "user", "content": "Hello!"}])
-              </div>
+response = client.chat.completions.create(model="gpt-5.6", messages=[{"role": "user", "content": "Hello!"}])</div>
             </div>
           </section>
 
@@ -129,16 +126,16 @@ response = client.chat.completions.create(model="gpt-5.6", messages=[{"role": "u
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
               <div class="card text-center cursor-pointer hover:border-emerald-500 transition-all" onclick="selectAmount(10)">
                 <div class="text-2xl font-bold">¥10</div>
-                <div class="text-sm text-zinc-500 mt-1">$10 额度</div>
+                <div class="text-sm text-muted mt-1">$10 额度</div>
               </div>
               <div class="card text-center cursor-pointer hover:border-emerald-500 transition-all" onclick="selectAmount(50)">
                 <div class="text-2xl font-bold">¥50</div>
-                <div class="text-sm text-zinc-500 mt-1">$50 额度</div>
+                <div class="text-sm text-muted mt-1">$50 额度</div>
                 <div class="text-xs text-emerald-500 mt-1">赠送 5%</div>
               </div>
               <div class="card text-center cursor-pointer hover:border-emerald-500 transition-all" onclick="selectAmount(100)">
                 <div class="text-2xl font-bold">¥100</div>
-                <div class="text-sm text-zinc-500 mt-1">$100 额度</div>
+                <div class="text-sm text-muted mt-1">$100 额度</div>
                 <div class="text-xs text-emerald-500 mt-1">赠送 10%</div>
               </div>
             </div>
@@ -148,7 +145,7 @@ response = client.chat.completions.create(model="gpt-5.6", messages=[{"role": "u
                 <button id="payWechat" class="btn btn-outline" onclick="selectPayment('wechat')">💬 微信支付</button>
                 <button id="payAlipay" class="btn btn-outline" onclick="selectPayment('alipay')">💰 支付宝</button>
               </div>
-              <div id="qrCodeArea" class="hidden p-6 bg-zinc-900 rounded-lg text-center">
+              <div id="qrCodeArea" class="hidden p-6 bg-gray-50 rounded-lg text-center">
                 <div class="mb-4">请联系管理员获取收款码</div>
                 <button onclick="confirmPayment()" class="btn btn-primary">已完成支付</button>
               </div>
@@ -172,15 +169,15 @@ response = client.chat.completions.create(model="gpt-5.6", messages=[{"role": "u
             <h2 class="text-xl font-semibold mb-6">个人设置</h2>
             <div class="card max-w-lg space-y-4">
               <div>
-                <label class="block text-sm text-zinc-500 mb-2">用户名</label>
+                <label class="block text-sm text-muted mb-2">用户名</label>
                 <input type="text" id="settingsUsername" class="input-field">
               </div>
               <div>
-                <label class="block text-sm text-zinc-500 mb-2">邮箱</label>
+                <label class="block text-sm text-muted mb-2">邮箱</label>
                 <input type="email" id="settingsEmail" class="input-field" disabled>
               </div>
               <div>
-                <label class="block text-sm text-zinc-500 mb-2">新密码（留空不修改）</label>
+                <label class="block text-sm text-muted mb-2">新密码（留空不修改）</label>
                 <input type="password" id="settingsPassword" class="input-field" placeholder="输入新密码">
               </div>
               <button onclick="saveSettings()" class="btn btn-primary">保存</button>
@@ -194,10 +191,7 @@ response = client.chat.completions.create(model="gpt-5.6", messages=[{"role": "u
   <script>
     let token = localStorage.getItem('token');
     if (!token) window.location.href = '/login';
-
-    function getHeaders() {
-      return { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' };
-    }
+    function getHeaders() { return { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' }; }
 
     async function loadUserInfo() {
       try {
@@ -210,9 +204,7 @@ response = client.chat.completions.create(model="gpt-5.6", messages=[{"role": "u
         document.getElementById('settingsEmail').value = data.email;
         loadApiKeys();
         loadUsage();
-      } catch {
-        logout();
-      }
+      } catch { logout(); }
     }
 
     async function loadApiKeys() {
@@ -220,14 +212,9 @@ response = client.chat.completions.create(model="gpt-5.6", messages=[{"role": "u
       const data = await res.json();
       const list = document.getElementById('apiKeyList');
       if (data.keys && data.keys.length) {
-        list.innerHTML = data.keys.map(k => `
-          <div class="card flex items-center justify-between">
-            <div class="font-mono text-sm">${k.key.substring(0, 8)}...${k.key.slice(-4)}</div>
-            <button onclick="deleteKey('${k.id}')" class="text-red-500 text-sm hover:text-red-400">删除</button>
-          </div>
-        `).join('');
+        list.innerHTML = data.keys.map(k => `<div class="card flex items-center justify-between"><div class="font-mono text-sm">${k.key.substring(0, 8)}...${k.key.slice(-4)}</div><button onclick="deleteKey('${k.id}')" class="text-red-500 text-sm hover:text-red-600">删除</button></div>`).join('');
       } else {
-        list.innerHTML = '<div class="text-center py-8 text-zinc-500">暂无 API 密钥</div>';
+        list.innerHTML = '<div class="text-center py-8 text-muted">暂无 API 密钥</div>';
       }
     }
 
@@ -236,103 +223,39 @@ response = client.chat.completions.create(model="gpt-5.6", messages=[{"role": "u
       const data = await res.json();
       const tbody = document.getElementById('usageTable');
       if (data.records && data.records.length) {
-        tbody.innerHTML = data.records.slice(0, 50).map(r => `
-          <tr>
-            <td>${new Date(r.created * 1000).toLocaleString()}</td>
-            <td>${r.model}</td>
-            <td>${r.input_tokens}</td>
-            <td>${r.output_tokens}</td>
-            <td class="text-red-400">-$${r.cost?.toFixed(4)}</td>
-          </tr>
-        `).join('');
+        tbody.innerHTML = data.records.slice(0, 50).map(r => `<tr><td>${new Date(r.created * 1000).toLocaleString()}</td><td>${r.model}</td><td>${r.input_tokens}</td><td>${r.output_tokens}</td><td class="text-red-500">-$${r.cost?.toFixed(4)}</td></tr>`).join('');
       } else {
-        tbody.innerHTML = '<tr><td colspan="5" class="text-center py-8 text-zinc-500">暂无记录</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="5" class="text-center py-8 text-muted">暂无记录</td></tr>';
       }
     }
 
     async function createApiKey() {
       const res = await fetch('/api/auth/keys', { method: 'POST', headers: getHeaders() });
       const data = await res.json();
-      if (data.key) {
-        loadApiKeys();
-        alert('密钥: ' + data.key);
-      }
+      if (data.key) { loadApiKeys(); alert('密钥: ' + data.key); }
     }
-
-    async function deleteKey(id) {
-      if (confirm('确定删除?')) {
-        await fetch(`/api/auth/keys/${id}`, { method: 'DELETE', headers: getHeaders() });
-        loadApiKeys();
-      }
-    }
+    async function deleteKey(id) { if (confirm('确定删除?')) { await fetch(`/api/auth/keys/${id}`, { method: 'DELETE', headers: getHeaders() }); loadApiKeys(); } }
 
     let selectedAmount = null, currentPayment = null;
-
-    function selectAmount(amount) {
-      selectedAmount = amount;
-      document.querySelectorAll('#section-billing .grid > div').forEach(el => el.classList.remove('border-emerald-500'));
-      event.currentTarget.classList.add('border-emerald-500');
-    }
-
-    function selectPayment(type) {
-      currentPayment = type;
-      document.getElementById('payWechat').classList.toggle('border-emerald-500', type === 'wechat');
-      document.getElementById('payAlipay').classList.toggle('border-emerald-500', type === 'alipay');
-      document.getElementById('qrCodeArea').classList.remove('hidden');
-    }
-
-    async function confirmPayment() {
-      if (!selectedAmount || !currentPayment) return alert('请选择金额和支付方式');
-      const res = await fetch('/api/payment/create', {
-        method: 'POST', headers: getHeaders(),
-        body: JSON.stringify({ amount: selectedAmount, method: currentPayment })
-      });
-      const data = await res.json();
-      if (data.order_id) alert('订单: ' + data.order_id + '\n请联系管理员完成支付');
-    }
+    function selectAmount(amount) { selectedAmount = amount; document.querySelectorAll('#section-billing .grid > div').forEach(el => el.classList.remove('border-emerald-500')); event.currentTarget.classList.add('border-emerald-500'); }
+    function selectPayment(type) { currentPayment = type; document.getElementById('payWechat').classList.toggle('border-emerald-500', type === 'wechat'); document.getElementById('payAlipay').classList.toggle('border-emerald-500', type === 'alipay'); document.getElementById('qrCodeArea').classList.remove('hidden'); }
+    async function confirmPayment() { if (!selectedAmount || !currentPayment) return alert('请选择金额和支付方式'); const res = await fetch('/api/payment/create', { method: 'POST', headers: getHeaders(), body: JSON.stringify({ amount: selectedAmount, method: currentPayment }) }); const data = await res.json(); if (data.order_id) alert('订单: ' + data.order_id + '\n请联系管理员完成支付'); }
 
     async function redeemCard() {
       const code = document.getElementById('redeemCode').value.trim();
       if (!code) return;
-      const res = await fetch('/api/redeem', {
-        method: 'POST', headers: getHeaders(), body: JSON.stringify({ code })
-      });
+      const res = await fetch('/api/redeem', { method: 'POST', headers: getHeaders(), body: JSON.stringify({ code }) });
       const data = await res.json();
       const result = document.getElementById('redeemResult');
       result.classList.remove('hidden');
-      if (data.success) {
-        result.className = 'mt-4 p-4 bg-emerald-900/50 text-emerald-400 rounded-lg';
-        result.textContent = `成功！获得 $${data.amount}`;
-        loadUserInfo();
-      } else {
-        result.className = 'mt-4 p-4 bg-red-900/50 text-red-400 rounded-lg';
-        result.textContent = data.detail || '失败';
-      }
+      if (data.success) { result.className = 'mt-4 p-4 bg-emerald-50 text-emerald-600 rounded-lg'; result.textContent = `成功！获得 $${data.amount}`; loadUserInfo(); }
+      else { result.className = 'mt-4 p-4 bg-red-50 text-red-600 rounded-lg'; result.textContent = data.detail || '失败'; }
     }
 
-    async function saveSettings() {
-      const data = {
-        username: document.getElementById('settingsUsername').value,
-        password: document.getElementById('settingsPassword').value || undefined
-      };
-      await fetch('/api/auth/profile', {
-        method: 'PUT', headers: getHeaders(), body: JSON.stringify(data)
-      });
-      alert('已保存');
-    }
+    async function saveSettings() { await fetch('/api/auth/profile', { method: 'PUT', headers: getHeaders(), body: JSON.stringify({ username: document.getElementById('settingsUsername').value, password: document.getElementById('settingsPassword').value || undefined }) }); alert('已保存'); }
 
-    function showSection(name, el) {
-      document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-      document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
-      document.getElementById(`section-${name}`).classList.add('active');
-      if (el) el.classList.add('active');
-    }
-
-    function logout() {
-      localStorage.removeItem('token');
-      window.location.href = '/';
-    }
-
+    function showSection(name, el) { document.querySelectorAll('.section').forEach(s => s.classList.remove('active')); document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active')); document.getElementById(`section-${name}`).classList.add('active'); if (el) el.classList.add('active'); }
+    function logout() { localStorage.removeItem('token'); window.location.href = '/'; }
     loadUserInfo();
   </script>
 </body>

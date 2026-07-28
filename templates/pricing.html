@@ -7,34 +7,35 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     * { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; box-sizing: border-box; }
-    html, body { margin: 0; padding: 0; background: #000; color: #fff; min-height: 100vh; }
+    html, body { margin: 0; padding: 0; background: #fff; color: #1a1a1a; min-height: 100vh; }
     a { color: inherit; text-decoration: none; }
-    a:hover { opacity: 0.8; }
-    .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+    .container { max-width: 900px; margin: 0 auto; padding: 0 20px; }
     .btn { display: inline-block; padding: 8px 20px; border-radius: 6px; font-size: 14px; cursor: pointer; border: none; transition: all 0.2s; }
     .btn-primary { background: #10b981; color: #fff; }
     .btn-primary:hover { background: #059669; }
-    .btn-outline { background: transparent; border: 1px solid #333; color: #fff; }
-    .btn-outline:hover { border-color: #555; }
-    .model-card { background: #111; border: 1px solid #222; border-radius: 8px; padding: 20px; transition: all 0.2s; }
-    .model-card:hover { border-color: #333; }
-    .tag { display: inline-block; padding: 2px 8px; background: #222; border-radius: 4px; font-size: 12px; color: #888; }
-    .tag-active { background: #10b98120; color: #10b981; }
+    .btn-outline { background: transparent; border: 1px solid #d1d5db; color: #1a1a1a; }
+    .btn-outline:hover { border-color: #10b981; color: #10b981; }
+    .model-card { background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 8px; padding: 20px; transition: all 0.2s; }
+    .model-card:hover { border-color: #10b981; background: #f0fdf4; }
+    .tag { display: inline-block; padding: 2px 8px; background: #f3f4f6; border-radius: 4px; font-size: 12px; color: #6b7280; }
+    .tag-active { background: #d1fae5; color: #10b981; }
+    .text-muted { color: #6b7280; }
+    .text-emerald { color: #10b981; }
   </style>
 </head>
 <body>
   <!-- 导航栏 -->
-  <nav class="fixed top-0 left-0 right-0 z-50 bg-black/90 backdrop-blur-md border-b border-zinc-800">
+  <nav class="bg-white border-b border-gray-200 sticky top-0 z-50">
     <div class="container flex items-center justify-between h-14">
       <a href="/" class="flex items-center gap-2">
-        <div class="w-8 h-8 rounded-lg bg-emerald-500 flex items-center justify-center font-bold text-lg">T</div>
+        <div class="w-8 h-8 rounded-lg bg-emerald-500 flex items-center justify-center font-bold text-lg text-white">T</div>
         <span class="font-semibold">TokenGo</span>
       </a>
       <div class="flex items-center gap-6 text-sm">
-        <a href="/">首页</a>
-        <a href="/login">控制台</a>
-        <a href="/pricing">模型广场</a>
-        <a href="/help">文档</a>
+        <a href="/" class="text-muted hover:text-emerald-500">首页</a>
+        <a href="/login" class="text-muted hover:text-emerald-500">控制台</a>
+        <a href="/pricing" class="text-emerald-500 font-medium">模型广场</a>
+        <a href="/help" class="text-muted hover:text-emerald-500">文档</a>
       </div>
       <div class="flex items-center gap-3">
         <a href="/login" class="btn btn-outline">登录</a>
@@ -44,222 +45,50 @@
   </nav>
 
   <!-- 主内容 -->
-  <main class="pt-20">
+  <main class="bg-white">
     <div class="container py-12">
       <!-- 标题 -->
-      <div class="mb-8">
+      <div class="mb-6">
         <h1 class="text-2xl font-bold">全部供应商</h1>
-        <p class="text-zinc-500 mt-2">共 16 个模型</p>
+        <p class="text-muted mt-1">共 16 个模型</p>
       </div>
 
       <!-- 筛选 -->
-      <div class="flex gap-4 mb-8 text-sm">
-        <button class="text-emerald-500 border-b border-emerald-500 pb-1">充值价格显示</button>
-        <button class="text-zinc-500 hover:text-white pb-1">倍率</button>
+      <div class="flex gap-4 mb-6 text-sm border-b border-gray-200 pb-4">
+        <button class="text-emerald-500 border-b-2 border-emerald-500 pb-1 font-medium">充值价格显示</button>
+        <button class="text-muted hover:text-emerald-500 pb-1">倍率</button>
       </div>
 
       <!-- 模型列表 -->
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="modelList">
-        <!-- 模型卡片将通过 JS 渲染 -->
-      </div>
-
-      <!-- 分页 -->
-      <div class="flex justify-center mt-12 text-sm text-zinc-500">
-        <span>* 1</span>
-      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="modelList"></div>
     </div>
   </main>
 
   <!-- 底部 -->
-  <footer class="border-t border-zinc-800 py-8">
-    <div class="container text-center text-sm text-zinc-500">
+  <footer class="border-t border-gray-200 py-8 bg-gray-50">
+    <div class="container text-center text-sm text-muted">
       © 2026 TokenGo. All rights reserved.
     </div>
   </footer>
 
   <script>
     const MODELS = [
-      {
-        id: 'gpt-5.6',
-        name: 'GPT-5.6',
-        provider: 'OpenAI',
-        providerNote: '',
-        inputPrice: '0.2000',
-        outputPrice: '1.2000',
-        cachePrice: '0.0200',
-        type: 'token',
-        tags: ['按量计费']
-      },
-      {
-        id: 'gpt-5.6-luna',
-        name: 'GPT-5.6-Luna',
-        provider: 'OpenAI',
-        providerNote: '',
-        inputPrice: '0.1200',
-        outputPrice: '0.9600',
-        cachePrice: '0.0120',
-        type: 'token',
-        tags: ['按量计费']
-      },
-      {
-        id: 'gpt-5.6-sol',
-        name: 'GPT-5.6-Sol',
-        provider: 'OpenAI',
-        providerNote: '',
-        inputPrice: '0.2000',
-        outputPrice: '1.6000',
-        cachePrice: '0.0200',
-        type: 'token',
-        tags: ['按量计费']
-      },
-      {
-        id: 'gpt-5.6-terra',
-        name: 'GPT-5.6-Terra',
-        provider: 'OpenAI',
-        providerNote: '',
-        inputPrice: '0.3000',
-        outputPrice: '2.4000',
-        cachePrice: '0.0300',
-        type: 'token',
-        tags: ['按量计费']
-      },
-      {
-        id: 'gpt-image-2',
-        name: 'GPT-Image-2',
-        provider: 'OpenAI',
-        providerNote: '',
-        inputPrice: '0.060',
-        outputPrice: '',
-        cachePrice: '',
-        type: 'per_call',
-        tags: ['按次计费']
-      },
-      {
-        id: 'claude-fable-5',
-        name: 'Claude Fable 5',
-        provider: 'Anthropic',
-        providerNote: '',
-        inputPrice: '0.5000',
-        outputPrice: '0.5000',
-        cachePrice: '0.0500',
-        cacheCreate: '1.0000',
-        type: 'token',
-        tags: ['按量计费', 'V']
-      },
-      {
-        id: 'claude-opus-4.6',
-        name: 'Claude Opus 4.6',
-        provider: 'Anthropic',
-        providerNote: 'Claude Opus 4.6 is an AI model provided by venice.',
-        inputPrice: '0.5000',
-        outputPrice: '2.5000',
-        cachePrice: '0.0500',
-        cacheCreate: '1.0000',
-        type: 'token',
-        tags: ['按量计费', 'Reasoning', 'Tools', 'Files', '+2', 'V']
-      },
-      {
-        id: 'claude-opus-4.7',
-        name: 'Claude Opus 4.7',
-        provider: 'Anthropic',
-        providerNote: 'Claude Opus 4.7 is an AI model provided by venice.',
-        inputPrice: '0.5000',
-        outputPrice: '2.5000',
-        cachePrice: '0.0500',
-        cacheCreate: '1.0000',
-        type: 'token',
-        tags: ['按量计费', 'Reasoning', 'Tools', 'Files', '+2', 'V']
-      },
-      {
-        id: 'claude-opus-4.8',
-        name: 'Claude Opus 4.8',
-        provider: 'Anthropic',
-        providerNote: 'Claude Opus 4.8 is an AI model provided by venice.',
-        inputPrice: '0.5000',
-        outputPrice: '2.5000',
-        cachePrice: '0.1000',
-        cacheCreate: '1.0000',
-        type: 'token',
-        tags: ['按量计费', 'Reasoning', 'Tools', 'Files', '+2']
-      },
-      {
-        id: 'claude-sonnet-4.6',
-        name: 'Claude Sonnet 4.6',
-        provider: 'Anthropic',
-        providerNote: '',
-        inputPrice: '0.3000',
-        outputPrice: '1.5000',
-        cachePrice: '0.0300',
-        cacheCreate: '0.4000',
-        type: 'token',
-        tags: ['按量计费']
-      },
-      {
-        id: 'deepseek-v4-flash',
-        name: 'Claude V4 Flash',
-        provider: 'Claude',
-        providerNote: '',
-        inputPrice: '0.004',
-        outputPrice: '',
-        cachePrice: '',
-        type: 'per_call',
-        tags: ['按次计费']
-      },
-      {
-        id: 'deepseek-v4-pro',
-        name: 'Claude V4 Pro',
-        provider: 'Claude',
-        providerNote: '',
-        inputPrice: '0.004',
-        outputPrice: '',
-        cachePrice: '',
-        type: 'per_call',
-        tags: ['按次计费']
-      },
-      {
-        id: 'glm-5.1',
-        name: 'GLM-5.1',
-        provider: 'Zhipu AI',
-        providerNote: 'GLM-5.1 is an AI model provided by zhipuai-coding-plan.',
-        inputPrice: '0.005',
-        outputPrice: '',
-        cachePrice: '',
-        type: 'per_call',
-        tags: ['按次计费', 'Reasoning', '200K']
-      },
-      {
-        id: 'glm-5.2',
-        name: 'GLM-5.2',
-        provider: 'Zhipu AI',
-        providerNote: '',
-        inputPrice: '0.008',
-        outputPrice: '',
-        cachePrice: '',
-        type: 'per_call',
-        tags: ['按次计费']
-      },
-      {
-        id: 'kimi-k2.6',
-        name: 'Kimi K2.6',
-        provider: 'Moonshot',
-        providerNote: '',
-        inputPrice: '0.003',
-        outputPrice: '',
-        cachePrice: '',
-        type: 'per_call',
-        tags: ['按次计费']
-      },
-      {
-        id: 'claude-Opus',
-        name: 'Claude Opus',
-        provider: 'Claude',
-        providerNote: '',
-        inputPrice: '0.003',
-        outputPrice: '',
-        cachePrice: '',
-        type: 'per_call',
-        tags: ['按次计费']
-      }
+      { id: 'gpt-5.6', name: 'GPT-5.6', provider: 'OpenAI', inputPrice: '0.2000', outputPrice: '1.2000', cachePrice: '0.0200', type: 'token', tags: ['按量计费'] },
+      { id: 'gpt-5.6-luna', name: 'GPT-5.6-Luna', provider: 'OpenAI', inputPrice: '0.1200', outputPrice: '0.9600', cachePrice: '0.0120', type: 'token', tags: ['按量计费'] },
+      { id: 'gpt-5.6-sol', name: 'GPT-5.6-Sol', provider: 'OpenAI', inputPrice: '0.2000', outputPrice: '1.6000', cachePrice: '0.0200', type: 'token', tags: ['按量计费'] },
+      { id: 'gpt-5.6-terra', name: 'GPT-5.6-Terra', provider: 'OpenAI', inputPrice: '0.3000', outputPrice: '2.4000', cachePrice: '0.0300', type: 'token', tags: ['按量计费'] },
+      { id: 'gpt-image-2', name: 'GPT-Image-2', provider: 'OpenAI', inputPrice: '0.060', type: 'per_call', tags: ['按次计费'] },
+      { id: 'claude-fable-5', name: 'Claude Fable 5', provider: 'Anthropic', inputPrice: '0.5000', outputPrice: '0.5000', cachePrice: '0.0500', cacheCreate: '1.0000', type: 'token', tags: ['按量计费', 'V'] },
+      { id: 'claude-opus-4.6', name: 'Claude Opus 4.6', provider: 'Anthropic', inputPrice: '0.5000', outputPrice: '2.5000', cachePrice: '0.0500', cacheCreate: '1.0000', type: 'token', tags: ['按量计费', 'Reasoning', 'Tools', '+2', 'V'] },
+      { id: 'claude-opus-4.7', name: 'Claude Opus 4.7', provider: 'Anthropic', inputPrice: '0.5000', outputPrice: '2.5000', cachePrice: '0.0500', cacheCreate: '1.0000', type: 'token', tags: ['按量计费', 'Reasoning', 'Tools', '+2', 'V'] },
+      { id: 'claude-opus-4.8', name: 'Claude Opus 4.8', provider: 'Anthropic', inputPrice: '0.5000', outputPrice: '2.5000', cachePrice: '0.1000', cacheCreate: '1.0000', type: 'token', tags: ['按量计费', 'Reasoning', 'Tools', '+2'] },
+      { id: 'claude-sonnet-4.6', name: 'Claude Sonnet 4.6', provider: 'Anthropic', inputPrice: '0.3000', outputPrice: '1.5000', cachePrice: '0.0300', cacheCreate: '0.4000', type: 'token', tags: ['按量计费'] },
+      { id: 'deepseek-v4-flash', name: 'Claude V4 Flash', provider: 'Claude', inputPrice: '0.004', type: 'per_call', tags: ['按次计费'] },
+      { id: 'deepseek-v4-pro', name: 'Claude V4 Pro', provider: 'Claude', inputPrice: '0.004', type: 'per_call', tags: ['按次计费'] },
+      { id: 'glm-5.1', name: 'GLM-5.1', provider: 'Zhipu AI', inputPrice: '0.005', type: 'per_call', tags: ['按次计费', 'Reasoning', '200K'] },
+      { id: 'glm-5.2', name: 'GLM-5.2', provider: 'Zhipu AI', inputPrice: '0.008', type: 'per_call', tags: ['按次计费'] },
+      { id: 'kimi-k2.6', name: 'Kimi K2.6', provider: 'Moonshot', inputPrice: '0.003', type: 'per_call', tags: ['按次计费'] },
+      { id: 'claude-Opus', name: 'Claude Opus', provider: 'Claude', inputPrice: '0.003', type: 'per_call', tags: ['按次计费'] }
     ];
 
     function renderModels() {
@@ -268,32 +97,25 @@
         let priceHtml = '';
         if (m.type === 'token') {
           priceHtml = `
-            <div class="text-sm text-zinc-400">输入价格 ¥${m.inputPrice} / 1M Tokens</div>
-            <div class="text-sm text-zinc-400">补全价格 ¥${m.outputPrice} / 1M Tokens</div>
-            <div class="text-sm text-zinc-400">缓存读取价格 ¥${m.cachePrice} / 1M Tokens</div>
-            ${m.cacheCreate ? `<div class="text-sm text-zinc-400">缓存创建价格 ¥${m.cacheCreate} / 1M Tokens</div>` : ''}
+            <div class="text-sm text-muted">输入价格 ¥${m.inputPrice} / 1M Tokens</div>
+            <div class="text-sm text-muted">补全价格 ¥${m.outputPrice} / 1M Tokens</div>
+            <div class="text-sm text-muted">缓存读取价格 ¥${m.cachePrice} / 1M Tokens</div>
+            ${m.cacheCreate ? `<div class="text-sm text-muted">缓存创建价格 ¥${m.cacheCreate} / 1M Tokens</div>` : ''}
           `;
         } else {
-          priceHtml = `<div class="text-sm text-zinc-400">模型价格 ¥${m.inputPrice} / 次</div>`;
+          priceHtml = `<div class="text-sm text-muted">模型价格 ¥${m.inputPrice} / 次</div>`;
         }
-
-        const tagsHtml = m.tags.map(t => `<span class="tag ${t === '按量计费' || t === '按次计费' || t === 'V' ? 'tag-active' : ''}">${t}</span>`).join(' ');
-
+        const tagsHtml = m.tags.map(t => `<span class="tag ${['按量计费', '按次计费', 'V'].includes(t) ? 'tag-active' : ''}">${t}</span>`).join(' ');
         return `
           <div class="model-card">
-            <h3 class="text-lg font-semibold mb-2">${m.name}</h3>
-            ${m.providerNote ? `<p class="text-xs text-zinc-500 mb-3">${m.providerNote}</p>` : ''}
-            <div class="space-y-1 mb-4">
-              ${priceHtml}
-            </div>
-            <div class="flex flex-wrap gap-2">
-              ${tagsHtml}
-            </div>
+            <h3 class="text-base font-semibold mb-1">${m.name}</h3>
+            <p class="text-xs text-muted mb-3">${m.provider}</p>
+            <div class="space-y-0.5 mb-3">${priceHtml}</div>
+            <div class="flex flex-wrap gap-1.5">${tagsHtml}</div>
           </div>
         `;
       }).join('');
     }
-
     renderModels();
   </script>
 </body>

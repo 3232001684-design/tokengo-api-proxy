@@ -7,32 +7,33 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     * { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; box-sizing: border-box; }
-    html, body { margin: 0; padding: 0; background: #000; color: #fff; min-height: 100vh; }
+    html, body { margin: 0; padding: 0; background: #fff; color: #1a1a1a; min-height: 100vh; }
     a { color: inherit; text-decoration: none; }
-    a:hover { opacity: 0.8; }
-    .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+    .container { max-width: 900px; margin: 0 auto; padding: 0 20px; }
     .btn { display: inline-block; padding: 8px 20px; border-radius: 6px; font-size: 14px; cursor: pointer; border: none; transition: all 0.2s; }
     .btn-primary { background: #10b981; color: #fff; }
     .btn-primary:hover { background: #059669; }
-    .btn-outline { background: transparent; border: 1px solid #333; color: #fff; }
-    .btn-outline:hover { border-color: #555; }
-    .endpoint { background: #111; border: 1px solid #222; border-radius: 6px; padding: 12px 16px; font-family: monospace; font-size: 13px; transition: all 0.2s; }
-    .endpoint:hover { border-color: #333; }
+    .btn-outline { background: transparent; border: 1px solid #d1d5db; color: #1a1a1a; }
+    .btn-outline:hover { border-color: #10b981; color: #10b981; }
+    .endpoint { background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 6px; padding: 12px 16px; font-family: monospace; font-size: 13px; transition: all 0.2s; }
+    .endpoint:hover { border-color: #10b981; background: #f0fdf4; }
+    .text-muted { color: #6b7280; }
+    .text-emerald { color: #10b981; }
   </style>
 </head>
 <body>
   <!-- 导航栏 -->
-  <nav class="fixed top-0 left-0 right-0 z-50 bg-black/90 backdrop-blur-md border-b border-zinc-800">
+  <nav class="bg-white border-b border-gray-200 sticky top-0 z-50">
     <div class="container flex items-center justify-between h-14">
       <a href="/" class="flex items-center gap-2">
-        <div class="w-8 h-8 rounded-lg bg-emerald-500 flex items-center justify-center font-bold text-lg">T</div>
+        <div class="w-8 h-8 rounded-lg bg-emerald-500 flex items-center justify-center font-bold text-lg text-white">T</div>
         <span class="font-semibold">TokenGo</span>
       </a>
       <div class="flex items-center gap-6 text-sm">
-        <a href="/">首页</a>
-        <a href="/login">控制台</a>
-        <a href="/pricing">模型广场</a>
-        <a href="/help">文档</a>
+        <a href="/" class="text-emerald-500 font-medium">首页</a>
+        <a href="/login" class="text-muted hover:text-emerald-500">控制台</a>
+        <a href="/pricing" class="text-muted hover:text-emerald-500">模型广场</a>
+        <a href="/help" class="text-muted hover:text-emerald-500">文档</a>
       </div>
       <div class="flex items-center gap-3">
         <a href="/login" class="btn btn-outline">登录</a>
@@ -42,20 +43,20 @@
   </nav>
 
   <!-- 主内容 -->
-  <main class="pt-20">
+  <main class="bg-white">
     <div class="container py-16">
       <!-- 标题区域 -->
-      <div class="text-center mb-16">
-        <h1 class="text-4xl md:text-5xl font-bold mb-6">
+      <div class="text-center mb-12">
+        <h1 class="text-4xl md:text-5xl font-bold mb-4 text-gray-900">
           统一的大模型接口网关
         </h1>
-        <p class="text-xl text-zinc-400 mb-8">
+        <p class="text-xl text-muted">
           多模型统一接入，只需将基址替换为：
         </p>
       </div>
 
       <!-- API 端点 -->
-      <div class="max-w-3xl mx-auto mb-16">
+      <div class="max-w-3xl mx-auto mb-12">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
           <div class="endpoint">/v1/chat/completions</div>
           <div class="endpoint">/v1/responses</div>
@@ -74,7 +75,7 @@
 
       <!-- 底部信息 -->
       <div class="text-center">
-        <p class="text-zinc-500">
+        <p class="text-muted">
           支持众多的大模型供应商
         </p>
         <p class="text-3xl font-bold text-emerald-500 mt-2">16+</p>
@@ -83,8 +84,8 @@
   </main>
 
   <!-- 底部 -->
-  <footer class="border-t border-zinc-800 py-8">
-    <div class="container text-center text-sm text-zinc-500">
+  <footer class="border-t border-gray-200 py-8 bg-gray-50">
+    <div class="container text-center text-sm text-muted">
       © 2026 TokenGo. All rights reserved.
     </div>
   </footer>
