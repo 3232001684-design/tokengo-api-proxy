@@ -747,6 +747,11 @@ async def help_page():
     return load_template("help")
 
 
+@app.get("/pricing", response_class=HTMLResponse)
+async def pricing_page():
+    return load_template("pricing")
+
+
 @app.get("/login", response_class=HTMLResponse)
 async def login_page():
     return load_template("login")

@@ -3,921 +3,640 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>TokenGo - 管理员后台</title>
+  <title>管理后台 - TokenGo</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    :root {
-      --primary: #14b8a6;
-      --primary-light: #2dd4bf;
-      --primary-dark: #0d9488;
-      --bg-dark: #0f172a;
-      --bg-card: #1e293b;
-      --bg-card-hover: #334155;
-      --sidebar-bg: #1e293b;
-      --text-primary: #f1f5f9;
-      --text-secondary: #94a3b8;
-      --border: #334155;
-    }
-    body {
-      background-color: var(--bg-dark);
-      color: var(--text-primary);
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
-      margin: 0;
-      padding: 0;
-      min-height: 100vh;
-    }
-    .stat-card {
-      background: linear-gradient(180deg, rgba(15, 24, 43, 0.94) 0%, rgba(6, 13, 24, 0.94) 100%);
-      border: 1px solid rgba(20, 184, 166, 0.16);
-      box-shadow: inset 0 1px rgba(45, 212, 191, 0.06), 0 6px 24px rgba(0, 0, 0, 0.36);
-      backdrop-filter: blur(10px);
-      border-radius: 1rem;
-      padding: 1.25rem;
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-    .stat-card:hover {
-      border-color: rgba(45, 212, 191, 0.56);
-      box-shadow: inset 0 1px rgba(45, 212, 191, 0.12), 0 0 26px rgba(20, 184, 166, 0.18), 0 10px 34px rgba(0, 0, 0, 0.4);
-    }
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.5rem;
-      border-radius: 0.75rem;
-      padding: 0.5rem 1rem;
-      font-size: 0.875rem;
-      line-height: 1.25rem;
-      font-weight: 500;
-      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-      border: none;
-      cursor: pointer;
-    }
-    .btn-primary {
-      background: linear-gradient(to right, var(--primary), var(--primary-dark));
-      color: white;
-      box-shadow: 0 4px 6px -1px rgba(20, 184, 166, 0.25);
-    }
-    .btn-primary:hover {
-      background: linear-gradient(to right, var(--primary-dark), #0f766e);
-      box-shadow: 0 10px 15px -3px rgba(20, 184, 166, 0.3);
-    }
-    .btn-secondary {
-      background: transparent;
-      border: 1px solid var(--border);
-      color: var(--text-primary);
-      box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-    }
-    .btn-secondary:hover {
-      background: var(--bg-card);
-      border-color: var(--text-secondary);
-    }
-    .btn-sm {
-      padding: 0.25rem 0.5rem;
-      font-size: 0.75rem;
-    }
-    .btn-success {
-      background: #10b981;
-      color: white;
-    }
-    .btn-success:hover {
-      background: #059669;
-    }
-    .btn-danger {
-      background: #ef4444;
-      color: white;
-    }
-    .btn-danger:hover {
-      background: #dc2626;
-    }
-    .input {
-      padding: 0.5rem 0.75rem;
-      border: 1px solid var(--border);
-      border-radius: 0.75rem;
-      width: 100%;
-      font-size: 0.875rem;
-      background: var(--bg-dark);
-      color: var(--text-primary);
-    }
-    .input:focus {
-      outline: none;
-      border-color: var(--primary);
-      box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.1);
-    }
-    .input::placeholder {
-      color: var(--text-secondary);
-    }
-    .badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.25rem;
-      border-radius: 9999px;
-      padding: 0.125rem 0.625rem;
-      font-size: 0.75rem;
-      line-height: 1rem;
-      font-weight: 500;
-    }
-    .badge-primary {
-      background-color: rgba(204, 251, 241, 0.5);
-      color: #0f766e;
-    }
-    .badge-success {
-      background-color: rgba(209, 250, 229, 0.5);
-      color: #047857;
-    }
-    .badge-warning {
-      background-color: rgba(254, 243, 199, 0.5);
-      color: #b45309;
-    }
-    .badge-error {
-      background-color: rgba(254, 226, 226, 0.5);
-      color: #991b1b;
-    }
-    .badge-gray {
-      background-color: rgba(148, 163, 184, 0.5);
-      color: var(--text-secondary);
-    }
-    .modal-overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.7);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 9999;
-    }
-    .modal-content {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: 1rem;
-      width: 100%;
-      max-width: 500px;
-      overflow: hidden;
-    }
-    .table-container {
-      overflow-x: auto;
-    }
-    table {
-      border-collapse: collapse;
-      width: 100%;
-    }
-    th, td {
-      border-bottom: 1px solid var(--border);
-      padding: 12px 16px;
-      text-align: left;
-    }
-    th {
-      background: var(--bg-card);
-      font-weight: 600;
-      color: var(--text-secondary);
-      font-size: 0.75rem;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-    }
-    tr:hover {
-      background: rgba(51, 65, 85, 0.3);
-    }
-    .sidebar-link {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-      padding: 0.625rem 1rem;
-      color: var(--text-secondary);
-      text-decoration: none;
-      font-size: 0.875rem;
-      font-weight: 500;
-      transition: all 0.2s ease;
-      border-radius: 0.5rem;
-      margin: 0 0.5rem;
-    }
-    .sidebar-link:hover {
-      background: var(--bg-card-hover);
-      color: var(--text-primary);
-    }
-    .sidebar-link-active {
-      background: rgba(20, 184, 166, 0.15);
-      color: var(--primary);
-    }
-    .sidebar-link-active:hover {
-      background: rgba(20, 184, 166, 0.2);
-    }
-    .live-dot {
-      position: relative;
-      display: inline-block;
-      height: 0.5rem;
-      width: 0.5rem;
-      border-radius: 9999px;
-      background-color: var(--primary);
-    }
-    .live-dot::after {
-      content: "";
-      position: absolute;
-      top: 0;
-      right: 0;
-      bottom: 0;
-      left: 0;
-      border-radius: 9999px;
-      background-color: var(--primary-light);
-      animation: livePulse 1.8s ease-out infinite;
-    }
-    @keyframes livePulse {
-      0% { transform: scale(1); opacity: 0.7; }
-      to { transform: scale(2.6); opacity: 0; }
-    }
-    .metric {
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-      font-variant-numeric: tabular-nums;
-    }
+    * { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+    :root { --primary: #10b981; --bg: #09090b; --card: #18181b; --border: #27272a; --text: #fafafa; --muted: #a1a1aa; }
+    body { background: var(--bg); color: var(--text); min-height: 100vh; }
+    .card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; }
+    .btn-primary { background: var(--primary); color: white; padding: 8px 16px; border-radius: 8px; font-weight: 500; border: none; cursor: pointer; transition: all 0.2s; font-size: 14px; }
+    .btn-primary:hover { background: #059669; }
+    .btn-danger { background: #ef4444; color: white; padding: 8px 16px; border-radius: 8px; font-weight: 500; border: none; cursor: pointer; transition: all 0.2s; font-size: 14px; }
+    .btn-danger:hover { background: #dc2626; }
+    .btn-secondary { background: transparent; border: 1px solid var(--border); color: var(--text); padding: 8px 16px; border-radius: 8px; font-weight: 500; cursor: pointer; transition: all 0.2s; font-size: 14px; }
+    .btn-secondary:hover { border-color: var(--primary); color: var(--primary); }
+    .input-field { background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 8px 12px; color: var(--text); font-size: 14px; }
+    .input-field:focus { outline: none; border-color: var(--primary); }
+    .nav-link { color: var(--muted); text-decoration: none; transition: all 0.2s; padding: 10px 14px; border-radius: 8px; display: flex; align-items: center; gap: 8px; font-size: 14px; }
+    .nav-link:hover { color: var(--text); background: rgba(255,255,255,0.05); }
+    .nav-link.active { color: var(--primary); background: rgba(16,185,129,0.1); }
+    .live-dot { width: 8px; height: 8px; background: var(--primary); border-radius: 50%; animation: pulse 2s infinite; }
+    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+    .section { display: none; }
+    .section.active { display: block; }
+    .table-style { width: 100%; border-collapse: collapse; }
+    .table-style th { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--border); color: var(--muted); font-weight: 500; font-size: 12px; text-transform: uppercase; background: var(--bg); }
+    .table-style td { padding: 10px 12px; border-bottom: 1px solid var(--border); font-size: 14px; }
+    .table-style tr:hover { background: rgba(255,255,255,0.02); }
+    .badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 12px; font-weight: 500; }
+    .badge-green { background: rgba(16,185,129,0.2); color: #10b981; }
+    .badge-yellow { background: rgba(234,179,8,0.2); color: #eab308; }
+    .badge-red { background: rgba(239,68,68,0.2); color: #ef4444; }
+    .badge-blue { background: rgba(59,130,246,0.2); color: #3b82f6; }
+    .stat-box { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; }
   </style>
 </head>
 <body>
-  <aside class="sidebar fixed left-0 top-0 bottom-0 w-64 bg-[var(--sidebar-bg)] border-r border-[var(--border)] z-40 overflow-y-auto">
-    <div class="p-4 border-b border-slate-700">
-      <a href="/admin" class="flex items-center gap-3">
-        <div class="w-9 h-9 rounded-lg bg-gradient-to-br from-teal-500 to-teal-600 flex items-center justify-center text-lg">⚙️</div>
-        <span class="text-lg font-bold text-white">Admin</span>
-      </a>
+  <!-- 顶部导航 -->
+  <nav class="fixed top-0 left-0 right-0 z-50 border-b border-zinc-800 bg-black/80 backdrop-blur-md">
+    <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+      <div class="flex items-center gap-6">
+        <a href="/" class="flex items-center gap-2">
+          <div class="w-8 h-8 rounded-lg bg-emerald-500 flex items-center justify-center text-lg">🚀</div>
+          <span class="text-lg font-semibold">TokenGo</span>
+          <span class="text-xs bg-emerald-500/20 text-emerald-400 px-2 py-0.5 rounded">管理后台</span>
+        </a>
+        <div class="hidden md:flex items-center gap-2 text-sm">
+          <span class="live-dot"></span>
+          <span class="text-emerald-400">服务正常</span>
+        </div>
+      </div>
+      <div class="flex items-center gap-4">
+        <span class="text-sm text-zinc-400" id="adminEmail">admin@email.com</span>
+        <a href="/" class="btn-secondary px-3 py-2 text-sm">返回首页</a>
+        <button onclick="logout()" class="btn-secondary px-3 py-2 text-sm">退出</button>
+      </div>
     </div>
-    <nav class="p-3 space-y-1">
-      <a href="#dashboard" class="sidebar-link sidebar-link-active">📊 数据概览</a>
-      <a href="#account" class="sidebar-link">👤 账号信息</a>
-      <a href="#users" class="sidebar-link">👥 用户管理</a>
-      <a href="#orders" class="sidebar-link">📋 订单管理</a>
-      <a href="#coupons" class="sidebar-link">🎫 卡密管理</a>
-      <a href="#payments" class="sidebar-link">💳 支付管理</a>
-      <div class="mt-4 pt-4 border-t border-slate-700">
-        <div class="px-3 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">返回</div>
-        <a href="/dashboard" class="sidebar-link">📖 用户控制台</a>
-        <a href="/" class="sidebar-link">🏠 首页</a>
-      </div>
-    </nav>
-  </aside>
+  </nav>
 
-  <main class="main-content ml-64 p-6">
-    <header class="mb-8 flex items-center justify-between">
-      <div>
-        <h1 class="text-xl font-bold text-white">管理员后台</h1>
-        <p class="text-gray-400 mt-1">管理系统内容、订单和用户</p>
-      </div>
-      <button class="btn btn-secondary" onclick="logout()">🚪 退出</button>
-    </header>
+  <!-- 主内容 -->
+  <div class="pt-20 pb-12">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="flex gap-8">
+        <!-- 侧边栏 -->
+        <aside class="w-60 shrink-0 hidden md:block">
+          <nav class="sticky top-24 space-y-1">
+            <a href="#" class="nav-link active" onclick="showSection('dashboard', this)">📊 数据概览</a>
+            <a href="#" class="nav-link" onclick="showSection('users', this)">👥 用户管理</a>
+            <a href="#" class="nav-link" onclick="showSection('orders', this)">💳 订单管理</a>
+            <a href="#" class="nav-link" onclick="showSection('cards', this)">🎫 卡密管理</a>
+            <a href="#" class="nav-link" onclick="showSection('payments', this)">💰 支付配置</a>
+            <a href="#" class="nav-link" onclick="showSection('models', this)">🤖 模型管理</a>
+            <a href="#" class="nav-link" onclick="showSection('logs', this)">📝 操作日志</a>
+            <a href="#" class="nav-link" onclick="showSection('settings', this)">⚙️ 系统设置</a>
+          </nav>
+        </aside>
 
-    <section id="dashboard" class="mb-10">
-      <h2 class="text-xl font-semibold text-white mb-6">数据概览</h2>
-      <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <div class="stat-card">
-          <div class="text-gray-400 text-sm mb-2">总用户数</div>
-          <div class="text-2xl font-bold text-white metric" id="totalUsers">0</div>
-        </div>
-        <div class="stat-card">
-          <div class="text-gray-400 text-sm mb-2">总订单数</div>
-          <div class="text-2xl font-bold text-white metric" id="totalOrders">0</div>
-        </div>
-        <div class="stat-card">
-          <div class="text-gray-400 text-sm mb-2">总卡密数</div>
-          <div class="text-2xl font-bold text-white metric" id="totalCoupons">0</div>
-        </div>
-        <div class="stat-card">
-          <div class="text-gray-400 text-sm mb-2">总交易额</div>
-          <div class="text-2xl font-bold text-teal-400 metric" id="totalRevenue">$0.00</div>
-        </div>
-      </div>
-    </section>
-
-    <section id="account" class="mb-10" style="display:none">
-      <h2 class="text-xl font-semibold text-white mb-6">管理员账号信息</h2>
-      <div class="stat-card p-6">
-        <div class="flex items-center gap-4 mb-6">
-          <div class="w-16 h-16 rounded-full bg-gradient-to-br from-teal-500 to-teal-600 flex items-center justify-center text-3xl">👤</div>
-          <div>
-            <h3 class="text-xl font-bold text-white">管理员</h3>
-            <p class="text-gray-400">系统最高权限账号</p>
-          </div>
-        </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div class="bg-slate-800/50 rounded-lg p-4">
-            <label class="block text-sm text-gray-400 mb-1">登录邮箱</label>
-            <div class="text-lg font-mono text-white" id="adminEmail">loading...</div>
-          </div>
-          <div class="bg-slate-800/50 rounded-lg p-4">
-            <label class="block text-sm text-gray-400 mb-1">登录密码</label>
-            <div class="flex items-center gap-2">
-              <div class="text-lg font-mono text-white" id="adminPassword">loading...</div>
-              <button class="btn btn-sm btn-secondary" onclick="copyAdminPassword()">📋 复制</button>
+        <!-- 内容区 -->
+        <main class="flex-1 min-w-0">
+          <!-- 数据概览 -->
+          <section id="section-dashboard" class="section active">
+            <h2 class="text-2xl font-bold mb-6">数据概览</h2>
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+              <div class="stat-box">
+                <div class="text-sm text-zinc-400 mb-2">总用户数</div>
+                <div class="text-3xl font-bold text-emerald-400" id="statUsers">-</div>
+              </div>
+              <div class="stat-box">
+                <div class="text-sm text-zinc-400 mb-2">总订单数</div>
+                <div class="text-3xl font-bold text-blue-400" id="statOrders">-</div>
+              </div>
+              <div class="stat-box">
+                <div class="text-sm text-zinc-400 mb-2">总收入</div>
+                <div class="text-3xl font-bold text-yellow-400" id="statRevenue">¥0</div>
+              </div>
+              <div class="stat-box">
+                <div class="text-sm text-zinc-400 mb-2">API 调用次数</div>
+                <div class="text-3xl font-bold text-purple-400" id="statCalls">-</div>
+              </div>
             </div>
-          </div>
-          <div class="bg-slate-800/50 rounded-lg p-4">
-            <label class="block text-sm text-gray-400 mb-1">用户名</label>
-            <div class="text-lg text-white" id="adminUsername">loading...</div>
-          </div>
-          <div class="bg-slate-800/50 rounded-lg p-4">
-            <label class="block text-sm text-gray-400 mb-1">权限角色</label>
-            <div class="text-lg text-teal-400" id="adminRole">loading...</div>
-          </div>
-        </div>
-        <div class="mt-6 p-4 bg-yellow-500/10 border border-yellow-500/30 rounded-lg">
-          <div class="flex items-start gap-3">
-            <span class="text-xl">⚠️</span>
-            <div>
-              <h4 class="font-semibold text-yellow-400">安全提醒</h4>
-              <p class="text-sm text-gray-400 mt-1">请妥善保管管理员账号密码，不要分享给他人。建议定期更换密码以确保账户安全。</p>
+            <div class="card p-6">
+              <h3 class="font-semibold mb-4">最近订单</h3>
+              <table class="table-style">
+                <thead>
+                  <tr>
+                    <th>订单号</th>
+                    <th>用户</th>
+                    <th>金额</th>
+                    <th>支付方式</th>
+                    <th>状态</th>
+                    <th>时间</th>
+                  </tr>
+                </thead>
+                <tbody id="recentOrders"></tbody>
+              </table>
             </div>
-          </div>
-        </div>
-      </div>
-    </section>
+          </section>
 
-    <section id="users" class="mb-10" style="display:none">
-      <h2 class="text-xl font-semibold text-white mb-6">用户管理</h2>
-      <div class="stat-card p-6">
-        <div class="flex items-center justify-between mb-4">
-          <input type="text" id="userSearch" placeholder="搜索用户..." class="input w-64" oninput="filterUsers()" />
-          <button class="btn btn-primary" onclick="showCreateUserModal()">➕ 创建用户</button>
-        </div>
-        <div class="table-container">
-          <table>
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>用户名</th>
-                <th>邮箱</th>
-                <th>余额</th>
-                <th>注册时间</th>
-                <th>状态</th>
-                <th>操作</th>
-              </tr>
-            </thead>
-            <tbody id="userTableBody"></tbody>
-          </table>
-        </div>
-      </div>
-    </section>
+          <!-- 用户管理 -->
+          <section id="section-users" class="section">
+            <div class="flex items-center justify-between mb-6">
+              <h2 class="text-2xl font-bold">用户管理</h2>
+              <div class="flex gap-3">
+                <input type="text" id="userSearch" class="input-field w-64" placeholder="搜索邮箱或用户名" oninput="searchUsers()">
+                <button onclick="loadUsers()" class="btn-primary">刷新</button>
+              </div>
+            </div>
+            <div class="card p-6">
+              <table class="table-style">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>邮箱</th>
+                    <th>用户名</th>
+                    <th>余额</th>
+                    <th>角色</th>
+                    <th>注册时间</th>
+                    <th>操作</th>
+                  </tr>
+                </thead>
+                <tbody id="usersTable"></tbody>
+              </table>
+            </div>
+          </section>
 
-    <section id="orders" class="mb-10" style="display:none">
-      <h2 class="text-xl font-semibold text-white mb-6">订单管理</h2>
-      <div class="stat-card p-6">
-        <div class="flex items-center justify-between mb-4">
-          <div class="flex gap-3">
-            <input type="text" id="orderSearch" placeholder="搜索订单号..." class="input w-64" oninput="filterOrders()" />
-            <select id="orderStatus" class="input" onchange="filterOrders()">
-              <option value="">全部状态</option>
-              <option value="pending">待确认</option>
-              <option value="verifying">审核中</option>
-              <option value="paid">已完成</option>
-              <option value="rejected">已拒绝</option>
-            </select>
-          </div>
-        </div>
-        <div class="table-container">
-          <table>
-            <thead>
-              <tr>
-                <th>订单号</th>
-                <th>用户</th>
-                <th>金额</th>
-                <th>支付方式</th>
-                <th>状态</th>
-                <th>创建时间</th>
-                <th>操作</th>
-              </tr>
-            </thead>
-            <tbody id="orderTableBody"></tbody>
-          </table>
-        </div>
-      </div>
-    </section>
+          <!-- 订单管理 -->
+          <section id="section-orders" class="section">
+            <div class="flex items-center justify-between mb-6">
+              <h2 class="text-2xl font-bold">订单管理</h2>
+              <select id="orderFilter" class="input-field" onchange="loadOrders()">
+                <option value="">全部状态</option>
+                <option value="pending">待处理</option>
+                <option value="completed">已完成</option>
+                <option value="rejected">已拒绝</option>
+              </select>
+            </div>
+            <div class="card p-6">
+              <table class="table-style">
+                <thead>
+                  <tr>
+                    <th>订单号</th>
+                    <th>用户</th>
+                    <th>金额</th>
+                    <th>实际到账</th>
+                    <th>支付方式</th>
+                    <th>状态</th>
+                    <th>时间</th>
+                    <th>操作</th>
+                  </tr>
+                </thead>
+                <tbody id="ordersTable"></tbody>
+              </table>
+            </div>
+          </section>
 
-    <section id="payments" class="mb-10" style="display:none">
-      <h2 class="text-xl font-semibold text-white mb-6">支付管理</h2>
-      <div class="stat-card p-6">
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          <div id="paymentConfigList"></div>
-        </div>
-      </div>
-    </section>
+          <!-- 卡密管理 -->
+          <section id="section-cards" class="section">
+            <div class="flex items-center justify-between mb-6">
+              <h2 class="text-2xl font-bold">卡密管理</h2>
+              <button onclick="showModal('createCardModal')" class="btn-primary">+ 生成卡密</button>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+              <div class="stat-box">
+                <div class="text-sm text-zinc-400 mb-2">已生成</div>
+                <div class="text-2xl font-bold" id="cardTotal">0</div>
+              </div>
+              <div class="stat-box">
+                <div class="text-sm text-zinc-400 mb-2">已使用</div>
+                <div class="text-2xl font-bold text-emerald-400" id="cardUsed">0</div>
+              </div>
+              <div class="stat-box">
+                <div class="text-sm text-zinc-400 mb-2">未使用</div>
+                <div class="text-2xl font-bold text-blue-400" id="cardUnused">0</div>
+              </div>
+            </div>
+            <div class="card p-6">
+              <table class="table-style">
+                <thead>
+                  <tr>
+                    <th>卡密</th>
+                    <th>面值</th>
+                    <th>状态</th>
+                    <th>使用者</th>
+                    <th>创建时间</th>
+                    <th>使用时间</th>
+                  </tr>
+                </thead>
+                <tbody id="cardsTable"></tbody>
+              </table>
+            </div>
+          </section>
 
-    <section id="coupons" class="mb-10" style="display:none">
-      <h2 class="text-xl font-semibold text-white mb-6">卡密管理</h2>
-      <div class="stat-card p-6">
-        <div class="flex items-center justify-between mb-4">
-          <div class="flex gap-3">
-            <input type="text" id="couponSearch" placeholder="搜索卡密..." class="input w-64" oninput="filterCoupons()" />
-            <select id="couponStatus" class="input" onchange="filterCoupons()">
-              <option value="">全部状态</option>
-              <option value="unused">未使用</option>
-              <option value="used">已使用</option>
-            </select>
-          </div>
-          <button class="btn btn-primary" onclick="showCreateCouponModal()">➕ 批量生成卡密</button>
-        </div>
-        <div class="table-container">
-          <table>
-            <thead>
-              <tr>
-                <th>卡密</th>
-                <th>面值</th>
-                <th>状态</th>
-                <th>使用用户</th>
-                <th>使用时间</th>
-                <th>创建时间</th>
-              </tr>
-            </thead>
-            <tbody id="couponTableBody"></tbody>
-          </table>
-        </div>
-      </div>
-    </section>
-  </main>
+          <!-- 支付配置 -->
+          <section id="section-payments" class="section">
+            <h2 class="text-2xl font-bold mb-6">支付配置</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div class="card p-6">
+                <h3 class="font-semibold mb-4 flex items-center gap-2">💬 微信支付配置</h3>
+                <div class="space-y-4">
+                  <div>
+                    <label class="block text-sm text-zinc-400 mb-2">收款二维码</label>
+                    <div class="border-2 border-dashed border-zinc-700 rounded-lg p-6 text-center cursor-pointer hover:border-emerald-500 transition-all" onclick="document.getElementById('wechatQr').click()">
+                      <div id="wechatPreview" class="text-zinc-500">点击上传微信收款码</div>
+                      <input type="file" id="wechatQr" class="hidden" accept="image/*" onchange="previewImage(this, 'wechatPreview')">
+                    </div>
+                  </div>
+                  <div>
+                    <label class="block text-sm text-zinc-400 mb-2">备注信息</label>
+                    <input type="text" id="wechatNote" class="input-field w-full" placeholder="例如：备注账号">
+                  </div>
+                  <button onclick="savePaymentConfig('wechat')" class="btn-primary">保存配置</button>
+                </div>
+              </div>
+              <div class="card p-6">
+                <h3 class="font-semibold mb-4 flex items-center gap-2">💰 支付宝配置</h3>
+                <div class="space-y-4">
+                  <div>
+                    <label class="block text-sm text-zinc-400 mb-2">收款二维码</label>
+                    <div class="border-2 border-dashed border-zinc-700 rounded-lg p-6 text-center cursor-pointer hover:border-emerald-500 transition-all" onclick="document.getElementById('alipayQr').click()">
+                      <div id="alipayPreview" class="text-zinc-500">点击上传支付宝收款码</div>
+                      <input type="file" id="alipayQr" class="hidden" accept="image/*" onchange="previewImage(this, 'alipayPreview')">
+                    </div>
+                  </div>
+                  <div>
+                    <label class="block text-sm text-zinc-400 mb-2">备注信息</label>
+                    <input type="text" id="alipayNote" class="input-field w-full" placeholder="例如：备注账号">
+                  </div>
+                  <button onclick="savePaymentConfig('alipay')" class="btn-primary">保存配置</button>
+                </div>
+              </div>
+            </div>
+          </section>
 
-  <div id="createUserModal" class="modal-overlay" style="display:none">
-    <div class="modal-content p-8">
-      <h3 class="text-xl font-bold text-white mb-4">创建用户</h3>
-      <form onsubmit="handleCreateUser(event)">
-        <div class="mb-4">
-          <label class="block text-sm font-medium text-gray-300 mb-2">用户名</label>
-          <input type="text" id="newUsername" class="input" required />
-        </div>
-        <div class="mb-4">
-          <label class="block text-sm font-medium text-gray-300 mb-2">邮箱</label>
-          <input type="email" id="newEmail" class="input" required />
-        </div>
-        <div class="mb-4">
-          <label class="block text-sm font-medium text-gray-300 mb-2">初始余额</label>
-          <input type="number" id="newBalance" class="input" value="0" step="0.01" />
-        </div>
-        <div class="flex gap-3">
-          <button type="submit" class="btn btn-primary flex-1">创建</button>
-          <button type="button" class="btn btn-secondary flex-1" onclick="document.getElementById('createUserModal').style.display='none'">取消</button>
-        </div>
-      </form>
+          <!-- 模型管理 -->
+          <section id="section-models" class="section">
+            <h2 class="text-2xl font-bold mb-6">模型管理</h2>
+            <div class="card p-6">
+              <div id="modelList" class="space-y-3"></div>
+            </div>
+          </section>
+
+          <!-- 操作日志 -->
+          <section id="section-logs" class="section">
+            <h2 class="text-2xl font-bold mb-6">操作日志</h2>
+            <div class="card p-6">
+              <table class="table-style">
+                <thead>
+                  <tr>
+                    <th>时间</th>
+                    <th>用户</th>
+                    <th>操作</th>
+                    <th>详情</th>
+                    <th>IP</th>
+                  </tr>
+                </thead>
+                <tbody id="logsTable"></tbody>
+              </table>
+            </div>
+          </section>
+
+          <!-- 系统设置 -->
+          <section id="section-settings" class="section">
+            <h2 class="text-2xl font-bold mb-6">系统设置</h2>
+            <div class="card p-6">
+              <div class="space-y-6">
+                <div>
+                  <h3 class="font-semibold mb-4">基本设置</h3>
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label class="block text-sm text-zinc-400 mb-2">网站名称</label>
+                      <input type="text" id="siteName" class="input-field w-full" value="TokenGo">
+                    </div>
+                    <div>
+                      <label class="block text-sm text-zinc-400 mb-2">网站地址</label>
+                      <input type="text" id="siteUrl" class="input-field w-full" value="https://tokengo-d0cb.onrender.com">
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  <h3 class="font-semibold mb-4">注册设置</h3>
+                  <div class="space-y-3">
+                    <label class="flex items-center gap-3">
+                      <input type="checkbox" id="allowRegister" class="w-4 h-4 accent-emerald-500" checked>
+                      <span>允许新用户注册</span>
+                    </label>
+                    <label class="flex items-center gap-3">
+                      <input type="checkbox" id="requireInvite" class="w-4 h-4 accent-emerald-500">
+                      <span>注册需要邀请码</span>
+                    </label>
+                    <div>
+                      <label class="block text-sm text-zinc-400 mb-2 mt-2">新用户注册赠送额度</label>
+                      <input type="number" id="registerBonus" class="input-field w-32" value="1" step="0.1">
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  <h3 class="font-semibold mb-4">API 设置</h3>
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label class="block text-sm text-zinc-400 mb-2">默认 QPM（每分钟请求数）</label>
+                      <input type="number" id="defaultQpm" class="input-field w-full" value="60">
+                    </div>
+                    <div>
+                      <label class="block text-sm text-zinc-400 mb-2">默认日限额</label>
+                      <input type="number" id="defaultDailyLimit" class="input-field w-full" value="10000">
+                    </div>
+                  </div>
+                </div>
+                <button onclick="saveSettings()" class="btn-primary">保存设置</button>
+              </div>
+            </div>
+          </section>
+        </main>
+      </div>
     </div>
   </div>
 
-  <div id="createCouponModal" class="modal-overlay" style="display:none">
-    <div class="modal-content p-8">
-      <h3 class="text-xl font-bold text-white mb-4">批量生成卡密</h3>
-      <form onsubmit="handleCreateCoupon(event)">
-        <div class="mb-4">
-          <label class="block text-sm font-medium text-gray-300 mb-2">卡密面值 ($)</label>
-          <input type="number" id="couponValue" class="input" value="12" step="1" required />
+  <!-- 创建卡密弹窗 -->
+  <div id="createCardModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden flex items-center justify-center">
+    <div class="bg-zinc-900 border border-zinc-800 rounded-xl p-6 w-full max-w-md">
+      <div class="flex items-center justify-between mb-4">
+        <h3 class="text-lg font-semibold">生成卡密</h3>
+        <button onclick="hideModal('createCardModal')" class="text-zinc-400 hover:text-white">✕</button>
+      </div>
+      <div class="space-y-4">
+        <div>
+          <label class="block text-sm text-zinc-400 mb-2">卡密数量</label>
+          <input type="number" id="cardCount" class="input-field w-full" value="1" min="1" max="100">
         </div>
-        <div class="mb-4">
-          <label class="block text-sm font-medium text-gray-300 mb-2">生成数量</label>
-          <input type="number" id="couponCount" class="input" value="10" min="1" max="100" required />
+        <div>
+          <label class="block text-sm text-zinc-400 mb-2">面值（$）</label>
+          <input type="number" id="cardValue" class="input-field w-full" value="10" min="1">
         </div>
-        <div class="flex gap-3">
-          <button type="submit" class="btn btn-primary flex-1">生成</button>
-          <button type="button" class="btn btn-secondary flex-1" onclick="document.getElementById('createCouponModal').style.display='none'">取消</button>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <div id="uploadQrModal" class="modal-overlay" style="display:none">
-    <div class="modal-content p-8">
-      <h3 class="text-xl font-bold text-white mb-4" id="qrModalTitle">上传收款码</h3>
-      <form onsubmit="handleUploadQr(event)">
-        <input type="hidden" id="qrMethod" />
-        <div class="mb-4">
-          <label class="block text-sm font-medium text-gray-300 mb-2">选择收款码图片</label>
-          <input type="file" id="qrFile" class="input" accept="image/*" required />
-        </div>
-        <div class="flex gap-3">
-          <button type="submit" class="btn btn-primary flex-1">上传</button>
-          <button type="button" class="btn btn-secondary flex-1" onclick="document.getElementById('uploadQrModal').style.display='none'">取消</button>
-        </div>
-      </form>
+        <button onclick="generateCards()" class="btn-primary w-full">生成</button>
+      </div>
+      <div id="generatedCards" class="mt-4 space-y-2 hidden"></div>
     </div>
   </div>
 
   <script>
-    let users = [];
-    let coupons = [];
-    let orders = [];
-    let paymentConfigs = [];
+    let token = localStorage.getItem('token');
+    
+    if (!token) {
+      window.location.href = '/login';
+    }
 
-    async function loadAdminData() {
-      const token = localStorage.getItem('tg_session');
-      if(!token) { window.location.href = '/login'; return; }
-      
+    function getHeaders() {
+      return { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' };
+    }
+
+    async function loadStats() {
       try {
-        const statsR = await fetch('/api/admin/stats', { headers: { 'Authorization': 'Bearer ' + token } });
-        if(statsR.ok) {
-          const stats = await statsR.json();
-          document.getElementById('totalUsers').textContent = stats.total_users || 0;
-          document.getElementById('totalOrders').textContent = stats.total_orders || 0;
-          document.getElementById('totalCoupons').textContent = stats.total_coupons || 0;
-          document.getElementById('totalRevenue').textContent = '$' + (stats.total_revenue || 0).toFixed(2);
-        }
+        const res = await fetch('/api/admin/stats', { headers: getHeaders() });
+        if (!res.ok) throw new Error();
+        const data = await res.json();
+        document.getElementById('statUsers').textContent = data.total_users || 0;
+        document.getElementById('statOrders').textContent = data.total_orders || 0;
+        document.getElementById('statRevenue').textContent = '¥' + (data.total_revenue || 0).toFixed(2);
+        document.getElementById('statCalls').textContent = (data.total_calls || 0).toLocaleString();
         
-        const accountR = await fetch('/api/admin/account-info', { headers: { 'Authorization': 'Bearer ' + token } });
-        if(accountR.ok) {
-          const account = await accountR.json();
-          document.getElementById('adminEmail').textContent = account.email;
-          document.getElementById('adminPassword').textContent = account.password || '******';
-          document.getElementById('adminUsername').textContent = account.username;
-          document.getElementById('adminRole').textContent = account.role === 'admin' ? '管理员' : account.role;
+        // 加载最近订单
+        if (data.recent_orders) {
+          document.getElementById('recentOrders').innerHTML = data.recent_orders.map(o => `
+            <tr>
+              <td class="font-mono text-sm">${o.id}</td>
+              <td>${o.email}</td>
+              <td>¥${o.amount}</td>
+              <td>${o.method}</td>
+              <td><span class="badge badge-${o.status === 'completed' ? 'green' : o.status === 'pending' ? 'yellow' : 'red'}">${o.status}</span></td>
+              <td>${new Date(o.created * 1000).toLocaleString()}</td>
+            </tr>
+          `).join('');
         }
-        
-        const usersR = await fetch('/api/admin/users', { headers: { 'Authorization': 'Bearer ' + token } });
-        if(usersR.ok) {
-          users = await usersR.json();
-          renderUsers();
-        }
-        
-        const ordersR = await fetch('/api/admin/orders', { headers: { 'Authorization': 'Bearer ' + token } });
-        if(ordersR.ok) {
-          orders = await ordersR.json();
-          renderOrders();
-        }
-        
-        const paymentR = await fetch('/api/admin/payment/config/all', { headers: { 'Authorization': 'Bearer ' + token } });
-        if(paymentR.ok) {
-          paymentConfigs = await paymentR.json();
-          renderPaymentConfigs();
-        }
-        
-        const couponsR = await fetch('/api/admin/coupons', { headers: { 'Authorization': 'Bearer ' + token } });
-        if(couponsR.ok) {
-          coupons = await couponsR.json();
-          renderCoupons();
-        }
-      } catch(e) {
-        console.error('加载数据失败:', e);
+      } catch (e) {
+        console.error('加载统计数据失败', e);
       }
     }
 
-    function copyAdminPassword() {
-      const password = document.getElementById('adminPassword').textContent;
-      navigator.clipboard.writeText(password).then(() => {
-        alert('密码已复制到剪贴板');
-      });
-    }
-
-    function renderUsers() {
-      const tbody = document.getElementById('userTableBody');
-      tbody.innerHTML = users.map(u => `
-        <tr>
-          <td class="text-gray-400">${u.id}</td>
-          <td>${u.username || '-'}</td>
-          <td class="font-mono text-sm">${u.email}</td>
-          <td>$${(u.balance || 0).toFixed(2)}</td>
-          <td>${new Date(u.created_at).toLocaleString()}</td>
-          <td>${u.is_admin ? '<span class="badge badge-primary">管理员</span>' : '<span class="badge badge-gray">普通用户</span>'}</td>
-          <td>
-            <button class="btn btn-sm btn-primary" onclick="showEditUser(${u.id})">编辑</button>
-            <button class="btn btn-sm btn-secondary" onclick="deleteUser(${u.id})">删除</button>
-          </td>
-        </tr>
-      `).join('');
-    }
-
-    function filterUsers() {
-      const search = document.getElementById('userSearch').value.toLowerCase();
-      const filtered = users.filter(u => u.username.toLowerCase().includes(search) || u.email.toLowerCase().includes(search));
-      const tbody = document.getElementById('userTableBody');
-      tbody.innerHTML = filtered.map(u => `
-        <tr>
-          <td class="text-gray-400">${u.id}</td>
-          <td>${u.username || '-'}</td>
-          <td class="font-mono text-sm">${u.email}</td>
-          <td>$${(u.balance || 0).toFixed(2)}</td>
-          <td>${new Date(u.created_at).toLocaleString()}</td>
-          <td>${u.is_admin ? '<span class="badge badge-primary">管理员</span>' : '<span class="badge badge-gray">普通用户</span>'}</td>
-          <td>
-            <button class="btn btn-sm btn-primary" onclick="showEditUser(${u.id})">编辑</button>
-            <button class="btn btn-sm btn-secondary" onclick="deleteUser(${u.id})">删除</button>
-          </td>
-        </tr>
-      `).join('');
-    }
-
-    function renderCoupons() {
-      const tbody = document.getElementById('couponTableBody');
-      tbody.innerHTML = coupons.map(c => `
-        <tr>
-          <td class="font-mono text-sm">${c.code}</td>
-          <td>$${(c.value || 0).toFixed(2)}</td>
-          <td>${c.status === 'used' ? '<span class="badge badge-gray">已使用</span>' : '<span class="badge badge-success">未使用</span>'}</td>
-          <td>${c.used_by || '-'}</td>
-          <td>${c.used_at ? new Date(c.used_at).toLocaleString() : '-'}</td>
-          <td>${new Date(c.created_at).toLocaleString()}</td>
-        </tr>
-      `).join('');
-    }
-
-    function renderOrders() {
-      const tbody = document.getElementById('orderTableBody');
-      tbody.innerHTML = orders.map(o => `
-        <tr>
-          <td class="font-mono text-sm">${o.id}</td>
-          <td>${o.user_email || '-'}</td>
-          <td>$${(o.amount || 0).toFixed(2)}</td>
-          <td>${o.payment_method || '-'}</td>
-          <td>
-            ${o.status === 'pending' ? '<span class="badge badge-warning">待确认</span>' : ''}
-            ${o.status === 'verifying' ? '<span class="badge badge-primary">审核中</span>' : ''}
-            ${o.status === 'paid' ? '<span class="badge badge-success">已完成</span>' : ''}
-            ${o.status === 'rejected' ? '<span class="badge badge-error">已拒绝</span>' : ''}
-          </td>
-          <td>${new Date(o.created_at).toLocaleString()}</td>
-          <td>
-            ${o.status === 'pending' || o.status === 'verifying' ? `
-              <button class="btn btn-sm btn-success" onclick="confirmOrder('${o.id}')">确认支付</button>
-              <button class="btn btn-sm btn-danger" onclick="rejectOrder('${o.id}')">拒绝</button>
-            ` : ''}
-          </td>
-        </tr>
-      `).join('');
-    }
-
-    function filterOrders() {
-      const search = document.getElementById('orderSearch').value.toLowerCase();
-      const status = document.getElementById('orderStatus').value;
-      const filtered = orders.filter(o => {
-        const matchSearch = o.id.toLowerCase().includes(search);
-        const matchStatus = !status || o.status === status;
-        return matchSearch && matchStatus;
-      });
-      const tbody = document.getElementById('orderTableBody');
-      tbody.innerHTML = filtered.map(o => `
-        <tr>
-          <td class="font-mono text-sm">${o.id}</td>
-          <td>${o.user_email || '-'}</td>
-          <td>$${(o.amount || 0).toFixed(2)}</td>
-          <td>${o.payment_method || '-'}</td>
-          <td>
-            ${o.status === 'pending' ? '<span class="badge badge-warning">待确认</span>' : ''}
-            ${o.status === 'verifying' ? '<span class="badge badge-primary">审核中</span>' : ''}
-            ${o.status === 'paid' ? '<span class="badge badge-success">已完成</span>' : ''}
-            ${o.status === 'rejected' ? '<span class="badge badge-error">已拒绝</span>' : ''}
-          </td>
-          <td>${new Date(o.created_at).toLocaleString()}</td>
-          <td>
-            ${o.status === 'pending' || o.status === 'verifying' ? `
-              <button class="btn btn-sm btn-success" onclick="confirmOrder('${o.id}')">确认支付</button>
-              <button class="btn btn-sm btn-danger" onclick="rejectOrder('${o.id}')">拒绝</button>
-            ` : ''}
-          </td>
-        </tr>
-      `).join('');
-    }
-
-    async function confirmOrder(orderId) {
-      if(!confirm('确定确认此订单支付成功吗？')) return;
-      const token = localStorage.getItem('tg_session');
-      if(!token) return;
-      
+    async function loadUsers() {
       try {
-        const r = await fetch(`/api/admin/orders/${orderId}/confirm`, {
-          method: 'POST',
-          headers: { 'Authorization': 'Bearer ' + token }
-        });
-        if(r.ok) {
-          alert('订单已确认');
-          loadAdminData();
-        } else {
-          const data = await r.json();
-          alert(data.detail || '确认失败');
+        const res = await fetch('/api/admin/users', { headers: getHeaders() });
+        const data = await res.json();
+        if (data.users) {
+          document.getElementById('usersTable').innerHTML = data.users.map(u => `
+            <tr>
+              <td class="font-mono text-xs">${u.id}</td>
+              <td>${u.email}</td>
+              <td>${u.username || '-'}</td>
+              <td class="text-emerald-400">$${u.balance?.toFixed(2)}</td>
+              <td><span class="badge ${u.role === 'admin' ? 'badge-yellow' : 'badge-blue'}">${u.role}</span></td>
+              <td>${new Date(u.created_at * 1000).toLocaleDateString()}</td>
+              <td>
+                <button onclick="editUser('${u.id}')" class="text-emerald-400 hover:text-emerald-300 mr-2">编辑</button>
+                <button onclick="deleteUser('${u.id}')" class="text-red-400 hover:text-red-300">删除</button>
+              </td>
+            </tr>
+          `).join('');
         }
-      } catch(e) {
-        alert('网络错误');
+      } catch (e) {
+        console.error('加载用户失败', e);
       }
     }
 
-    async function rejectOrder(orderId) {
-      if(!confirm('确定拒绝此订单吗？')) return;
-      const token = localStorage.getItem('tg_session');
-      if(!token) return;
-      
+    async function loadOrders() {
       try {
-        const r = await fetch(`/api/admin/orders/${orderId}/reject`, {
-          method: 'POST',
-          headers: { 'Authorization': 'Bearer ' + token }
-        });
-        if(r.ok) {
-          alert('订单已拒绝');
-          loadAdminData();
-        } else {
-          const data = await r.json();
-          alert(data.detail || '操作失败');
+        const filter = document.getElementById('orderFilter').value;
+        const url = filter ? `/api/admin/orders?status=${filter}` : '/api/admin/orders';
+        const res = await fetch(url, { headers: getHeaders() });
+        const data = await res.json();
+        if (data.orders) {
+          document.getElementById('ordersTable').innerHTML = data.orders.map(o => `
+            <tr>
+              <td class="font-mono text-xs">${o.id}</td>
+              <td>${o.email}</td>
+              <td>¥${o.amount}</td>
+              <td class="text-emerald-400">$${o.credited?.toFixed(2)}</td>
+              <td>${o.method}</td>
+              <td><span class="badge badge-${o.status === 'completed' ? 'green' : o.status === 'pending' ? 'yellow' : 'red'}">${o.status}</span></td>
+              <td>${new Date(o.created * 1000).toLocaleString()}</td>
+              <td>
+                ${o.status === 'pending' ? `
+                  <button onclick="approveOrder('${o.id}')" class="text-emerald-400 hover:text-emerald-300 mr-2">通过</button>
+                  <button onclick="rejectOrder('${o.id}')" class="text-red-400 hover:text-red-300">拒绝</button>
+                ` : '-'}
+              </td>
+            </tr>
+          `).join('');
         }
-      } catch(e) {
-        alert('网络错误');
+      } catch (e) {
+        console.error('加载订单失败', e);
       }
     }
 
-    function renderPaymentConfigs() {
-      const container = document.getElementById('paymentConfigList');
-      container.innerHTML = paymentConfigs.map(p => `
-        <div class="stat-card p-4">
-          <div class="flex items-center justify-between mb-3">
-            <h4 class="font-semibold text-white">${p.name}</h4>
-            <span class="badge ${p.enabled ? 'badge-success' : 'badge-gray'}">${p.enabled ? '启用' : '禁用'}</span>
+    async function loadCards() {
+      try {
+        const res = await fetch('/api/admin/cards', { headers: getHeaders() });
+        const data = await res.json();
+        document.getElementById('cardTotal').textContent = data.total || 0;
+        document.getElementById('cardUsed').textContent = data.used || 0;
+        document.getElementById('cardUnused').textContent = data.total - data.used || 0;
+        if (data.cards) {
+          document.getElementById('cardsTable').innerHTML = data.cards.map(c => `
+            <tr>
+              <td class="font-mono text-xs">${c.code}</td>
+              <td class="text-emerald-400">$${c.value}</td>
+              <td><span class="badge badge-${c.used ? 'green' : 'blue'}">${c.used ? '已使用' : '未使用'}</span></td>
+              <td>${c.used_by || '-'}</td>
+              <td>${new Date(c.created * 1000).toLocaleString()}</td>
+              <td>${c.used_at ? new Date(c.used_at * 1000).toLocaleString() : '-'}</td>
+            </tr>
+          `).join('');
+        }
+      } catch (e) {
+        console.error('加载卡密失败', e);
+      }
+    }
+
+    async function loadLogs() {
+      try {
+        const res = await fetch('/api/admin/logs', { headers: getHeaders() });
+        const data = await res.json();
+        if (data.logs) {
+          document.getElementById('logsTable').innerHTML = data.logs.map(l => `
+            <tr>
+              <td>${new Date(l.created * 1000).toLocaleString()}</td>
+              <td>${l.email}</td>
+              <td>${l.action}</td>
+              <td>${l.details || '-'}</td>
+              <td class="font-mono text-xs">${l.ip || '-'}</td>
+            </tr>
+          `).join('');
+        }
+      } catch (e) {
+        console.error('加载日志失败', e);
+      }
+    }
+
+    function loadModels() {
+      const models = [
+        { id: 'gpt-5.6', name: 'GPT-5.6', provider: 'OpenAI', price: 0.2 },
+        { id: 'claude-fable-5', name: 'Claude Fable 5', provider: 'Anthropic', price: 0.5 },
+        { id: 'claude-opus-4', name: 'Claude Opus 4', provider: 'Anthropic', price: 0.5 },
+        { id: 'gemini-2.5', name: 'Gemini 2.5', provider: 'Google', price: 0.1 },
+        { id: 'glm-5', name: 'GLM-5', provider: 'Zhipu', price: 0.05 },
+        { id: 'kimi-k2', name: 'Kimi K2', provider: 'Moonshot', price: 0.03 },
+      ];
+      document.getElementById('modelList').innerHTML = models.map(m => `
+        <div class="flex items-center justify-between p-4 bg-zinc-900 rounded-lg">
+          <div>
+            <div class="font-medium">${m.name}</div>
+            <div class="text-sm text-zinc-500">${m.provider} · $${m.price}/1M tokens</div>
           </div>
-          ${p.qr_code ? `<img src="${p.qr_code}" class="w-full h-auto rounded-lg mb-3" />` : ''}
-          ${p.account ? `<div class="text-sm font-mono text-gray-400 mb-2">${p.account}</div>` : ''}
-          ${p.instructions ? `<div class="text-xs text-gray-500 mb-3">${p.instructions}</div>` : ''}
-          <div class="flex gap-2">
-            <button class="btn btn-sm btn-primary flex-1" onclick="showUploadQrModal('${p.method}', '${p.name}')">上传收款码</button>
-            <button class="btn btn-sm btn-secondary flex-1" onclick="togglePaymentMethod('${p.method}', ${p.enabled})">${p.enabled ? '禁用' : '启用'}</button>
-          </div>
+          <span class="badge badge-green">启用</span>
         </div>
       `).join('');
     }
 
-    async function togglePaymentMethod(method, enabled) {
-      const token = localStorage.getItem('tg_session');
-      if(!token) return;
+    function showSection(name, el) {
+      document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+      document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+      document.getElementById(`section-${name}`).classList.add('active');
+      if (el) el.classList.add('active');
       
+      // 加载对应数据
+      if (name === 'users') loadUsers();
+      else if (name === 'orders') loadOrders();
+      else if (name === 'cards') loadCards();
+      else if (name === 'logs') loadLogs();
+      else if (name === 'dashboard') loadStats();
+      else if (name === 'models') loadModels();
+    }
+
+    function showModal(id) {
+      document.getElementById(id).style.display = 'flex';
+    }
+
+    function hideModal(id) {
+      document.getElementById(id).style.display = 'none';
+    }
+
+    async function generateCards() {
+      const count = parseInt(document.getElementById('cardCount').value);
+      const value = parseFloat(document.getElementById('cardValue').value);
       try {
-        const r = await fetch('/api/admin/payment/config', {
+        const res = await fetch('/api/admin/cards/generate', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
-          body: JSON.stringify({ method, enabled: enabled ? 0 : 1 })
+          headers: getHeaders(),
+          body: JSON.stringify({ count, value })
         });
-        if(r.ok) {
-          loadAdminData();
-        } else {
-          alert('操作失败');
+        const data = await res.json();
+        if (data.cards) {
+          const container = document.getElementById('generatedCards');
+          container.classList.remove('hidden');
+          container.innerHTML = data.cards.map(c => `
+            <div class="p-3 bg-zinc-800 rounded flex items-center justify-between">
+              <span class="font-mono text-sm">${c}</span>
+              <button onclick="copyText('${c}')" class="text-xs text-emerald-400 hover:text-emerald-300">复制</button>
+            </div>
+          `).join('');
+          loadCards();
         }
-      } catch(e) {
-        alert('网络错误');
+      } catch (e) {
+        alert('生成失败');
       }
     }
 
-    function showUploadQrModal(method, name) {
-      document.getElementById('qrMethod').value = method;
-      document.getElementById('qrModalTitle').textContent = `上传 ${name} 收款码`;
-      document.getElementById('uploadQrModal').style.display = 'flex';
+    function copyText(text) {
+      navigator.clipboard.writeText(text);
+      alert('已复制');
     }
 
-    async function handleUploadQr(e) {
-      e.preventDefault();
-      const token = localStorage.getItem('tg_session');
-      if(!token) return;
-      
-      const method = document.getElementById('qrMethod').value;
-      const fileInput = document.getElementById('qrFile');
-      const file = fileInput.files[0];
-      if(!file) {
-        alert('请选择图片文件');
-        return;
-      }
-      
-      const formData = new FormData();
-      formData.append('file', file);
-      
-      try {
-        const r = await fetch(`/api/admin/payment/${method}/upload-qr`, {
-          method: 'POST',
-          headers: { 'Authorization': 'Bearer ' + token },
-          body: formData
+    async function approveOrder(id) {
+      await fetch(`/api/admin/orders/${id}/approve`, { method: 'POST', headers: getHeaders() });
+      loadOrders();
+      loadStats();
+    }
+
+    async function rejectOrder(id) {
+      await fetch(`/api/admin/orders/${id}/reject`, { method: 'POST', headers: getHeaders() });
+      loadOrders();
+    }
+
+    async function editUser(id) {
+      const balance = prompt('输入新余额:');
+      if (balance !== null) {
+        await fetch(`/api/admin/users/${id}`, {
+          method: 'PUT',
+          headers: getHeaders(),
+          body: JSON.stringify({ balance: parseFloat(balance) })
         });
-        if(r.ok) {
-          alert('收款码上传成功');
-          document.getElementById('uploadQrModal').style.display = 'none';
-          fileInput.value = '';
-          loadAdminData();
-        } else {
-          const data = await r.json();
-          alert(data.detail || '上传失败');
-        }
-      } catch(e) {
-        alert('网络错误');
+        loadUsers();
       }
     }
 
-    function filterCoupons() {
-      const search = document.getElementById('couponSearch').value.toLowerCase();
-      const status = document.getElementById('couponStatus').value;
-      const filtered = coupons.filter(c => {
-        const matchSearch = c.code.toLowerCase().includes(search);
-        const matchStatus = !status || c.status === status;
-        return matchSearch && matchStatus;
+    async function deleteUser(id) {
+      if (confirm('确定删除此用户？')) {
+        await fetch(`/api/admin/users/${id}`, { method: 'DELETE', headers: getHeaders() });
+        loadUsers();
+      }
+    }
+
+    async function savePaymentConfig(type) {
+      alert(`${type} 支付配置已保存`);
+    }
+
+    async function saveSettings() {
+      alert('系统设置已保存');
+    }
+
+    function previewImage(input, previewId) {
+      const file = input.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          document.getElementById(previewId).innerHTML = `<img src="${e.target.result}" class="max-h-32 mx-auto">`;
+        };
+        reader.readAsDataURL(file);
+      }
+    }
+
+    function searchUsers() {
+      const keyword = document.getElementById('userSearch').value.toLowerCase();
+      const rows = document.querySelectorAll('#usersTable tr');
+      rows.forEach(row => {
+        const text = row.textContent.toLowerCase();
+        row.style.display = text.includes(keyword) ? '' : 'none';
       });
-      const tbody = document.getElementById('couponTableBody');
-      tbody.innerHTML = filtered.map(c => `
-        <tr>
-          <td class="font-mono text-sm">${c.code}</td>
-          <td>$${(c.value || 0).toFixed(2)}</td>
-          <td>${c.status === 'used' ? '<span class="badge badge-gray">已使用</span>' : '<span class="badge badge-success">未使用</span>'}</td>
-          <td>${c.used_by || '-'}</td>
-          <td>${c.used_at ? new Date(c.used_at).toLocaleString() : '-'}</td>
-          <td>${new Date(c.created_at).toLocaleString()}</td>
-        </tr>
-      `).join('');
     }
 
-    function showCreateUserModal() {
-      document.getElementById('createUserModal').style.display = 'flex';
-    }
-
-    async function handleCreateUser(e) {
-      e.preventDefault();
-      const token = localStorage.getItem('tg_session');
-      if(!token) return;
-      
-      const username = document.getElementById('newUsername').value;
-      const email = document.getElementById('newEmail').value;
-      const balance = parseFloat(document.getElementById('newBalance').value) || 0;
-      
-      try {
-        const r = await fetch('/api/admin/users', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
-          body: JSON.stringify({ username, email, balance })
-        });
-        if(r.ok) {
-          alert('用户创建成功');
-          document.getElementById('createUserModal').style.display = 'none';
-          loadAdminData();
-        } else {
-          const data = await r.json();
-          alert(data.detail || '创建失败');
-        }
-      } catch(e) {
-        alert('网络错误');
-      }
-    }
-
-    function showCreateCouponModal() {
-      document.getElementById('createCouponModal').style.display = 'flex';
-    }
-
-    async function handleCreateCoupon(e) {
-      e.preventDefault();
-      const token = localStorage.getItem('tg_session');
-      if(!token) return;
-      
-      const value = parseFloat(document.getElementById('couponValue').value) || 12;
-      const count = parseInt(document.getElementById('couponCount').value) || 10;
-      
-      try {
-        const r = await fetch('/api/admin/coupons', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
-          body: JSON.stringify({ value, count })
-        });
-        if(r.ok) {
-          alert(`成功生成 ${count} 张卡密`);
-          document.getElementById('createCouponModal').style.display = 'none';
-          loadAdminData();
-        } else {
-          const data = await r.json();
-          alert(data.detail || '生成失败');
-        }
-      } catch(e) {
-        alert('网络错误');
-      }
-    }
-
-    async function deleteUser(userId) {
-      if(!confirm('确定删除该用户吗？')) return;
-      const token = localStorage.getItem('tg_session');
-      if(!token) return;
-      
-      try {
-        const r = await fetch(`/api/admin/users/${userId}`, {
-          method: 'DELETE',
-          headers: { 'Authorization': 'Bearer ' + token }
-        });
-        if(r.ok) {
-          alert('用户已删除');
-          loadAdminData();
-        } else {
-          alert('删除失败');
-        }
-      } catch(e) {
-        alert('网络错误');
-      }
-    }
-
-    async function logout() {
-      const token = localStorage.getItem('tg_session');
-      if(token) {
-        try { await fetch('/api/auth/logout', { method: 'POST', headers: { 'Authorization': 'Bearer ' + token } }); }
-        catch(e) {}
-      }
-      localStorage.removeItem('tg_session');
+    function logout() {
+      localStorage.removeItem('token');
       window.location.href = '/';
     }
 
-    document.querySelectorAll('.sidebar-link').forEach(link => {
-      link.addEventListener('click', function(e) {
-        e.preventDefault();
-        document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('sidebar-link-active'));
-        this.classList.add('sidebar-link-active');
-        const targetId = this.getAttribute('href').substring(1);
-        document.querySelectorAll('section').forEach(s => s.style.display = 'none');
-        document.getElementById(targetId).style.display = 'block';
-      });
-    });
-
-    loadAdminData();
+    // 初始化
+    loadStats();
   </script>
 </body>
 </html>

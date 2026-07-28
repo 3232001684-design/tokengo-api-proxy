@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>模型广场 - TokenGo</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    * { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+    :root { --primary: #10b981; --bg: #09090b; --card: #18181b; --border: #27272a; --text: #fafafa; --muted: #a1a1aa; }
+    body { background: var(--bg); color: var(--text); min-height: 100vh; }
+    .card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; }
+    .btn-primary { background: var(--primary); color: white; padding: 10px 20px; border-radius: 8px; font-weight: 500; border: none; cursor: pointer; transition: all 0.2s; }
+    .btn-primary:hover { background: #059669; }
+    .nav-link { color: var(--muted); text-decoration: none; transition: color 0.2s; font-size: 14px; }
+    .nav-link:hover { color: var(--text); }
+    .nav-link.active { color: var(--primary); }
+    .badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 12px; font-weight: 500; background: rgba(16,185,129,0.2); color: #10b981; }
+  </style>
+</head>
+<body>
+  <!-- 导航栏 -->
+  <nav class="fixed top-0 left-0 right-0 z-50 border-b border-zinc-800 bg-black/80 backdrop-blur-md">
+    <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+      <a href="/" class="flex items-center gap-2">
+        <div class="w-8 h-8 rounded-lg bg-emerald-500 flex items-center justify-center text-lg">🚀</div>
+        <span class="text-lg font-semibold">TokenGo</span>
+      </a>
+      <div class="flex items-center gap-6">
+        <a href="/" class="nav-link">首页</a>
+        <a href="/pricing" class="nav-link active">模型广场</a>
+        <a href="/help" class="nav-link">文档</a>
+        <a href="/dashboard" class="btn-primary px-4 py-2 text-sm">控制台</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- 主内容 -->
+  <div class="pt-24 pb-16">
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="text-center mb-12">
+        <h1 class="text-3xl font-bold mb-4">模型广场</h1>
+        <p class="text-zinc-400">共 18 个模型</p>
+      </div>
+
+      <!-- 模型列表 -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <!-- GPT-5.6 -->
+        <div class="card p-6">
+          <div class="flex items-center gap-3 mb-4">
+            <div class="w-12 h-12 rounded-xl bg-emerald-500/20 flex items-center justify-center">
+              <span class="text-xl">🤖</span>
+            </div>
+            <div>
+              <h3 class="font-semibold">GPT-5.6</h3>
+              <span class="text-xs text-zinc-500">OpenAI</span>
+            </div>
+          </div>
+          <div class="space-y-2 text-sm mb-4">
+            <div class="flex justify-between">
+              <span class="text-zinc-400">输入价格</span>
+              <span>$0.005 / 1K tokens</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-zinc-400">输出价格</span>
+              <span>$0.015 / 1K tokens</span>
+            </div>
+          </div>
+          <span class="badge">按量计费</span>
+        </div>
+
+        <!-- Claude Fable 5 -->
+        <div class="card p-6">
+          <div class="flex items-center gap-3 mb-4">
+            <div class="w-12 h-12 rounded-xl bg-amber-500/20 flex items-center justify-center">
+              <span class="text-xl">🧠</span>
+            </div>
+            <div>
+              <h3 class="font-semibold">Claude Fable 5</h3>
+              <span class="text-xs text-zinc-500">Anthropic</span>
+            </div>
+          </div>
+          <div class="space-y-2 text-sm mb-4">
+            <div class="flex justify-between">
+              <span class="text-zinc-400">输入价格</span>
+              <span>$0.005 / 1K tokens</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-zinc-400">输出价格</span>
+              <span>$0.015 / 1K tokens</span>
+            </div>
+          </div>
+          <span class="badge">按量计费</span>
+        </div>
+
+        <!-- Claude Opus 4 -->
+        <div class="card p-6">
+          <div class="flex items-center gap-3 mb-4">
+            <div class="w-12 h-12 rounded-xl bg-amber-500/20 flex items-center justify-center">
+              <span class="text-xl">🧠</span>
+            </div>
+            <div>
+              <h3 class="font-semibold">Claude Opus 4</h3>
+              <span class="text-xs text-zinc-500">Anthropic</span>
+            </div>
+          </div>
+          <div class="space-y-2 text-sm mb-4">
+            <div class="flex justify-between">
+              <span class="text-zinc-400">输入价格</span>
+              <span>$0.005 / 1K tokens</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-zinc-400">输出价格</span>
+              <span>$0.015 / 1K tokens</span>
+            </div>
+          </div>
+          <span class="badge">按量计费</span>
+        </div>
+
+        <!-- Gemini 2.5 -->
+        <div class="card p-6">
+          <div class="flex items-center gap-3 mb-4">
+            <div class="w-12 h-12 rounded-xl bg-blue-500/20 flex items-center justify-center">
+              <span class="text-xl">💎</span>
+            </div>
+            <div>
+              <h3 class="font-semibold">Gemini 2.5</h3>
+              <span class="text-xs text-zinc-500">Google</span>
+            </div>
+          </div>
+          <div class="space-y-2 text-sm mb-4">
+            <div class="flex justify-between">
+              <span class="text-zinc-400">输入价格</span>
+              <span>$0.001 / 1K tokens</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-zinc-400">输出价格</span>
+              <span>$0.004 / 1K tokens</span>
+            </div>
+          </div>
+          <span class="badge">按量计费</span>
+        </div>
+
+        <!-- GLM-5 -->
+        <div class="card p-6">
+          <div class="flex items-center gap-3 mb-4">
+            <div class="w-12 h-12 rounded-xl bg-teal-500/20 flex items-center justify-center">
+              <span class="text-xl">📊</span>
+            </div>
+            <div>
+              <h3 class="font-semibold">GLM-5</h3>
+              <span class="text-xs text-zinc-500">Zhipu AI</span>
+            </div>
+          </div>
+          <div class="space-y-2 text-sm mb-4">
+            <div class="flex justify-between">
+              <span class="text-zinc-400">输入价格</span>
+              <span>$0.0005 / 1K tokens</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-zinc-400">输出价格</span>
+              <span>$0.0005 / 1K tokens</span>
+            </div>
+          </div>
+          <span class="badge">按量计费</span>
+        </div>
+
+        <!-- Kimi K2 -->
+        <div class="card p-6">
+          <div class="flex items-center gap-3 mb-4">
+            <div class="w-12 h-12 rounded-xl bg-purple-500/20 flex items-center justify-center">
+              <span class="text-xl">🌙</span>
+            </div>
+            <div>
+              <h3 class="font-semibold">Kimi K2</h3>
+              <span class="text-xs text-zinc-500">Moonshot</span>
+            </div>
+          </div>
+          <div class="space-y-2 text-sm mb-4">
+            <div class="flex justify-between">
+              <span class="text-zinc-400">输入价格</span>
+              <span>$0.0003 / 1K tokens</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-zinc-400">输出价格</span>
+              <span>$0.0003 / 1K tokens</span>
+            </div>
+          </div>
+          <span class="badge">按量计费</span>
+        </div>
+
+        <!-- GPT-Image-2 -->
+        <div class="card p-6">
+          <div class="flex items-center gap-3 mb-4">
+            <div class="w-12 h-12 rounded-xl bg-pink-500/20 flex items-center justify-center">
+              <span class="text-xl">🎨</span>
+            </div>
+            <div>
+              <h3 class="font-semibold">GPT-Image-2</h3>
+              <span class="text-xs text-zinc-500">OpenAI</span>
+            </div>
+          </div>
+          <div class="space-y-2 text-sm mb-4">
+            <div class="flex justify-between">
+              <span class="text-zinc-400">图片生成</span>
+              <span>$0.030 / 张</span>
+            </div>
+          </div>
+          <span class="badge">按次计费</span>
+        </div>
+
+        <!-- DeepSeek V4 -->
+        <div class="card p-6">
+          <div class="flex items-center gap-3 mb-4">
+            <div class="w-12 h-12 rounded-xl bg-sky-500/20 flex items-center justify-center">
+              <span class="text-xl">🔍</span>
+            </div>
+            <div>
+              <h3 class="font-semibold">DeepSeek V4</h3>
+              <span class="text-xs text-zinc-500">DeepSeek</span>
+            </div>
+          </div>
+          <div class="space-y-2 text-sm mb-4">
+            <div class="flex justify-between">
+              <span class="text-zinc-400">输入价格</span>
+              <span>$0.0004 / 1K tokens</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-zinc-400">输出价格</span>
+              <span>$0.0004 / 1K tokens</span>
+            </div>
+          </div>
+          <span class="badge">按量计费</span>
+        </div>
+
+        <!-- Llama 4 -->
+        <div class="card p-6">
+          <div class="flex items-center gap-3 mb-4">
+            <div class="w-12 h-12 rounded-xl bg-indigo-500/20 flex items-center justify-center">
+              <span class="text-xl">🦙</span>
+            </div>
+            <div>
+              <h3 class="font-semibold">Llama 4</h3>
+              <span class="text-xs text-zinc-500">Meta</span>
+            </div>
+          </div>
+          <div class="space-y-2 text-sm mb-4">
+            <div class="flex justify-between">
+              <span class="text-zinc-400">输入价格</span>
+              <span>$0.002 / 1K tokens</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-zinc-400">输出价格</span>
+              <span>$0.008 / 1K tokens</span>
+            </div>
+          </div>
+          <span class="badge">按量计费</span>
+        </div>
+      </div>
+
+      <!-- 底部提示 -->
+      <div class="mt-12 text-center">
+        <p class="text-zinc-500 text-sm">所有模型均按量计费，无隐藏费用。立即 <a href="/login" class="text-emerald-400 hover:text-emerald-300">注册</a> 开始使用。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 底部 -->
+  <footer class="py-8 border-t border-zinc-800">
+    <div class="max-w-6xl mx-auto px-6 text-center text-sm text-zinc-500">
+      © 2026 TokenGo. All rights reserved.
+    </div>
+  </footer>
+</body>
+</html>

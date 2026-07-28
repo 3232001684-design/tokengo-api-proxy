@@ -3,399 +3,216 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>TokenGo - 使用帮助</title>
+  <title>帮助文档 - TokenGo</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    :root {
-      --primary: #14b8a6;
-      --primary-light: #2dd4bf;
-      --primary-dark: #0d9488;
-      --bg-dark: #0f172a;
-      --bg-card: #1e293b;
-      --text-primary: #f1f5f9;
-      --text-secondary: #94a3b8;
-      --border: #334155;
-    }
-    body {
-      background-color: var(--bg-dark);
-      color: var(--text-primary);
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
-      line-height: 1.6;
-    }
-    .nav-link {
-      color: var(--text-secondary);
-      text-decoration: none;
-      transition: color 0.2s;
-    }
-    .nav-link:hover {
-      color: var(--primary);
-    }
-    .section-title {
-      font-size: 1.5rem;
-      font-weight: 700;
-      color: white;
-      margin-bottom: 1rem;
-    }
-    .code-block {
-      background: #0d1117;
-      border: 1px solid var(--border);
-      border-radius: 0.75rem;
-      padding: 1rem;
-      font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
-      font-size: 0.875rem;
-      overflow-x: auto;
-      white-space: pre;
-      color: #c9d1d9;
-    }
-    .tab-btn {
-      padding: 0.75rem 1.5rem;
-      color: var(--text-secondary);
-      border-bottom: 2px solid transparent;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-    .tab-btn:hover {
-      color: var(--text-primary);
-    }
-    .tab-btn.active {
-      color: var(--primary);
-      border-bottom-color: var(--primary);
-    }
-    .feature-item {
-      display: flex;
-      gap: 1rem;
-      padding: 1rem;
-      background: var(--bg-card);
-      border: 1px solid rgba(20, 184, 166, 0.16);
-      border-radius: 0.75rem;
-      margin-bottom: 1rem;
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-    .feature-item:hover {
-      border-color: rgba(45, 212, 191, 0.56);
-    }
-    .stat-card {
-      background: linear-gradient(180deg, rgba(15, 24, 43, 0.94) 0%, rgba(6, 13, 24, 0.94) 100%);
-      border: 1px solid rgba(20, 184, 166, 0.16);
-      box-shadow: inset 0 1px rgba(45, 212, 191, 0.06), 0 6px 24px rgba(0, 0, 0, 0.36);
-      backdrop-filter: blur(10px);
-      border-radius: 1rem;
-      padding: 1.25rem;
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-    .stat-card:hover {
-      border-color: rgba(45, 212, 191, 0.56);
-      box-shadow: inset 0 1px rgba(45, 212, 191, 0.12), 0 0 26px rgba(20, 184, 166, 0.18), 0 10px 34px rgba(0, 0, 0, 0.4);
-    }
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.5rem;
-      border-radius: 0.75rem;
-      padding: 0.5rem 1rem;
-      font-size: 0.875rem;
-      line-height: 1.25rem;
-      font-weight: 500;
-      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-      border: none;
-      cursor: pointer;
-    }
-    .btn-primary {
-      background: linear-gradient(to right, var(--primary), var(--primary-dark));
-      color: white;
-      box-shadow: 0 4px 6px -1px rgba(20, 184, 166, 0.25);
-    }
-    .btn-primary:hover {
-      background: linear-gradient(to right, var(--primary-dark), #0f766e);
-      box-shadow: 0 10px 15px -3px rgba(20, 184, 166, 0.3);
-    }
-    .live-dot {
-      position: relative;
-      display: inline-block;
-      height: 0.5rem;
-      width: 0.5rem;
-      border-radius: 9999px;
-      background-color: var(--primary);
-    }
-    .live-dot::after {
-      content: "";
-      position: absolute;
-      top: 0;
-      right: 0;
-      bottom: 0;
-      left: 0;
-      border-radius: 9999px;
-      background-color: var(--primary-light);
-      animation: livePulse 1.8s ease-out infinite;
-    }
-    @keyframes livePulse {
-      0% { transform: scale(1); opacity: 0.7; }
-      to { transform: scale(2.6); opacity: 0; }
-    }
+    * { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+    :root { --primary: #10b981; --bg: #09090b; --card: #18181b; --border: #27272a; --text: #fafafa; --muted: #a1a1aa; }
+    body { background: var(--bg); color: var(--text); min-height: 100vh; }
+    .card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; }
+    .btn-primary { background: var(--primary); color: white; padding: 10px 20px; border-radius: 8px; font-weight: 500; border: none; cursor: pointer; transition: all 0.2s; }
+    .btn-primary:hover { background: #059669; }
+    .input-field { background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 10px 14px; color: var(--text); width: 100%; font-size: 14px; }
+    .input-field:focus { outline: none; border-color: var(--primary); }
+    .nav-link { color: var(--muted); text-decoration: none; transition: color 0.2s; font-size: 14px; }
+    .nav-link:hover { color: var(--text); }
+    .nav-link.active { color: var(--primary); }
+    .code-block { background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 16px; font-family: monospace; font-size: 13px; overflow-x: auto; white-space: pre-wrap; }
+    .badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 12px; font-weight: 500; background: rgba(16,185,129,0.2); color: #10b981; }
+    details { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 16px; }
+    details summary { cursor: pointer; font-weight: 500; }
+    details[open] { border-color: var(--primary); }
   </style>
 </head>
 <body>
-  <nav class="fixed top-0 left-0 right-0 z-50 bg-[var(--bg-dark)] border-b border-[var(--border)]">
-    <div class="container mx-auto px-6 h-16 flex items-center justify-between">
-      <a href="/" class="flex items-center gap-3">
-        <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-teal-500 to-teal-600 flex items-center justify-center text-xl">🚀</div>
-        <span class="text-xl font-bold text-white">TokenGo</span>
+  <!-- 导航栏 -->
+  <nav class="fixed top-0 left-0 right-0 z-50 border-b border-zinc-800 bg-black/80 backdrop-blur-md">
+    <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+      <a href="/" class="flex items-center gap-2">
+        <div class="w-8 h-8 rounded-lg bg-emerald-500 flex items-center justify-center text-lg">🚀</div>
+        <span class="text-lg font-semibold">TokenGo</span>
       </a>
       <div class="flex items-center gap-6">
         <a href="/" class="nav-link">首页</a>
-        <a href="/dashboard" class="nav-link">控制台</a>
-        <a href="/help" class="nav-link" style="color: var(--primary)">使用帮助</a>
-        <a href="/login" class="btn btn-primary">登录</a>
+        <a href="/pricing" class="nav-link">模型广场</a>
+        <a href="/help" class="nav-link active">文档</a>
+        <a href="/dashboard" class="btn-primary px-4 py-2 text-sm">控制台</a>
       </div>
     </div>
   </nav>
 
-  <main class="pt-24 pb-16">
-    <div class="container mx-auto px-6 max-w-4xl">
-      <h1 class="text-3xl font-bold text-white mb-8">使用帮助</h1>
+  <!-- 主内容 -->
+  <div class="pt-24 pb-16">
+    <div class="max-w-6xl mx-auto px-6">
+      <h1 class="text-3xl font-bold mb-8">帮助文档</h1>
 
-      <div class="space-y-8">
-        <section>
-          <h2 class="section-title">🚀 快速开始</h2>
-          <div class="feature-item">
-            <div class="text-3xl">1️⃣</div>
-            <div>
-              <h3 class="text-lg font-semibold text-white mb-2">注册账号</h3>
-              <p class="text-[var(--text-secondary)]">点击右上角「免费注册」，填写邮箱和密码即可。注册即送 $1 试用额度。</p>
-            </div>
+      <!-- 快速开始 -->
+      <section class="card p-6 mb-6">
+        <h2 class="text-xl font-semibold mb-4">🚀 快速开始</h2>
+        <div class="space-y-4">
+          <div class="p-4 bg-zinc-900 rounded-lg">
+            <h3 class="font-medium mb-2">1. 注册账号</h3>
+            <p class="text-zinc-400 text-sm">访问 <a href="/login" class="text-emerald-400">登录页面</a> 注册账号，新用户注册即送 $1 试用额度。</p>
           </div>
-          <div class="feature-item">
-            <div class="text-3xl">2️⃣</div>
-            <div>
-              <h3 class="text-lg font-semibold text-white mb-2">获取 API Key</h3>
-              <p class="text-[var(--text-secondary)]">登录后在控制台获取您的个人 API Key，一个密钥即可调用所有支持的模型。</p>
-            </div>
+          <div class="p-4 bg-zinc-900 rounded-lg">
+            <h3 class="font-medium mb-2">2. 创建 API 密钥</h3>
+            <p class="text-zinc-400 text-sm">登录后在控制台的「API 密钥」页面点击「新建密钥」按钮。</p>
           </div>
-          <div class="feature-item">
-            <div class="text-3xl">3️⃣</div>
-            <div>
-              <h3 class="text-lg font-semibold text-white mb-2">开始使用</h3>
-              <p class="text-[var(--text-secondary)]">使用您的 API Key 调用 AI 服务，按实际使用量计费。</p>
-            </div>
+          <div class="p-4 bg-zinc-900 rounded-lg">
+            <h3 class="font-medium mb-2">3. 开始调用</h3>
+            <p class="text-zinc-400 text-sm">使用您的 API 密钥调用我们的接口即可。</p>
           </div>
-        </section>
+        </div>
+      </section>
 
-        <section>
-          <h2 class="section-title">📡 API 调用示例</h2>
-          
-          <div class="border-b border-[var(--border)] mb-4">
-            <div class="flex gap-4">
-              <button class="tab-btn active" onclick="showTab('curl')">cURL</button>
-              <button class="tab-btn" onclick="showTab('python')">Python</button>
-              <button class="tab-btn" onclick="showTab('js')">JavaScript</button>
-            </div>
-          </div>
+      <!-- API 调用示例 -->
+      <section class="card p-6 mb-6" id="api">
+        <h2 class="text-xl font-semibold mb-4">📡 API 调用示例</h2>
+        
+        <h3 class="font-medium mb-3">Base URL</h3>
+        <div class="code-block mb-6">https://tokengo-d0cb.onrender.com</div>
 
-          <div id="tab-curl" class="tab-content">
-            <h3 class="text-lg font-medium text-white mb-3">ChatGPT 风格调用</h3>
-            <div class="code-block">curl https://tokengo-d0cb.onrender.com/v1/chat/completions \
-  -H "Content-Type: application/json" \
+        <h3 class="font-medium mb-3">cURL</h3>
+        <div class="code-block mb-6">curl https://tokengo-d0cb.onrender.com/v1/chat/completions \
   -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
   -d '{
-    "model": "gpt-5.4-mini",
-    "messages": [{"role": "user", "content": "Hello"}]
+    "model": "gpt-5.6",
+    "messages": [{"role": "user", "content": "Hello!"}]
   }'</div>
-          </div>
 
-          <div id="tab-python" class="tab-content" style="display:none">
-            <h3 class="text-lg font-medium text-white mb-3">Python 示例</h3>
-            <div class="code-block">from openai import OpenAI
+        <h3 class="font-medium mb-3">Python</h3>
+        <div class="code-block mb-6">from openai import OpenAI
 
 client = OpenAI(
     api_key="YOUR_API_KEY",
-    base_url="https://tokengo-d0cb.onrender.com/v1"
+    base_url="https://tokengo-d0cb.onrender.com"
 )
 
 response = client.chat.completions.create(
-    model="gpt-5.4-mini",
-    messages=[{"role": "user", "content": "Hello"}]
+    model="gpt-5.6",
+    messages=[{"role": "user", "content": "Hello!"}]
 )
-
 print(response.choices[0].message.content)</div>
-          </div>
 
-          <div id="tab-js" class="tab-content" style="display:none">
-            <h3 class="text-lg font-medium text-white mb-3">JavaScript 示例</h3>
-            <div class="code-block">import OpenAI from 'openai';
+        <h3 class="font-medium mb-3">JavaScript</h3>
+        <div class="code-block">import OpenAI from 'openai';
 
 const client = new OpenAI({
-  apiKey: 'YOUR_API_KEY',
-  baseURL: 'https://tokengo-d0cb.onrender.com/v1'
+    apiKey: 'YOUR_API_KEY',
+    baseURL: 'https://tokengo-d0cb.onrender.com'
 });
 
 const response = await client.chat.completions.create({
-  model: 'gpt-5.4-mini',
-  messages: [{role: 'user', content: 'Hello'}]
+    model: 'gpt-5.6',
+    messages: [{role: 'user', content: 'Hello!'}]
 });
-
 console.log(response.choices[0].message.content);</div>
-          </div>
-        </section>
+      </section>
 
-        <section>
-          <h2 class="section-title">🤖 支持的模型</h2>
-          <div class="stat-card">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div class="p-4 bg-slate-800/50 rounded-lg">
-                <h4 class="font-semibold text-teal-400 mb-2">GPT 系列</h4>
-                <ul class="text-sm text-[var(--text-secondary)] space-y-1">
-                  <li>• gpt-5.6</li>
-                  <li>• gpt-5.5</li>
-                  <li>• gpt-5.4</li>
-                  <li>• gpt-5.4-mini</li>
-                  <li>• gpt-5.3-codex-spark</li>
-                </ul>
-              </div>
-              <div class="p-4 bg-slate-800/50 rounded-lg">
-                <h4 class="font-semibold text-teal-400 mb-2">Claude 系列</h4>
-                <ul class="text-sm text-[var(--text-secondary)] space-y-1">
-                  <li>• claude-fable-5</li>
-                  <li>• claude-sonnet-4.6</li>
-                  <li>• claude-haiku-4.5</li>
-                </ul>
-              </div>
-              <div class="p-4 bg-slate-800/50 rounded-lg">
-                <h4 class="font-semibold text-teal-400 mb-2">图像生成</h4>
-                <ul class="text-sm text-[var(--text-secondary)] space-y-1">
-                  <li>• gpt-image-1</li>
-                  <li>• gpt-image-1.5</li>
-                  <li>• gpt-image-2</li>
-                </ul>
-              </div>
-              <div class="p-4 bg-slate-800/50 rounded-lg">
-                <h4 class="font-semibold text-teal-400 mb-2">其他模型</h4>
-                <ul class="text-sm text-[var(--text-secondary)] space-y-1">
-                  <li>• codex-auto-review</li>
-                  <li>• Gemini 系列</li>
-                  <li>• GLM 系列</li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </section>
+      <!-- 支持的模型 -->
+      <section class="card p-6 mb-6" id="pricing">
+        <h2 class="text-xl font-semibold mb-4">🤖 支持的模型</h2>
+        <div class="overflow-x-auto">
+          <table class="w-full text-left">
+            <thead>
+              <tr class="border-b border-zinc-800">
+                <th class="py-3 px-4 text-zinc-400 font-medium">模型</th>
+                <th class="py-3 px-4 text-zinc-400 font-medium">提供商</th>
+                <th class="py-3 px-4 text-zinc-400 font-medium">输入价格</th>
+                <th class="py-3 px-4 text-zinc-400 font-medium">输出价格</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="border-b border-zinc-800">
+                <td class="py-3 px-4"><span class="badge">GPT-5.6</span></td>
+                <td class="py-3 px-4 text-zinc-400">OpenAI</td>
+                <td class="py-3 px-4">$0.2 / 1M tokens</td>
+                <td class="py-3 px-4">$1.2 / 1M tokens</td>
+              </tr>
+              <tr class="border-b border-zinc-800">
+                <td class="py-3 px-4"><span class="badge">Claude Fable 5</span></td>
+                <td class="py-3 px-4 text-zinc-400">Anthropic</td>
+                <td class="py-3 px-4">$0.5 / 1M tokens</td>
+                <td class="py-3 px-4">$0.5 / 1M tokens</td>
+              </tr>
+              <tr class="border-b border-zinc-800">
+                <td class="py-3 px-4"><span class="badge">Claude Opus 4</span></td>
+                <td class="py-3 px-4 text-zinc-400">Anthropic</td>
+                <td class="py-3 px-4">$0.5 / 1M tokens</td>
+                <td class="py-3 px-4">$2.5 / 1M tokens</td>
+              </tr>
+              <tr class="border-b border-zinc-800">
+                <td class="py-3 px-4"><span class="badge">Gemini 2.5</span></td>
+                <td class="py-3 px-4 text-zinc-400">Google</td>
+                <td class="py-3 px-4">$0.1 / 1M tokens</td>
+                <td class="py-3 px-4">$0.4 / 1M tokens</td>
+              </tr>
+              <tr class="border-b border-zinc-800">
+                <td class="py-3 px-4"><span class="badge">GLM-5</span></td>
+                <td class="py-3 px-4 text-zinc-400">Zhipu AI</td>
+                <td class="py-3 px-4">$0.05 / 1M tokens</td>
+                <td class="py-3 px-4">$0.05 / 1M tokens</td>
+              </tr>
+              <tr>
+                <td class="py-3 px-4"><span class="badge">Kimi K2</span></td>
+                <td class="py-3 px-4 text-zinc-400">Moonshot</td>
+                <td class="py-3 px-4">$0.03 / 1M tokens</td>
+                <td class="py-3 px-4">$0.03 / 1M tokens</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
 
-        <section>
-          <h2 class="section-title">💰 价格说明</h2>
-          <div class="stat-card">
-            <p class="text-[var(--text-secondary)] mb-4">TokenGo 按实际使用的 Token 数量计费，价格比官方更低：</p>
-            <div class="overflow-x-auto">
-              <table class="w-full text-sm">
-                <thead>
-                  <tr class="border-b border-[var(--border)]">
-                    <th class="text-left py-3 px-4 text-[var(--text-secondary)]">模型</th>
-                    <th class="text-right py-3 px-4 text-[var(--text-secondary)]">输入 ($/1K tokens)</th>
-                    <th class="text-right py-3 px-4 text-[var(--text-secondary)]">输出 ($/1K tokens)</th>
-                  </tr>
-                </thead>
-                <tbody class="text-white">
-                  <tr class="border-b border-[var(--border)]">
-                    <td class="py-3 px-4">GPT-5.4-mini</td>
-                    <td class="py-3 px-4 text-right text-teal-400">$0.001</td>
-                    <td class="py-3 px-4 text-right text-teal-400">$0.004</td>
-                  </tr>
-                  <tr class="border-b border-[var(--border)]">
-                    <td class="py-3 px-4">Claude-haiku-4.5</td>
-                    <td class="py-3 px-4 text-right text-teal-400">$0.001</td>
-                    <td class="py-3 px-4 text-right text-teal-400">$0.004</td>
-                  </tr>
-                  <tr class="border-b border-[var(--border)]">
-                    <td class="py-3 px-4">Claude-fable-5</td>
-                    <td class="py-3 px-4 text-right text-teal-400">$0.005</td>
-                    <td class="py-3 px-4 text-right text-teal-400">$0.015</td>
-                  </tr>
-                  <tr>
-                    <td class="py-3 px-4">GPT-Image-2</td>
-                    <td class="py-3 px-4 text-right text-teal-400">$0.030</td>
-                    <td class="py-3 px-4 text-right text-teal-400">$0.030</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </section>
+      <!-- 常见问题 -->
+      <section class="card p-6 mb-6">
+        <h2 class="text-xl font-semibold mb-4">❓ 常见问题</h2>
+        <div class="space-y-4">
+          <details>
+            <summary>API Key 是什么？如何获取？</summary>
+            <p class="mt-3 text-zinc-400 text-sm">API Key 是您调用 AI 服务的凭证。登录后在控制台的「API 密钥」页面可以创建和管理您的密钥。</p>
+          </details>
+          <details>
+            <summary>如何充值？</summary>
+            <p class="mt-3 text-zinc-400 text-sm">登录后在控制台的「充值中心」页面选择金额和支付方式（微信/支付宝），完成支付后联系我们确认即可到账。</p>
+          </details>
+          <details>
+            <summary>支持哪些支付方式？</summary>
+            <p class="mt-3 text-zinc-400 text-sm">目前支持微信支付和支付宝。收款码可在控制台充值页面获取。</p>
+          </details>
+          <details>
+            <summary>如何兑换卡密？</summary>
+            <p class="mt-3 text-zinc-400 text-sm">在控制台的「卡密兑换」页面输入卡密代码即可兑换额度。</p>
+          </details>
+          <details>
+            <summary>API 调用有频率限制吗？</summary>
+            <p class="mt-3 text-zinc-400 text-sm">是的，默认每分钟最多 60 次请求，每日限额 10000 次。如需更高限额请联系客服。</p>
+          </details>
+          <details>
+            <summary>余额会过期吗？</summary>
+            <p class="mt-3 text-zinc-400 text-sm">余额永久有效，不会过期。</p>
+          </details>
+        </div>
+      </section>
 
-        <section>
-          <h2 class="section-title">❓ 常见问题</h2>
-          <div class="space-y-4">
-            <details class="stat-card">
-              <summary class="font-semibold text-white cursor-pointer">API Key 是什么？如何获取？</summary>
-              <p class="mt-3 text-[var(--text-secondary)]">API Key 是您调用 AI 服务的凭证。登录后在控制台的「API 密钥」页面可以查看和管理您的密钥。</p>
-            </details>
-            <details class="stat-card">
-              <summary class="font-semibold text-white cursor-pointer">额度用完了怎么办？</summary>
-              <p class="mt-3 text-[var(--text-secondary)]">您可以在控制台的「充值/订阅」页面购买额度，也可以使用卡密兑换。我们支持支付宝和微信支付。</p>
-            </details>
-            <details class="stat-card">
-              <summary class="font-semibold text-white cursor-pointer">如何确保 API 调用安全？</summary>
-              <p class="mt-3 text-[var(--text-secondary)]">请妥善保管您的 API Key，不要在公开场合分享。建议定期更换密钥，如发现异常使用请联系客服。</p>
-            </details>
-            <details class="stat-card">
-              <summary class="font-semibold text-white cursor-pointer">支持流式输出吗？</summary>
-              <p class="mt-3 text-[var(--text-secondary)]">是的，我们支持流式输出（Streaming）。在请求中添加 `"stream": true` 即可启用流式响应。</p>
-            </details>
-          </div>
-        </section>
-
-        <section>
-          <h2 class="section-title">📧 联系我们</h2>
-          <div class="stat-card text-center">
-            <p class="text-[var(--text-secondary)] mb-4">遇到问题或有建议？</p>
-            <p class="text-lg text-white">📧 commecy2014@gmail.com</p>
-          </div>
-        </section>
-      </div>
+      <!-- 联系客服 -->
+      <section class="card p-6">
+        <h2 class="text-xl font-semibold mb-4">📞 联系客服</h2>
+        <p class="text-zinc-400 mb-4">如果您有任何问题，请通过以下方式联系我们：</p>
+        <div class="space-y-2 text-sm">
+          <p>💬 微信：联系管理员获取</p>
+          <p>📧 邮箱：admin@tokengo.com</p>
+        </div>
+      </section>
     </div>
-  </main>
+  </div>
 
-  <footer class="border-t border-[var(--border)] py-8">
-    <div class="container mx-auto px-6 text-center text-[var(--text-secondary)]">
-      <p>© 2026 TokenGo. All rights reserved.</p>
+  <!-- 底部 -->
+  <footer class="py-8 border-t border-zinc-800">
+    <div class="max-w-6xl mx-auto px-6 text-center text-sm text-zinc-500">
+      © 2026 TokenGo. All rights reserved.
     </div>
   </footer>
-
-  <script>
-    function showTab(tab) {
-      document.querySelectorAll('.tab-content').forEach(el => el.style.display = 'none');
-      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-      document.getElementById('tab-' + tab).style.display = 'block';
-      event.target.classList.add('active');
-    }
-
-    async function checkLogin() {
-      const token = localStorage.getItem('tg_session');
-      if (token) {
-        try {
-          const r = await fetch('/api/auth/me', { headers: { 'Authorization': 'Bearer ' + token } });
-          if (r.ok) {
-            const user = await r.json();
-            document.querySelector('nav').innerHTML = `
-              <div class="container mx-auto px-6 h-16 flex items-center justify-between">
-                <a href="/" class="flex items-center gap-3">
-                  <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-teal-500 to-teal-600 flex items-center justify-center text-xl">🚀</div>
-                  <span class="text-xl font-bold text-white">TokenGo</span>
-                </a>
-                <div class="flex items-center gap-6">
-                  <a href="/" class="nav-link">首页</a>
-                  <a href="/dashboard" class="nav-link">控制台</a>
-                  <a href="/help" class="nav-link" style="color: var(--primary)">使用帮助</a>
-                  <a href="/dashboard" class="btn btn-primary">${user.username || user.email}</a>
-                </div>
-              </div>
-            `;
-          }
-        } catch(e) {}
-      }
-    }
-    checkLogin();
-  </script>
 </body>
 </html>

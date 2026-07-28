@@ -3,325 +3,214 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>TokenGo - 登录 / 注册</title>
+  <title>登录 - TokenGo</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
+    * { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
     :root {
-      --primary: #14b8a6;
-      --primary-hover: #0d9488;
-      --bg-dark: #0f172a;
-      --bg-card: #1e293b;
-      --text-primary: #f1f5f9;
-      --text-secondary: #94a3b8;
-      --border: #334155;
+      --primary: #10b981;
+      --bg: #09090b;
+      --card: #18181b;
+      --border: #27272a;
+      --text: #fafafa;
+      --muted: #a1a1aa;
     }
-    body {
-      background-color: var(--bg-dark);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
-    }
-    .login-card {
-      background: linear-gradient(180deg, rgba(30, 41, 59, 0.94) 0%, rgba(15, 24, 43, 0.94) 100%);
-      border: 1px solid rgba(20, 184, 166, 0.16);
-      box-shadow: inset 0 1px rgba(45, 212, 191, 0.06), 0 6px 24px rgba(0, 0, 0, 0.36);
-      backdrop-filter: blur(10px);
-      border-radius: 1rem;
-      width: 100%;
-      max-width: 420px;
-      overflow: hidden;
-    }
-    .input-field {
-      width: 100%;
-      padding: 0.875rem 1rem;
-      border: 1px solid var(--border);
-      border-radius: 0.75rem;
-      font-size: 0.875rem;
-      background: var(--bg-dark);
-      color: var(--text-primary);
-      transition: all 0.2s ease;
-    }
-    .input-field:focus {
-      outline: none;
-      border-color: var(--primary);
-      box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.1);
-    }
-    .input-field::placeholder {
-      color: var(--text-secondary);
-    }
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.5rem;
-      border-radius: 0.75rem;
-      padding: 0.625rem 1rem;
-      font-size: 0.875rem;
-      line-height: 1.25rem;
-      font-weight: 500;
-      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-    .btn-primary {
-      background: linear-gradient(to right, var(--primary), var(--primary-hover));
-      color: white;
-      box-shadow: 0 4px 6px -1px rgba(20, 184, 166, 0.25);
-      width: 100%;
-      padding: 0.875rem 1.5rem;
-    }
-    .btn-primary:hover {
-      background: linear-gradient(to right, var(--primary-hover), #0f766e);
-      box-shadow: 0 10px 15px -3px rgba(20, 184, 166, 0.3);
-    }
-    .btn-primary:disabled {
-      opacity: 0.7;
-      cursor: not-allowed;
-      transform: none;
-    }
-    .btn-secondary {
-      background: transparent;
-      border: 1px solid var(--border);
-      color: var(--text-primary);
-    }
-    .btn-secondary:hover {
-      background: var(--bg-card);
-      border-color: var(--text-secondary);
-    }
-    .link-text {
-      color: var(--primary);
-      text-decoration: none;
-      font-weight: 500;
-    }
-    .link-text:hover {
-      text-decoration: underline;
-    }
-    .live-dot {
-      position: relative;
-      display: inline-block;
-      height: 0.5rem;
-      width: 0.5rem;
-      border-radius: 9999px;
-      background-color: var(--primary);
-    }
-    .live-dot::after {
-      content: "";
-      position: absolute;
-      top: 0;
-      right: 0;
-      bottom: 0;
-      left: 0;
-      border-radius: 9999px;
-      background-color: #2dd4bf;
-      animation: livePulse 1.8s ease-out infinite;
-    }
-    @keyframes livePulse {
-      0% { transform: scale(1); opacity: 0.7; }
-      to { transform: scale(2.6); opacity: 0; }
-    }
-    .alert-error {
-      background: rgba(239, 68, 68, 0.1);
-      color: #ef4444;
-      padding: 0.75rem;
-      border-radius: 0.75rem;
-      font-size: 0.875rem;
-      margin-bottom: 1rem;
-      display: none;
-      border: 1px solid rgba(239, 68, 68, 0.3);
-    }
-    .tab-active {
-      color: var(--primary);
-      border-bottom: 2px solid var(--primary);
-      font-weight: 600;
-    }
-    .tab-inactive {
-      color: var(--text-secondary);
-      border-bottom: 2px solid transparent;
-    }
-    .stat-icon {
-      height: 3rem;
-      width: 3rem;
-      border-radius: 0.75rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.25rem;
-    }
-    .stat-icon-primary {
-      background-color: rgba(204, 251, 241, 0.5);
-      color: var(--primary-hover);
-    }
+    body { background: var(--bg); color: var(--text); min-height: 100vh; }
+    .btn-primary { background: var(--primary); color: white; padding: 12px 24px; border-radius: 8px; font-weight: 500; border: none; cursor: pointer; transition: all 0.2s; width: 100%; }
+    .btn-primary:hover { background: #059669; }
+    .input-field { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 12px 16px; color: var(--text); width: 100%; transition: all 0.2s; }
+    .input-field:focus { outline: none; border-color: var(--primary); }
+    .input-field::placeholder { color: var(--muted); }
+    .live-dot { width: 8px; height: 8px; background: var(--primary); border-radius: 50%; animation: pulse 2s infinite; }
+    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+    .tab-btn { padding: 12px 24px; font-weight: 500; color: var(--muted); border-bottom: 2px solid transparent; transition: all 0.2s; cursor: pointer; }
+    .tab-btn.active { color: var(--primary); border-bottom-color: var(--primary); }
+    .tab-btn:hover { color: var(--text); }
   </style>
 </head>
 <body>
-  <div class="login-card p-8">
-    <div class="text-center mb-8">
-      <div class="flex items-center justify-center gap-3 mb-4">
-          <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-teal-500 to-teal-600 flex items-center justify-center text-2xl">🚀</div>
-          <span class="text-2xl font-bold text-white">TokenGo</span>
-        </div>
-      <p class="text-gray-400 text-sm">一个密钥，畅用多个 AI 模型</p>
+  <!-- 导航栏 -->
+  <nav class="border-b border-zinc-800 bg-black/80 backdrop-blur-md">
+    <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+      <a href="/" class="flex items-center gap-2">
+        <div class="w-8 h-8 rounded-lg bg-emerald-500 flex items-center justify-center text-lg">🚀</div>
+        <span class="text-lg font-semibold">TokenGo</span>
+      </a>
+      <div class="flex items-center gap-2">
+        <span class="live-dot"></span>
+        <span class="text-sm text-emerald-400">服务正常</span>
+      </div>
     </div>
+  </nav>
 
-    <div class="flex border-b border-slate-700 mb-6">
-      <button id="tabLogin" class="flex-1 py-3 text-center tab-active" onclick="switchTab('login')">登录</button>
-      <button id="tabRegister" class="flex-1 py-3 text-center tab-inactive" onclick="switchTab('register')">注册</button>
-    </div>
+  <!-- 登录表单 -->
+  <div class="min-h-[calc(100vh-64px)] flex items-center justify-center p-6">
+    <div class="w-full max-w-md">
+      <!-- Logo -->
+      <div class="text-center mb-8">
+        <div class="w-16 h-16 rounded-2xl bg-emerald-500 flex items-center justify-center text-3xl mx-auto mb-4">🚀</div>
+        <h1 class="text-2xl font-bold">欢迎回来</h1>
+        <p class="text-zinc-400 mt-2">登录到您的 TokenGo 账户</p>
+      </div>
 
-    <div id="loginForm">
-      <div id="loginError" class="alert-error"></div>
-      <form onsubmit="handleLogin(event)">
-        <div class="mb-4">
-          <label class="block text-sm font-medium text-gray-300 mb-2">邮箱</label>
-          <input type="email" id="loginEmail" class="input-field" placeholder="your@email.com" required>
+      <!-- Tab 切换 -->
+      <div class="flex border-b border-zinc-800 mb-6">
+        <button id="tabLogin" class="tab-btn active" onclick="switchTab('login')">登录</button>
+        <button id="tabRegister" class="tab-btn" onclick="switchTab('register')">注册</button>
+      </div>
+
+      <!-- 登录表单 -->
+      <form id="loginForm" onsubmit="handleLogin(event)">
+        <div class="space-y-4">
+          <div>
+            <label class="block text-sm text-zinc-400 mb-2">邮箱</label>
+            <input type="email" name="email" class="input-field" placeholder="your@email.com" required>
+          </div>
+          <div>
+            <label class="block text-sm text-zinc-400 mb-2">密码</label>
+            <input type="password" name="password" class="input-field" placeholder="••••••••" required>
+          </div>
+          <div class="flex items-center justify-between text-sm">
+            <label class="flex items-center gap-2 cursor-pointer">
+              <input type="checkbox" class="w-4 h-4 rounded border-zinc-700 bg-zinc-800 accent-emerald-500">
+              <span class="text-zinc-400">记住我</span>
+            </label>
+            <a href="#" class="text-emerald-400 hover:text-emerald-300">忘记密码？</a>
+          </div>
+          <button type="submit" class="btn-primary">登录</button>
         </div>
-        <div class="mb-6">
-          <label class="block text-sm font-medium text-gray-300 mb-2">密码</label>
-          <input type="password" id="loginPassword" class="input-field" placeholder="••••••••" required>
-        </div>
-        <button type="submit" id="loginBtn" class="btn btn-primary">登录</button>
       </form>
-      <div class="mt-6 text-center">
-        <p class="text-sm text-gray-400 mb-3">或</p>
-        <a href="/redeem" class="link-text text-sm inline-flex items-center gap-1">🎫 使用卡密兑换（无需注册）</a>
-      </div>
-      <div class="mt-6 text-center">
-        <p class="text-sm text-gray-400">
-          还没有账号? <a href="#" class="link-text" onclick="switchTab('register')">立即注册</a>
-        </p>
-      </div>
-    </div>
 
-    <div id="registerForm" style="display:none;">
-      <div id="registerError" class="alert-error"></div>
-      <form onsubmit="handleRegister(event)">
-        <div class="mb-4">
-          <label class="block text-sm font-medium text-gray-300 mb-2">邮箱</label>
-          <input type="email" id="registerEmail" class="input-field" placeholder="your@email.com" required>
+      <!-- 注册表单 -->
+      <form id="registerForm" onsubmit="handleRegister(event)" class="hidden">
+        <div class="space-y-4">
+          <div>
+            <label class="block text-sm text-zinc-400 mb-2">邮箱</label>
+            <input type="email" name="email" class="input-field" placeholder="your@email.com" required>
+          </div>
+          <div>
+            <label class="block text-sm text-zinc-400 mb-2">密码</label>
+            <input type="password" name="password" class="input-field" placeholder="至少 6 位" required minlength="6">
+          </div>
+          <div>
+            <label class="block text-sm text-zinc-400 mb-2">确认密码</label>
+            <input type="password" name="confirmPassword" class="input-field" placeholder="再次输入密码" required>
+          </div>
+          <div>
+            <label class="block text-sm text-zinc-400 mb-2">邀请码（选填）</label>
+            <input type="text" name="inviteCode" class="input-field" placeholder="如有邀请码请输入">
+          </div>
+          <button type="submit" class="btn-primary">注册</button>
         </div>
-        <div class="mb-4">
-          <label class="block text-sm font-medium text-gray-300 mb-2">用户名</label>
-          <input type="text" id="registerUsername" class="input-field" placeholder="username" required>
-        </div>
-        <div class="mb-6">
-          <label class="block text-sm font-medium text-gray-300 mb-2">密码</label>
-          <input type="password" id="registerPassword" class="input-field" placeholder="••••••••" required>
-        </div>
-        <button type="submit" id="registerBtn" class="btn btn-primary">注册</button>
       </form>
-      <div class="mt-6 text-center">
-        <p class="text-sm text-gray-400">
-          已有账号? <a href="#" class="link-text" onclick="switchTab('login')">立即登录</a>
-        </p>
-      </div>
-    </div>
 
-    <div class="mt-8 pt-6 border-t border-slate-700 text-center">
-      <div class="flex items-center justify-center gap-2 text-sm text-gray-400">
-        <span class="live-dot"></span> 服务在线，API 稳定可用
+      <!-- 提示 -->
+      <div class="mt-6 text-center text-sm text-zinc-500">
+        登录即表示同意我们的 <a href="#" class="text-emerald-400 hover:text-emerald-300">服务条款</a>
       </div>
+
+      <!-- 错误/成功提示 -->
+      <div id="message" class="hidden mt-4 p-4 rounded-lg text-sm"></div>
     </div>
   </div>
 
   <script>
     const urlParams = new URLSearchParams(window.location.search);
     const mode = urlParams.get('mode');
-    if(mode === 'register') switchTab('register');
+    
+    if (mode === 'register') {
+      switchTab('register');
+    }
 
     function switchTab(tab) {
       const loginForm = document.getElementById('loginForm');
       const registerForm = document.getElementById('registerForm');
       const tabLogin = document.getElementById('tabLogin');
       const tabRegister = document.getElementById('tabRegister');
-
-      if(tab === 'login') {
-        loginForm.style.display = 'block';
-        registerForm.style.display = 'none';
-        tabLogin.className = 'flex-1 py-3 text-center tab-active';
-        tabRegister.className = 'flex-1 py-3 text-center tab-inactive';
+      const message = document.getElementById('message');
+      
+      message.classList.add('hidden');
+      
+      if (tab === 'login') {
+        loginForm.classList.remove('hidden');
+        registerForm.classList.add('hidden');
+        tabLogin.classList.add('active');
+        tabRegister.classList.remove('active');
       } else {
-        loginForm.style.display = 'none';
-        registerForm.style.display = 'block';
-        tabLogin.className = 'flex-1 py-3 text-center tab-inactive';
-        tabRegister.className = 'flex-1 py-3 text-center tab-active';
+        loginForm.classList.add('hidden');
+        registerForm.classList.remove('hidden');
+        tabLogin.classList.remove('active');
+        tabRegister.classList.add('active');
       }
+    }
+
+    function showMessage(text, type) {
+      const message = document.getElementById('message');
+      message.textContent = text;
+      message.className = `mt-4 p-4 rounded-lg text-sm ${type === 'error' ? 'bg-red-500/20 text-red-400 border border-red-500/30' : 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30'}`;
+      message.classList.remove('hidden');
     }
 
     async function handleLogin(e) {
       e.preventDefault();
-      const btn = document.getElementById('loginBtn');
-      const email = document.getElementById('loginEmail').value;
-      const password = document.getElementById('loginPassword').value;
-      const urlParams = new URLSearchParams(window.location.search);
-      const redirect = urlParams.get('redirect') || '/dashboard';
-
-      btn.disabled = true;
-      btn.innerHTML = '登录中...';
-      document.getElementById('loginError').style.display = 'none';
-
+      const form = e.target;
+      const data = {
+        email: form.email.value,
+        password: form.password.value
+      };
+      
       try {
-        const r = await fetch('/api/auth/login', {
+        const res = await fetch('/api/auth/login', {
           method: 'POST',
-          headers: {'Content-Type': 'application/json'},
-          body: JSON.stringify({email, password})
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
         });
-        const data = await r.json();
-
-        if(r.ok) {
-          localStorage.setItem('tg_session', data.session_token);
-          window.location.href = redirect;
+        const result = await res.json();
+        
+        if (res.ok) {
+          localStorage.setItem('token', result.token);
+          showMessage('登录成功！正在跳转...', 'success');
+          setTimeout(() => window.location.href = '/dashboard', 1000);
         } else {
-          const errEl = document.getElementById('loginError');
-          errEl.textContent = data.detail || '登录失败';
-          errEl.style.display = 'block';
+          showMessage(result.detail || '登录失败', 'error');
         }
-      } catch(err) {
-        const errEl = document.getElementById('loginError');
-        errEl.textContent = '网络错误，请稍后重试';
-        errEl.style.display = 'block';
-      } finally {
-        btn.disabled = false;
-        btn.innerHTML = '登录';
+      } catch (err) {
+        showMessage('网络错误，请重试', 'error');
       }
     }
 
     async function handleRegister(e) {
       e.preventDefault();
-      const btn = document.getElementById('registerBtn');
-      const email = document.getElementById('registerEmail').value;
-      const username = document.getElementById('registerUsername').value;
-      const password = document.getElementById('registerPassword').value;
-
-      btn.disabled = true;
-      btn.innerHTML = '注册中...';
-      document.getElementById('registerError').style.display = 'none';
-
+      const form = e.target;
+      
+      if (form.password.value !== form.confirmPassword.value) {
+        showMessage('两次密码输入不一致', 'error');
+        return;
+      }
+      
+      const data = {
+        email: form.email.value,
+        password: form.password.value,
+        invite_code: form.inviteCode.value || undefined
+      };
+      
       try {
-        const r = await fetch('/api/auth/register', {
+        const res = await fetch('/api/auth/register', {
           method: 'POST',
-          headers: {'Content-Type': 'application/json'},
-          body: JSON.stringify({email, password, username})
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
         });
-        const data = await r.json();
-
-        if(r.ok) {
-          localStorage.setItem('tg_session', data.session_token);
-          window.location.href = '/dashboard';
+        const result = await res.json();
+        
+        if (res.ok) {
+          localStorage.setItem('token', result.token);
+          showMessage('注册成功！正在跳转...', 'success');
+          setTimeout(() => window.location.href = '/dashboard', 1000);
         } else {
-          const errEl = document.getElementById('registerError');
-          errEl.textContent = data.detail || '注册失败';
-          errEl.style.display = 'block';
+          showMessage(result.detail || '注册失败', 'error');
         }
-      } catch(err) {
-        const errEl = document.getElementById('registerError');
-        errEl.textContent = '网络错误，请稍后重试';
-        errEl.style.display = 'block';
-      } finally {
-        btn.disabled = false;
-        btn.innerHTML = '注册';
+      } catch (err) {
+        showMessage('网络错误，请重试', 'error');
       }
     }
   </script>
