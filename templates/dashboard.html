@@ -1210,8 +1210,8 @@
           const container = document.getElementById('paymentMethods');
           container.innerHTML = '';
 
-          const icons = { 'alipay': '💚', 'wechat': '💙', 'unionpay': '💳' };
-          const names = { 'alipay': '支付宝', 'wechat': '微信支付', 'unionpay': '银联' };
+          const icons = { 'alipay': '💚', 'wechat': '💙' };
+          const names = { 'alipay': '支付宝', 'wechat': '微信支付' };
 
           methods.forEach(m => {
             const btn = document.createElement('button');
@@ -1238,7 +1238,7 @@
       const paymentAccount = document.getElementById('paymentAccount');
       const paymentInstructions = document.getElementById('paymentInstructions');
 
-      const icons = { 'alipay': '💚', 'wechat': '💙', 'unionpay': '💳' };
+      const icons = { 'alipay': '💚', 'wechat': '💙' };
 
       if(method.qr_code) {
         qrImg.src = method.qr_code;
