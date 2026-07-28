@@ -1,0 +1,16 @@
+name: Keep TokenGo Alive
+
+on:
+  schedule:
+    - cron: '*/5 * * * *'
+  workflow_dispatch:
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping TokenGo
+        run: |
+          curl -s -o /dev/null -w "HTTP Status: %{http_code}\n" https://tokengo-d0cb.onrender.com/health
+          curl -s -o /dev/null -w "HTTP Status: %{http_code}\n" https://tokengo-d0cb.onrender.com/
+        timeout-minutes: 2
