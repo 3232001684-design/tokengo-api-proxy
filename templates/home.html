@@ -3,12 +3,16 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>TokenGo - 多模型 AI 网关</title>
+  <title>TokenGo - AI API Gateway</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
       --primary: #14b8a6;
-      --primary-hover: #0d9488;
+      --primary-light: #2dd4bf;
+      --primary-dark: #0d9488;
       --bg-dark: #0f172a;
       --bg-card: #1e293b;
       --bg-card-hover: #334155;
@@ -19,39 +23,174 @@
     body {
       background-color: var(--bg-dark);
       color: var(--text-primary);
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      min-height: 100vh;
     }
     .glass-card {
       background: rgba(30, 41, 59, 0.8);
-      backdrop-filter: blur(10px);
-      border: 1px solid var(--border);
+      backdrop-filter: blur(24px);
+      border: 1px solid rgba(51, 65, 85, 0.5);
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      border-radius: 0.75rem;
+      padding: 0.625rem 1rem;
+      font-size: 0.875rem;
+      line-height: 1.25rem;
+      font-weight: 500;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     }
     .btn-primary {
-      background: var(--primary);
+      background: linear-gradient(to right, var(--primary), var(--primary-dark));
       color: white;
-      transition: all 0.2s ease;
+      box-shadow: 0 4px 6px -1px rgba(20, 184, 166, 0.25);
     }
     .btn-primary:hover {
-      background: var(--primary-hover);
-      transform: translateY(-1px);
+      background: linear-gradient(to right, var(--primary-dark), #0f766e);
+      box-shadow: 0 10px 15px -3px rgba(20, 184, 166, 0.3);
     }
     .btn-secondary {
       background: transparent;
       border: 1px solid var(--border);
       color: var(--text-primary);
-      transition: all 0.2s ease;
+      box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
     }
     .btn-secondary:hover {
       background: var(--bg-card);
+      border-color: var(--text-secondary);
     }
     .stat-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      transition: all 0.2s ease;
+      background: linear-gradient(180deg, rgba(15, 24, 43, 0.94) 0%, rgba(6, 13, 24, 0.94) 100%);
+      border: 1px solid rgba(20, 184, 166, 0.16);
+      box-shadow: inset 0 1px rgba(45, 212, 191, 0.06), 0 6px 24px rgba(0, 0, 0, 0.36);
+      backdrop-filter: blur(10px);
+      border-radius: 1rem;
+      padding: 1.25rem;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
     .stat-card:hover {
-      background: var(--bg-card-hover);
-      transform: translateY(-2px);
+      border-color: rgba(45, 212, 191, 0.56);
+      box-shadow: inset 0 1px rgba(45, 212, 191, 0.12), 0 0 26px rgba(20, 184, 166, 0.18), 0 10px 34px rgba(0, 0, 0, 0.4);
+    }
+    .tech-card {
+      position: relative;
+      background: linear-gradient(180deg, rgba(13, 22, 41, 0.73) 0%, rgba(6, 11, 24, 0.73) 100%);
+      border: 1px solid rgba(20, 184, 166, 0.15);
+      box-shadow: inset 0 1px rgba(45, 212, 191, 0.06), 0 0 0 1px rgba(20, 184, 166, 0.04), 0 10px 34px rgba(0, 0, 0, 0.45);
+      backdrop-filter: blur(12px);
+      border-radius: 1rem;
+      padding: 2rem;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      overflow: hidden;
+    }
+    .tech-card::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 10%;
+      right: 10%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(45, 212, 191, 0.8), transparent);
+    }
+    .tech-card:hover {
+      border-color: rgba(45, 212, 191, 0.56);
+      box-shadow: inset 0 1px rgba(45, 212, 191, 0.12), 0 0 26px rgba(20, 184, 166, 0.18), 0 10px 34px rgba(0, 0, 0, 0.48);
+    }
+    .live-dot {
+      position: relative;
+      display: inline-block;
+      height: 0.5rem;
+      width: 0.5rem;
+      border-radius: 9999px;
+      background-color: var(--primary);
+    }
+    .live-dot::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      border-radius: 9999px;
+      background-color: var(--primary-light);
+      animation: livePulse 1.8s ease-out infinite;
+    }
+    @keyframes livePulse {
+      0% { transform: scale(1); opacity: 0.7; }
+      to { transform: scale(2.6); opacity: 0; }
+    }
+    .gradient-text {
+      background: linear-gradient(90deg, var(--primary), var(--primary-light));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .hud-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.25em;
+      color: var(--primary-dark);
+    }
+    .hud-label {
+      font-size: 11px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-secondary);
+    }
+    .metric {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-variant-numeric: tabular-nums;
+    }
+    .stat-icon {
+      height: 3rem;
+      width: 3rem;
+      border-radius: 0.75rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+    }
+    .stat-icon-primary {
+      background-color: rgba(204, 251, 241, 0.5);
+      color: var(--primary-dark);
+    }
+    .stat-icon-success {
+      background-color: rgba(209, 250, 229, 0.5);
+      color: #059669;
+    }
+    .stat-icon-warning {
+      background-color: rgba(254, 243, 199, 0.5);
+      color: #d97706;
+    }
+    .stat-icon-danger {
+      background-color: rgba(254, 226, 226, 0.5);
+      color: #dc2626;
+    }
+    .stat-value {
+      font-size: 1.5rem;
+      line-height: 2rem;
+      font-weight: 700;
+    }
+    .stat-label {
+      font-size: 0.875rem;
+      line-height: 1.25rem;
+      color: var(--text-secondary);
+    }
+    .nav-link {
+      color: var(--text-secondary);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+    .nav-link:hover {
+      color: var(--text-primary);
     }
     .model-badge {
       font-size: 10px;
@@ -60,63 +199,94 @@
       padding: 2px 8px;
       border-radius: 4px;
     }
-    .live-dot {
-      width: 8px;
-      height: 8px;
-      background: #10b981;
-      border-radius: 50%;
-      animation: pulse 2s infinite;
-      display: inline-block;
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      border-radius: 9999px;
+      padding: 0.125rem 0.625rem;
+      font-size: 0.75rem;
+      line-height: 1rem;
+      font-weight: 500;
     }
-    @keyframes pulse {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.5; }
+    .badge-primary {
+      background-color: rgba(204, 251, 241, 0.5);
+      color: #0f766e;
     }
-    .gradient-text {
-      background: linear-gradient(90deg, var(--primary), #22d3ee);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
+    .badge-success {
+      background-color: rgba(209, 250, 229, 0.5);
+      color: #047857;
     }
-    .feature-card {
-      background: var(--bg-card);
+    .table {
+      width: 100%;
+      font-size: 0.875rem;
+      line-height: 1.25rem;
+    }
+    .table th {
+      padding: 0.75rem 1rem;
+      text-align: left;
+      font-weight: 500;
+      color: var(--text-secondary);
+      background-color: rgba(249, 250, 251, 0.05);
+      border-bottom: 1px solid var(--border);
+    }
+    .table td {
+      padding: 0.75rem 1rem;
+      color: var(--text-primary);
+      border-bottom: 1px solid rgba(243, 244, 246, 0.1);
+    }
+    .table tbody tr:hover {
+      background-color: rgba(249, 250, 251, 0.03);
+    }
+    .dropdown {
+      position: absolute;
+      z-index: 50;
+      background-color: var(--bg-card);
+      border-radius: 0.75rem;
       border: 1px solid var(--border);
-      transition: all 0.3s ease;
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+      padding-top: 0.25rem;
+      padding-bottom: 0.25rem;
+      animation: scaleIn 0.2s ease-out;
     }
-    .feature-card:hover {
-      border-color: var(--primary);
-      background: rgba(16, 163, 127, 0.05);
+    @keyframes scaleIn {
+      0% { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
+    .dropdown-item {
+      padding: 0.5rem 1rem;
+      font-size: 0.875rem;
+      line-height: 1.25rem;
+      color: var(--text-secondary);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all 0.15s;
+    }
+    .dropdown-item:hover {
+      background-color: var(--bg-card-hover);
+      color: var(--text-primary);
     }
   </style>
 </head>
-<body>
+<body class="min-h-screen">
   <nav class="fixed top-0 left-0 right-0 z-50 glass-card">
     <div class="container mx-auto px-6 h-16 flex items-center justify-between">
       <a href="/" class="flex items-center gap-3">
         <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-teal-500 to-teal-600 flex items-center justify-center text-xl">🚀</div>
         <span class="text-xl font-bold text-white">TokenGo</span>
       </a>
-
       <div class="hidden md:flex items-center gap-8">
-        <a href="#features" class="text-sm text-gray-400 hover:text-white transition-colors">功能特色</a>
-        <a href="#models" class="text-sm text-gray-400 hover:text-white transition-colors">AI 模型</a>
-        <a href="#pricing" class="text-sm text-gray-400 hover:text-white transition-colors">价格方案</a>
-        <a href="/help" class="text-sm text-gray-400 hover:text-white transition-colors">使用教程</a>
+        <a href="#features" class="nav-link">功能特色</a>
+        <a href="#models" class="nav-link">AI 模型</a>
+        <a href="#pricing" class="nav-link">价格方案</a>
+        <a href="/help" class="nav-link">使用教程</a>
       </div>
-
       <div class="flex items-center gap-3">
-        <button class="btn-secondary p-2 text-sm hidden md:block" title="公告">
-          📢
-        </button>
-        <button class="btn-secondary p-2 text-sm hidden md:block" title="语言切换">
-          中
-        </button>
-        <button class="btn-secondary p-2 text-sm hidden md:block" title="深色模式">
-          🌙
-        </button>
         <span id="navUserArea">
-          <a href="/login" class="btn-secondary px-5 py-2 rounded-lg text-sm font-medium">登录</a>
-          <a href="/login?mode=register" class="btn-primary px-5 py-2 rounded-lg text-sm font-medium">免费注册</a>
+          <a href="/login" class="btn btn-secondary px-5 py-2">登录</a>
+          <a href="/login?mode=register" class="btn btn-primary px-5 py-2">免费注册</a>
         </span>
       </div>
     </div>
@@ -124,28 +294,23 @@
 
   <section class="pt-24 pb-20">
     <div class="container mx-auto px-6 text-center">
-      <div class="inline-flex items-center gap-2 text-sm text-green-400 bg-green-500/10 px-4 py-2 rounded-full mb-8">
+      <div class="inline-flex items-center gap-2 text-sm text-teal-400 bg-teal-500/10 px-4 py-2 rounded-full mb-8">
         <span class="live-dot"></span>
         多模态 AI 网关
       </div>
-
       <h1 class="text-5xl md:text-6xl lg:text-7xl font-bold mb-6">
         <span class="gradient-text">TokenGo</span>
       </h1>
-
       <p class="text-xl md:text-2xl text-gray-300 mb-4">
         一个密钥 — 所有 AI 模型
       </p>
-
       <p class="text-gray-400 text-lg mb-12 max-w-2xl mx-auto">
         无需管理多个订阅账号，一站式接入 Claude、GPT、Gemini 等主流 AI 服务
       </p>
-
       <div class="flex flex-col sm:flex-row gap-4 justify-center mb-12">
-        <a href="/login?mode=register" class="btn-primary text-base px-10 py-4 rounded-xl font-semibold">🚀 免费注册</a>
-        <a href="/dashboard" class="btn-secondary text-base px-10 py-4 rounded-xl font-semibold">📖 进入控制台</a>
+        <a href="/login?mode=register" class="btn btn-primary text-base px-10 py-4 rounded-xl font-semibold">🚀 免费注册</a>
+        <a href="/dashboard" class="btn btn-secondary text-base px-10 py-4 rounded-xl font-semibold">📖 进入控制台</a>
       </div>
-
       <div class="flex flex-wrap gap-4 justify-center mb-16">
         <span class="inline-flex items-center gap-2 text-sm text-gray-400 bg-slate-800 px-5 py-3 rounded-full border border-slate-700">
           <span class="live-dot"></span> 🎁 注册即送 $1 试用额度
@@ -160,34 +325,33 @@
           <span class="live-dot"></span> 实时监控
         </span>
       </div>
-
       <div class="max-w-4xl mx-auto">
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div class="stat-card p-6 rounded-xl">
-            <div class="flex items-center justify-between">
-              <div class="text-left">
-                <div class="text-sm text-gray-400 mb-1">API Keys</div>
-                <div class="text-3xl font-bold text-white">999+</div>
+          <div class="stat-card">
+            <div class="flex items-start justify-between gap-4">
+              <div class="flex-1">
+                <div class="stat-label mb-1">API Keys</div>
+                <div class="stat-value text-white metric">999+</div>
               </div>
-              <div class="w-12 h-12 rounded-xl bg-green-500/10 flex items-center justify-center text-green-400 text-xl">🔑</div>
+              <div class="stat-icon stat-icon-primary">🔑</div>
             </div>
           </div>
-          <div class="stat-card p-6 rounded-xl">
-            <div class="flex items-center justify-between">
-              <div class="text-left">
-                <div class="text-sm text-gray-400 mb-1">今日请求</div>
-                <div class="text-3xl font-bold text-white">99K+</div>
+          <div class="stat-card">
+            <div class="flex items-start justify-between gap-4">
+              <div class="flex-1">
+                <div class="stat-label mb-1">今日请求</div>
+                <div class="stat-value text-white metric">99K+</div>
               </div>
-              <div class="w-12 h-12 rounded-xl bg-blue-500/10 flex items-center justify-center text-blue-400 text-xl">📊</div>
+              <div class="stat-icon stat-icon-success">📊</div>
             </div>
           </div>
-          <div class="stat-card p-6 rounded-xl">
-            <div class="flex items-center justify-between">
-              <div class="text-left">
-                <div class="text-sm text-gray-400 mb-1">响应时间</div>
-                <div class="text-3xl font-bold text-white">200ms</div>
+          <div class="stat-card">
+            <div class="flex items-start justify-between gap-4">
+              <div class="flex-1">
+                <div class="stat-label mb-1">响应时间</div>
+                <div class="stat-value text-white metric">200ms</div>
               </div>
-              <div class="w-12 h-12 rounded-xl bg-purple-500/10 flex items-center justify-center text-purple-400 text-xl">⚡</div>
+              <div class="stat-icon stat-icon-warning">⚡</div>
             </div>
           </div>
         </div>
@@ -198,23 +362,23 @@
   <section id="features" class="py-20 bg-slate-900/50">
     <div class="container mx-auto px-6">
       <div class="text-center mb-16">
-        <h2 class="text-3xl font-bold text-white mb-4">为什么选择 TokenGo</h2>
-        <p class="text-gray-400">专业、稳定、高性价比的 AI API 中转服务</p>
+        <div class="hud-eyebrow mb-4">为什么选择我们</div>
+        <h2 class="text-3xl font-bold text-white mb-4">专业、稳定、高性价比</h2>
+        <p class="text-gray-400">一站式 AI API 中转服务</p>
       </div>
-
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div class="feature-card p-8 rounded-xl text-center">
-          <div class="w-14 h-14 rounded-xl bg-green-500/10 flex items-center justify-center text-green-400 text-2xl mx-auto mb-6">🔑</div>
+        <div class="tech-card">
+          <div class="w-14 h-14 rounded-xl bg-teal-500/10 flex items-center justify-center text-teal-400 text-2xl mb-6">🔑</div>
           <h3 class="text-lg font-semibold text-white mb-3">一键接入</h3>
           <p class="text-sm text-gray-400">一个 API Key 即可调用所有已接入的 AI 模型，无需单独申请</p>
         </div>
-        <div class="feature-card p-8 rounded-xl text-center">
-          <div class="w-14 h-14 rounded-xl bg-green-500/10 flex items-center justify-center text-green-400 text-2xl mx-auto mb-6">🛡️</div>
+        <div class="tech-card">
+          <div class="w-14 h-14 rounded-xl bg-teal-500/10 flex items-center justify-center text-teal-400 text-2xl mb-6">🛡️</div>
           <h3 class="text-lg font-semibold text-white mb-3">稳定可靠</h3>
           <p class="text-sm text-gray-400">多上游账号智能路由 + 自动故障转移，告别错误</p>
         </div>
-        <div class="feature-card p-8 rounded-xl text-center">
-          <div class="w-14 h-14 rounded-xl bg-green-500/10 flex items-center justify-center text-green-400 text-2xl mx-auto mb-6">💎</div>
+        <div class="tech-card">
+          <div class="w-14 h-14 rounded-xl bg-teal-500/10 flex items-center justify-center text-teal-400 text-2xl mb-6">💎</div>
           <h3 class="text-lg font-semibold text-white mb-3">按量付费</h3>
           <p class="text-sm text-gray-400">基于用量的计费与额度上限，团队消耗全透明</p>
         </div>
@@ -225,10 +389,10 @@
   <section id="models" class="py-20">
     <div class="container mx-auto px-6">
       <div class="text-center mb-16">
-        <h2 class="text-3xl font-bold text-white mb-4">支持的 AI 模型</h2>
-        <p class="text-gray-400">一个 API Key 即可调用以下全部模型</p>
+        <div class="hud-eyebrow mb-4">支持的模型</div>
+        <h2 class="text-3xl font-bold text-white mb-4">一个 API Key 畅用所有模型</h2>
+        <p class="text-gray-400">无需管理多个订阅，统一接入主流 AI 服务</p>
       </div>
-
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5" id="modelGrid"></div>
     </div>
   </section>
@@ -236,39 +400,39 @@
   <section id="pricing" class="py-20 bg-slate-900/50">
     <div class="container mx-auto px-6">
       <div class="text-center mb-16">
-        <h2 class="text-3xl font-bold text-white mb-4">充值方案</h2>
-        <p class="text-gray-400">灵活的充值选项，满足不同需求</p>
+        <div class="hud-eyebrow mb-4">价格方案</div>
+        <h2 class="text-3xl font-bold text-white mb-4">灵活的充值选项</h2>
+        <p class="text-gray-400">满足个人开发者到企业级的不同需求</p>
       </div>
-
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
-        <div class="stat-card p-8 rounded-xl border-slate-700">
-          <div class="text-sm text-gray-400 mb-2">入门套餐</div>
-          <div class="text-4xl font-bold text-green-400 mb-1">$12</div>
-          <div class="text-sm text-gray-400 mb-6">API 额度</div>
+        <div class="stat-card p-8 border-slate-700">
+          <div class="stat-label mb-2">入门套餐</div>
+          <div class="text-4xl font-bold text-teal-400 mb-1 metric">$12</div>
+          <div class="stat-label mb-6">API 额度</div>
           <ul class="space-y-3 mb-8 text-sm text-gray-300">
             <li>✅ 全部模型访问</li>
             <li>✅ 标准响应速度</li>
             <li>✅ 基础技术支持</li>
           </ul>
-          <a href="/dashboard" class="btn-secondary w-full py-3 rounded-lg font-medium">立即充值</a>
+          <a href="/dashboard#billing" class="btn btn-secondary w-full py-3 rounded-lg font-medium">立即充值</a>
         </div>
-        <div class="stat-card p-8 rounded-xl border-green-500 bg-green-500/5">
-          <div class="inline-block bg-green-500 text-white text-xs font-semibold px-3 py-1 rounded-full mb-4">热门推荐</div>
-          <div class="text-sm text-gray-400 mb-2">专业套餐</div>
-          <div class="text-4xl font-bold text-green-400 mb-1">$60</div>
-          <div class="text-sm text-gray-400 mb-6">API 额度</div>
+        <div class="stat-card p-8 border-teal-500 bg-teal-500/5">
+          <div class="inline-block bg-teal-500 text-white text-xs font-semibold px-3 py-1 rounded-full mb-4">热门推荐</div>
+          <div class="stat-label mb-2">专业套餐</div>
+          <div class="text-4xl font-bold text-teal-400 mb-1 metric">$60</div>
+          <div class="stat-label mb-6">API 额度</div>
           <ul class="space-y-3 mb-8 text-sm text-gray-300">
             <li>✅ 全部模型访问</li>
             <li>✅ 优先响应速度</li>
             <li>✅ 专属技术支持</li>
             <li>✅ 自定义额度</li>
           </ul>
-          <a href="/dashboard" class="btn-primary w-full py-3 rounded-lg font-medium">立即充值</a>
+          <a href="/dashboard#billing" class="btn btn-primary w-full py-3 rounded-lg font-medium">立即充值</a>
         </div>
-        <div class="stat-card p-8 rounded-xl border-slate-700">
-          <div class="text-sm text-gray-400 mb-2">企业套餐</div>
-          <div class="text-4xl font-bold text-green-400 mb-1">$120</div>
-          <div class="text-sm text-gray-400 mb-6">API 额度</div>
+        <div class="stat-card p-8 border-slate-700">
+          <div class="stat-label mb-2">企业套餐</div>
+          <div class="text-4xl font-bold text-teal-400 mb-1 metric">$120</div>
+          <div class="stat-label mb-6">API 额度</div>
           <ul class="space-y-3 mb-8 text-sm text-gray-300">
             <li>✅ 全部模型访问</li>
             <li>✅ 最快响应速度</li>
@@ -276,7 +440,7 @@
             <li>✅ 无限额度</li>
             <li>✅ SLA 保障</li>
           </ul>
-          <a href="/dashboard" class="btn-secondary w-full py-3 rounded-lg font-medium">立即充值</a>
+          <a href="/dashboard#billing" class="btn btn-secondary w-full py-3 rounded-lg font-medium">立即充值</a>
         </div>
       </div>
     </div>
@@ -287,7 +451,7 @@
       <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
         <div>
           <div class="flex items-center gap-3 mb-4">
-            <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-green-500 to-teal-600 flex items-center justify-center text-xl">🚀</div>
+            <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-teal-500 to-teal-600 flex items-center justify-center text-xl">🚀</div>
             <span class="text-xl font-bold text-white">TokenGo</span>
           </div>
           <p class="text-sm text-gray-400">多模型 AI 网关，一个密钥畅用所有 AI 服务</p>
@@ -295,23 +459,23 @@
         <div>
           <h4 class="text-white font-semibold mb-4">产品</h4>
           <ul class="space-y-2 text-sm text-gray-400">
-            <li><a href="#features" class="hover:text-green-400 transition-colors">功能特色</a></li>
-            <li><a href="#models" class="hover:text-green-400 transition-colors">AI 模型</a></li>
-            <li><a href="#pricing" class="hover:text-green-400 transition-colors">价格方案</a></li>
+            <li><a href="#features" class="hover:text-teal-400 transition-colors">功能特色</a></li>
+            <li><a href="#models" class="hover:text-teal-400 transition-colors">AI 模型</a></li>
+            <li><a href="#pricing" class="hover:text-teal-400 transition-colors">价格方案</a></li>
           </ul>
         </div>
         <div>
           <h4 class="text-white font-semibold mb-4">资源</h4>
           <ul class="space-y-2 text-sm text-gray-400">
-            <li><a href="/help" class="hover:text-green-400 transition-colors">使用教程</a></li>
-            <li><a href="/dashboard" class="hover:text-green-400 transition-colors">控制台</a></li>
-            <li><a href="/redeem" class="hover:text-green-400 transition-colors">卡密兑换</a></li>
+            <li><a href="/help" class="hover:text-teal-400 transition-colors">使用教程</a></li>
+            <li><a href="/dashboard" class="hover:text-teal-400 transition-colors">控制台</a></li>
+            <li><a href="/redeem" class="hover:text-teal-400 transition-colors">卡密兑换</a></li>
           </ul>
         </div>
         <div>
           <h4 class="text-white font-semibold mb-4">联系我们</h4>
           <ul class="space-y-2 text-sm text-gray-400">
-            <li>📧 Commecy2014@gmail.com</li>
+            <li>📧 commecy2014@gmail.com</li>
           </ul>
         </div>
       </div>
@@ -326,14 +490,14 @@
       { name: 'Claude Fable 5', desc: '最强推理能力', icon: '🧠', color: '#10a37f', badge: '推荐' },
       { name: 'Claude Sonnet 4.6', desc: '均衡高性能', icon: '⚡', color: '#10a37f', badge: '' },
       { name: 'Claude Haiku 4.5', desc: '快速响应', icon: '🚀', color: '#10a37f', badge: '' },
-      { name: 'GPT-5', desc: '新世代模型', icon: '💫', color: '#6e56cf', badge: '新' },
-      { name: 'GPT-4.1', desc: '高可靠', icon: '✨', color: '#6e56cf', badge: '' },
+      { name: 'GPT-5.6', desc: '新世代旗舰', icon: '💫', color: '#6e56cf', badge: '新' },
+      { name: 'GPT-5.4-mini', desc: '高性价比', icon: '✨', color: '#6e56cf', badge: '' },
       { name: 'GPT-Image-2', desc: '图像生成', icon: '🎨', color: '#ff6b6b', badge: '图像' },
       { name: 'Gemini 2.5 Pro', desc: '多模态', icon: '🤖', color: '#f59e0b', badge: '多模态' },
       { name: 'Gemini 2.5 Flash', desc: '快速经济', icon: '💨', color: '#f59e0b', badge: '' },
-      { name: 'Antigravity', desc: '智能开发', icon: '🔧', color: '#3b82f6', badge: '新' },
       { name: 'GLM-5.2', desc: '智谱旗舰', icon: '🌐', color: '#ec4899', badge: '' },
       { name: 'Kimi', desc: '长文本', icon: '📖', color: '#8b5cf6', badge: '' },
+      { name: 'Codex Auto', desc: '智能开发', icon: '🔧', color: '#3b82f6', badge: '新' },
       { name: 'Seedance', desc: '视频生成', icon: '🎬', color: '#06b6d4', badge: '视频' },
     ];
     
@@ -357,20 +521,20 @@
       if(!area) return;
       const token = localStorage.getItem('tg_session');
       if(!token) {
-        area.innerHTML = '<a href="/login" class="btn-secondary px-5 py-2 rounded-lg text-sm font-medium">登录</a><a href="/login?mode=register" class="btn-primary px-5 py-2 rounded-lg text-sm font-medium">免费注册</a>';
+        area.innerHTML = '<a href="/login" class="btn btn-secondary px-5 py-2">登录</a><a href="/login?mode=register" class="btn btn-primary px-5 py-2">免费注册</a>';
         return;
       }
       try {
         const r = await fetch('/api/auth/me', { headers: { 'Authorization': 'Bearer ' + token } });
         if(!r.ok) {
           localStorage.removeItem('tg_session');
-          area.innerHTML = '<a href="/login" class="btn-secondary px-5 py-2 rounded-lg text-sm font-medium">登录</a><a href="/login?mode=register" class="btn-primary px-5 py-2 rounded-lg text-sm font-medium">免费注册</a>';
+          area.innerHTML = '<a href="/login" class="btn btn-secondary px-5 py-2">登录</a><a href="/login?mode=register" class="btn btn-primary px-5 py-2">免费注册</a>';
           return;
         }
         const u = await r.json();
-        area.innerHTML = `<span class="text-sm text-gray-300 mr-2">👋 ${u.username || u.email}</span><a href="/dashboard" class="btn-primary px-5 py-2 rounded-lg text-sm font-medium">控制台</a><button class="btn-secondary px-5 py-2 rounded-lg text-sm font-medium" onclick="logout()">退出</button>`;
+        area.innerHTML = `<span class="text-sm text-gray-300 mr-2">👋 ${u.username || u.email}</span><a href="/dashboard" class="btn btn-primary px-5 py-2">控制台</a><button class="btn btn-secondary px-5 py-2" onclick="logout()">退出</button>`;
       } catch(e) {
-        area.innerHTML = '<a href="/login" class="btn-secondary px-5 py-2 rounded-lg text-sm font-medium">登录</a><a href="/login?mode=register" class="btn-primary px-5 py-2 rounded-lg text-sm font-medium">免费注册</a>';
+        area.innerHTML = '<a href="/login" class="btn btn-secondary px-5 py-2">登录</a><a href="/login?mode=register" class="btn btn-primary px-5 py-2">免费注册</a>';
       }
     }
 

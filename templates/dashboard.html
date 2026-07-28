@@ -5,10 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>TokenGo - 控制台</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
       --primary: #14b8a6;
-      --primary-hover: #0d9488;
+      --primary-light: #2dd4bf;
+      --primary-dark: #0d9488;
       --bg-dark: #0f172a;
       --bg-card: #1e293b;
       --bg-card-hover: #334155;
@@ -20,7 +24,7 @@
     body {
       background-color: var(--bg-dark);
       color: var(--text-primary);
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
       margin: 0;
       padding: 0;
       min-height: 100vh;
@@ -93,60 +97,96 @@
       width: 20px;
       text-align: center;
     }
-    .stat-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: 0.75rem;
-      padding: 1.25rem;
-      transition: all 0.2s ease;
-    }
-    .stat-card:hover {
-      background: var(--bg-card-hover);
-      transform: translateY(-1px);
-    }
-    .stat-icon {
-      width: 44px;
-      height: 44px;
-      border-radius: 0.75rem;
-      display: flex;
+    .btn {
+      display: inline-flex;
       align-items: center;
       justify-content: center;
-      font-size: 18px;
-    }
-    .btn-primary {
-      background: var(--primary);
-      color: white;
+      gap: 0.5rem;
+      border-radius: 0.75rem;
       padding: 0.5rem 1rem;
-      border-radius: 0.5rem;
-      font-weight: 600;
       font-size: 0.875rem;
-      transition: all 0.2s ease;
+      line-height: 1.25rem;
+      font-weight: 500;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
       border: none;
       cursor: pointer;
     }
+    .btn-primary {
+      background: linear-gradient(to right, var(--primary), var(--primary-dark));
+      color: white;
+      box-shadow: 0 4px 6px -1px rgba(20, 184, 166, 0.25);
+    }
     .btn-primary:hover {
-      background: var(--primary-hover);
-      transform: translateY(-1px);
+      background: linear-gradient(to right, var(--primary-dark), #0f766e);
+      box-shadow: 0 10px 15px -3px rgba(20, 184, 166, 0.3);
     }
     .btn-secondary {
       background: transparent;
       border: 1px solid var(--border);
       color: var(--text-primary);
-      padding: 0.5rem 1rem;
-      border-radius: 0.5rem;
-      font-weight: 500;
-      font-size: 0.875rem;
-      transition: all 0.2s ease;
-      cursor: pointer;
+      box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
     }
     .btn-secondary:hover {
-      background: var(--bg-card-hover);
+      background: var(--bg-card);
+      border-color: var(--text-secondary);
+    }
+    .stat-card {
+      background: linear-gradient(180deg, rgba(15, 24, 43, 0.94) 0%, rgba(6, 13, 24, 0.94) 100%);
+      border: 1px solid rgba(20, 184, 166, 0.16);
+      box-shadow: inset 0 1px rgba(45, 212, 191, 0.06), 0 6px 24px rgba(0, 0, 0, 0.36);
+      backdrop-filter: blur(10px);
+      border-radius: 1rem;
+      padding: 1.25rem;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .stat-card:hover {
+      border-color: rgba(45, 212, 191, 0.56);
+      box-shadow: inset 0 1px rgba(45, 212, 191, 0.12), 0 0 26px rgba(20, 184, 166, 0.18), 0 10px 34px rgba(0, 0, 0, 0.4);
+    }
+    .stat-icon {
+      height: 3rem;
+      width: 3rem;
+      border-radius: 0.75rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+    }
+    .stat-icon-primary {
+      background-color: rgba(204, 251, 241, 0.5);
+      color: var(--primary-dark);
+    }
+    .stat-icon-success {
+      background-color: rgba(209, 250, 229, 0.5);
+      color: #059669;
+    }
+    .stat-icon-warning {
+      background-color: rgba(254, 243, 199, 0.5);
+      color: #d97706;
+    }
+    .stat-icon-danger {
+      background-color: rgba(254, 226, 226, 0.5);
+      color: #dc2626;
+    }
+    .stat-value {
+      font-size: 1.5rem;
+      line-height: 2rem;
+      font-weight: 700;
+    }
+    .stat-label {
+      font-size: 0.875rem;
+      line-height: 1.25rem;
+      color: var(--text-secondary);
+    }
+    .metric {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-variant-numeric: tabular-nums;
     }
     .input-field {
       width: 100%;
       padding: 0.5rem 0.75rem;
       border: 1px solid var(--border);
-      border-radius: 0.5rem;
+      border-radius: 0.75rem;
       font-size: 0.875rem;
       background: var(--bg-dark);
       color: var(--text-primary);
@@ -169,22 +209,33 @@
     .modal-content {
       background: var(--bg-card);
       border: 1px solid var(--border);
-      border-radius: 0.75rem;
+      border-radius: 1rem;
       width: 100%;
       max-width: 500px;
       overflow: hidden;
     }
     .live-dot {
-      width: 8px;
-      height: 8px;
-      background: #10b981;
-      border-radius: 50%;
-      animation: pulse 2s infinite;
+      position: relative;
       display: inline-block;
+      height: 0.5rem;
+      width: 0.5rem;
+      border-radius: 9999px;
+      background-color: var(--primary);
     }
-    @keyframes pulse {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.5; }
+    .live-dot::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      border-radius: 9999px;
+      background-color: var(--primary-light);
+      animation: livePulse 1.8s ease-out infinite;
+    }
+    @keyframes livePulse {
+      0% { transform: scale(1); opacity: 0.7; }
+      to { transform: scale(2.6); opacity: 0; }
     }
     .payment-method-btn {
       border: 2px solid var(--border);
@@ -206,7 +257,7 @@
       position: relative;
       background: var(--bg-dark);
       border: 1px solid var(--border);
-      border-radius: 0.5rem;
+      border-radius: 0.75rem;
       padding: 0.75rem 1rem;
       font-mono: 13px;
     }
@@ -230,7 +281,7 @@
     .package-card {
       background: var(--bg-card);
       border: 1px solid var(--border);
-      border-radius: 0.75rem;
+      border-radius: 1rem;
       padding: 1.25rem;
       transition: all 0.2s ease;
     }
@@ -279,34 +330,45 @@
     }
     .data-table td {
       padding: 0.75rem;
-      border-bottom: 1px solid var(--border);
+      border-bottom: 1px solid rgba(243, 244, 246, 0.1);
       color: var(--text-primary);
     }
-    .data-table tr:hover td {
-      background: var(--bg-card-hover);
+    .data-table tbody tr:hover {
+      background-color: rgba(249, 250, 251, 0.03);
     }
     .badge {
-      display: inline-block;
-      padding: 0.25rem 0.5rem;
-      border-radius: 0.25rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      border-radius: 9999px;
+      padding: 0.125rem 0.625rem;
       font-size: 0.75rem;
-      font-weight: 600;
+      line-height: 1rem;
+      font-weight: 500;
+    }
+    .badge-primary {
+      background-color: rgba(204, 251, 241, 0.5);
+      color: #0f766e;
     }
     .badge-success {
-      background: rgba(16, 185, 129, 0.15);
-      color: #10b981;
+      background-color: rgba(209, 250, 229, 0.5);
+      color: #047857;
     }
     .badge-warning {
-      background: rgba(245, 158, 11, 0.15);
-      color: #f59e0b;
+      background-color: rgba(254, 243, 199, 0.5);
+      color: #b45309;
     }
     .badge-error {
-      background: rgba(239, 68, 68, 0.15);
-      color: #ef4444;
+      background-color: rgba(254, 226, 226, 0.5);
+      color: #991b1b;
     }
     .badge-info {
-      background: rgba(59, 130, 246, 0.15);
-      color: #3b82f6;
+      background-color: rgba(147, 197, 253, 0.5);
+      color: #1d4ed8;
+    }
+    .badge-gray {
+      background-color: rgba(148, 163, 184, 0.5);
+      color: var(--text-secondary);
     }
   </style>
 </head>
@@ -391,7 +453,7 @@
     <header class="top-bar">
       <div class="flex items-center justify-between">
         <div class="flex items-center gap-4">
-          <button class="btn-secondary p-2" onclick="toggleSidebar()">
+          <button class="btn btn-secondary p-2" onclick="toggleSidebar()">
             <span>☰</span>
           </button>
           <nav class="flex items-center gap-1">
@@ -402,14 +464,14 @@
         </div>
 
         <div class="flex items-center gap-4">
-          <button class="btn-secondary p-2 text-sm" title="公告">
+          <button class="btn btn-secondary p-2 text-sm" title="公告">
             📢
           </button>
-          <button class="btn-secondary p-2 text-sm" title="语言切换">
+          <button class="btn btn-secondary p-2 text-sm" title="语言切换">
             中
           </button>
           <div class="flex items-center gap-2">
-            <button class="btn-secondary p-2 text-sm" title="深色模式">
+            <button class="btn btn-secondary p-2 text-sm" title="深色模式">
               🌙
             </button>
             <div class="h-6 w-px bg-slate-700"></div>
@@ -437,43 +499,43 @@
 
         <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
           <div class="stat-card">
-            <div class="flex items-start justify-between mb-3">
-              <div>
-                <div class="text-xs text-gray-400 mb-1">账户余额</div>
-                <div class="text-2xl font-bold text-white" id="balanceDisplay">$0.00</div>
+            <div class="flex items-start justify-between gap-4">
+              <div class="flex-1">
+                <div class="stat-label mb-1">账户余额</div>
+                <div class="stat-value text-white metric" id="balanceDisplay">$0.00</div>
                 <div class="text-xs text-teal-400 mt-1">可用额度</div>
               </div>
-              <div class="stat-icon bg-teal-500/10 text-teal-400">💰</div>
+              <div class="stat-icon stat-icon-primary">💰</div>
             </div>
           </div>
           <div class="stat-card">
-            <div class="flex items-start justify-between mb-3">
-              <div>
-                <div class="text-xs text-gray-400 mb-1">今日请求</div>
-                <div class="text-2xl font-bold text-white" id="callsDisplay">0</div>
-                <div class="text-xs text-gray-400 mt-1">总计: 0</div>
+            <div class="flex items-start justify-between gap-4">
+              <div class="flex-1">
+                <div class="stat-label mb-1">今日请求</div>
+                <div class="stat-value text-white metric" id="callsDisplay">0</div>
+                <div class="stat-label mt-1">总计: 0</div>
               </div>
-              <div class="stat-icon bg-blue-500/10 text-blue-400">📊</div>
+              <div class="stat-icon stat-icon-success">📊</div>
             </div>
           </div>
           <div class="stat-card">
-            <div class="flex items-start justify-between mb-3">
-              <div>
-                <div class="text-xs text-gray-400 mb-1">今日消耗</div>
-                <div class="text-2xl font-bold text-white" id="usageDisplay">$0.00</div>
-                <div class="text-xs text-gray-400 mt-1">总计: $0.00</div>
+            <div class="flex items-start justify-between gap-4">
+              <div class="flex-1">
+                <div class="stat-label mb-1">今日消耗</div>
+                <div class="stat-value text-white metric" id="usageDisplay">$0.00</div>
+                <div class="stat-label mt-1">总计: $0.00</div>
               </div>
-              <div class="stat-icon bg-purple-500/10 text-purple-400">💸</div>
+              <div class="stat-icon stat-icon-warning">💸</div>
             </div>
           </div>
           <div class="stat-card">
-            <div class="flex items-start justify-between mb-3">
-              <div>
-                <div class="text-xs text-gray-400 mb-1">API 密钥</div>
-                <div class="text-2xl font-bold text-white">1</div>
-                <div class="text-xs text-gray-400 mt-1">有效状态</div>
+            <div class="flex items-start justify-between gap-4">
+              <div class="flex-1">
+                <div class="stat-label mb-1">API 密钥</div>
+                <div class="stat-value text-white metric">1</div>
+                <div class="stat-label mt-1">有效状态</div>
               </div>
-              <div class="stat-icon bg-green-500/10 text-green-400">🔑</div>
+              <div class="stat-icon stat-icon-success">🔑</div>
             </div>
           </div>
         </div>
@@ -503,19 +565,19 @@
           <div class="stat-card">
             <h3 class="font-semibold text-white mb-4">快捷操作</h3>
             <div class="space-y-2">
-              <button class="btn-secondary w-full flex items-center justify-between" onclick="switchSection('billing')">
+              <button class="btn btn-secondary w-full flex items-center justify-between" onclick="switchSection('billing')">
                 <span>💰 充值额度</span>
                 <span>→</span>
               </button>
-              <button class="btn-secondary w-full flex items-center justify-between" onclick="switchSection('api-key')">
+              <button class="btn btn-secondary w-full flex items-center justify-between" onclick="switchSection('api-key')">
                 <span>🔑 管理密钥</span>
                 <span>→</span>
               </button>
-              <button class="btn-secondary w-full flex items-center justify-between" onclick="switchSection('redeem')">
+              <button class="btn btn-secondary w-full flex items-center justify-between" onclick="switchSection('redeem')">
                 <span>🎫 兑换卡密</span>
                 <span>→</span>
               </button>
-              <button class="btn-secondary w-full flex items-center justify-between" onclick="switchSection('invite')">
+              <button class="btn btn-secondary w-full flex items-center justify-between" onclick="switchSection('invite')">
                 <span>🎁 邀请好友</span>
                 <span>→</span>
               </button>
@@ -538,15 +600,15 @@
               <h3 class="font-semibold text-white">您的 API Key</h3>
               <p class="text-sm text-gray-400">用于调用 AI 模型的身份凭证，请妥善保管</p>
             </div>
-            <button class="btn-secondary" onclick="refreshApiKey()">🔄 刷新密钥</button>
+            <button class="btn btn-secondary" onclick="refreshApiKey()">🔄 刷新密钥</button>
           </div>
           <div class="api-key-card text-base text-gray-300 select-all" id="apiKeyDisplay">
             sk-xxxxxxxxxxxxxxxxxxxxxxxx
             <button class="copy-btn" onclick="copyApiKey()">复制</button>
           </div>
           <div class="flex gap-3 mt-4">
-            <button class="btn-primary" onclick="copyApiKey()">📋 复制密钥</button>
-            <button class="btn-secondary" onclick="window.open('/help', '_blank')">📖 使用文档</button>
+            <button class="btn btn-primary" onclick="copyApiKey()">📋 复制密钥</button>
+            <button class="btn btn-secondary" onclick="window.open('/help', '_blank')">📖 使用文档</button>
           </div>
         </div>
 
@@ -572,7 +634,7 @@
           </div>
           <div class="flex items-center gap-2">
             <input type="date" id="usageDate" class="input-field w-auto">
-            <button class="btn-secondary" onclick="loadUsageRecords()">查询</button>
+            <button class="btn btn-secondary" onclick="loadUsageRecords()">查询</button>
           </div>
         </div>
 
@@ -709,15 +771,15 @@
           <div class="mt-4 pt-4 border-t border-slate-700">
             <div class="grid grid-cols-3 gap-4">
               <div>
-                <div class="text-xs text-gray-400">到期时间</div>
+                <div class="stat-label">到期时间</div>
                 <div class="text-sm font-medium text-white">永久有效</div>
               </div>
               <div>
-                <div class="text-xs text-gray-400">最大并发</div>
+                <div class="stat-label">最大并发</div>
                 <div class="text-sm font-medium text-white">无限制</div>
               </div>
               <div>
-                <div class="text-xs text-gray-400">技术支持</div>
+                <div class="stat-label">技术支持</div>
                 <div class="text-sm font-medium text-white">7x24 小时</div>
               </div>
             </div>
@@ -735,26 +797,26 @@
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div class="package-card">
-            <div class="text-xs text-gray-400 mb-2">体验套餐</div>
-            <div class="text-2xl font-bold text-teal-400">$12</div>
-            <div class="text-xs text-gray-400 mb-4">API 额度</div>
+            <div class="stat-label mb-2">体验套餐</div>
+            <div class="text-2xl font-bold text-teal-400 metric">$12</div>
+            <div class="stat-label mb-4">API 额度</div>
             <div class="bg-teal-500/10 text-teal-400 text-xs px-3 py-1 rounded-full mb-4 inline-block">入门推荐</div>
-            <button class="btn-secondary w-full" onclick="createPayment(12)">立即购买</button>
+            <button class="btn btn-secondary w-full" onclick="createPayment(12)">立即购买</button>
           </div>
           <div class="package-card featured">
             <div class="inline-block bg-teal-500 text-white text-xs font-semibold px-3 py-1 rounded-full mb-2">热门推荐</div>
-            <div class="text-xs text-gray-400 mb-2">专业套餐</div>
-            <div class="text-2xl font-bold text-teal-400">$60</div>
-            <div class="text-xs text-gray-400 mb-4">API 额度</div>
+            <div class="stat-label mb-2">专业套餐</div>
+            <div class="text-2xl font-bold text-teal-400 metric">$60</div>
+            <div class="stat-label mb-4">API 额度</div>
             <div class="bg-teal-500/10 text-teal-400 text-xs px-3 py-1 rounded-full mb-4 inline-block">省 20%</div>
-            <button class="btn-primary w-full" onclick="createPayment(60)">立即购买</button>
+            <button class="btn btn-primary w-full" onclick="createPayment(60)">立即购买</button>
           </div>
           <div class="package-card">
-            <div class="text-xs text-gray-400 mb-2">企业套餐</div>
-            <div class="text-2xl font-bold text-teal-400">$120</div>
-            <div class="text-xs text-gray-400 mb-4">API 额度</div>
+            <div class="stat-label mb-2">企业套餐</div>
+            <div class="text-2xl font-bold text-teal-400 metric">$120</div>
+            <div class="stat-label mb-4">API 额度</div>
             <div class="bg-teal-500/10 text-teal-400 text-xs px-3 py-1 rounded-full mb-4 inline-block">省 30%</div>
-            <button class="btn-secondary w-full" onclick="createPayment(120)">立即购买</button>
+            <button class="btn btn-secondary w-full" onclick="createPayment(120)">立即购买</button>
           </div>
         </div>
       </section>
@@ -804,7 +866,7 @@
             <input type="text" id="redeemCode" class="input-field mb-4" placeholder="TG-XXXX-XXXX-XXXX">
             <label class="block text-sm font-medium text-gray-300 mb-2">邮箱（已登录用户自动填充）</label>
             <input type="email" id="redeemEmail" class="input-field mb-4" placeholder="your@email.com">
-            <button class="btn-primary w-full" onclick="redeemCard()">🎫 兑换卡密</button>
+            <button class="btn btn-primary w-full" onclick="redeemCard()">🎫 兑换卡密</button>
           </div>
         </div>
       </section>
@@ -823,23 +885,23 @@
               <h3 class="font-semibold text-white">您的邀请链接</h3>
               <p class="text-sm text-gray-400 mt-1">分享此链接给好友</p>
             </div>
-            <button class="btn-secondary" onclick="copyInviteLink()">复制链接</button>
+            <button class="btn btn-secondary" onclick="copyInviteLink()">复制链接</button>
           </div>
           <div class="api-key-card text-sm text-gray-300" id="inviteLink">
             https://tokengo-d0cb.onrender.com/register?ref=YOUR_REF_CODE
           </div>
           <div class="mt-6 grid grid-cols-3 gap-4">
             <div class="text-center">
-              <div class="text-2xl font-bold text-teal-400">0</div>
-              <div class="text-xs text-gray-400 mt-1">邀请人数</div>
+              <div class="text-2xl font-bold text-teal-400 metric">0</div>
+              <div class="stat-label mt-1">邀请人数</div>
             </div>
             <div class="text-center">
-              <div class="text-2xl font-bold text-teal-400">$0.00</div>
-              <div class="text-xs text-gray-400 mt-1">返利金额</div>
+              <div class="text-2xl font-bold text-teal-400 metric">$0.00</div>
+              <div class="stat-label mt-1">返利金额</div>
             </div>
             <div class="text-center">
-              <div class="text-2xl font-bold text-teal-400">15%</div>
-              <div class="text-xs text-gray-400 mt-1">返利比例</div>
+              <div class="text-2xl font-bold text-teal-400 metric">15%</div>
+              <div class="stat-label mt-1">返利比例</div>
             </div>
           </div>
         </div>
@@ -851,7 +913,7 @@
             <h1 class="text-xl font-bold text-white">客服工单</h1>
             <p class="text-sm text-gray-400 mt-1">提交问题或反馈</p>
           </div>
-          <button class="btn-primary" onclick="openTicketModal()">📝 新建工单</button>
+          <button class="btn btn-primary" onclick="openTicketModal()">📝 新建工单</button>
         </div>
 
         <div class="stat-card">
@@ -904,7 +966,7 @@
                 <input type="password" id="profileConfirm" class="input-field" placeholder="留空不修改">
               </div>
             </div>
-            <button type="submit" class="btn-primary mt-6">保存修改</button>
+            <button type="submit" class="btn btn-primary mt-6">保存修改</button>
           </form>
         </div>
       </section>
@@ -956,8 +1018,8 @@
           </div>
 
           <div class="flex gap-3">
-            <button class="btn-secondary flex-1" onclick="document.getElementById('paymentModal').style.display='none'">关闭</button>
-            <button class="btn-primary flex-1" onclick="submitPaymentProof()">✅ 我已支付</button>
+            <button class="btn btn-secondary flex-1" onclick="document.getElementById('paymentModal').style.display='none'">关闭</button>
+            <button class="btn btn-primary flex-1" onclick="submitPaymentProof()">✅ 我已支付</button>
           </div>
         </div>
       </div>
@@ -992,8 +1054,8 @@
             <textarea id="ticketContent" class="input-field" rows="4" placeholder="请详细描述您的问题..." required></textarea>
           </div>
           <div class="flex gap-3">
-            <button type="button" class="btn-secondary flex-1" onclick="document.getElementById('ticketModal').style.display='none'">取消</button>
-            <button type="submit" class="btn-primary flex-1">提交工单</button>
+            <button type="button" class="btn btn-secondary flex-1" onclick="document.getElementById('ticketModal').style.display='none'">取消</button>
+            <button type="submit" class="btn btn-primary flex-1">提交工单</button>
           </div>
         </form>
       </div>
@@ -1475,6 +1537,3 @@
     }
 
     loadUserData();
-  </script>
-</body>
-</html>

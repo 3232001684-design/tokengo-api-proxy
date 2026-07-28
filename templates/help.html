@@ -5,9 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>TokenGo - 使用帮助</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --primary: #10a37f;
+      --primary: #14b8a6;
+      --primary-light: #2dd4bf;
+      --primary-dark: #0d9488;
       --bg-dark: #0f172a;
       --bg-card: #1e293b;
       --text-primary: #f1f5f9;
@@ -17,7 +22,7 @@
     body {
       background-color: var(--bg-dark);
       color: var(--text-primary);
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
       line-height: 1.6;
     }
     .nav-link {
@@ -37,7 +42,7 @@
     .code-block {
       background: #0d1117;
       border: 1px solid var(--border);
-      border-radius: 0.5rem;
+      border-radius: 0.75rem;
       padding: 1rem;
       font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
       font-size: 0.875rem;
@@ -64,8 +69,72 @@
       gap: 1rem;
       padding: 1rem;
       background: var(--bg-card);
+      border: 1px solid rgba(20, 184, 166, 0.16);
       border-radius: 0.75rem;
       margin-bottom: 1rem;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .feature-item:hover {
+      border-color: rgba(45, 212, 191, 0.56);
+    }
+    .stat-card {
+      background: linear-gradient(180deg, rgba(15, 24, 43, 0.94) 0%, rgba(6, 13, 24, 0.94) 100%);
+      border: 1px solid rgba(20, 184, 166, 0.16);
+      box-shadow: inset 0 1px rgba(45, 212, 191, 0.06), 0 6px 24px rgba(0, 0, 0, 0.36);
+      backdrop-filter: blur(10px);
+      border-radius: 1rem;
+      padding: 1.25rem;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .stat-card:hover {
+      border-color: rgba(45, 212, 191, 0.56);
+      box-shadow: inset 0 1px rgba(45, 212, 191, 0.12), 0 0 26px rgba(20, 184, 166, 0.18), 0 10px 34px rgba(0, 0, 0, 0.4);
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      border-radius: 0.75rem;
+      padding: 0.5rem 1rem;
+      font-size: 0.875rem;
+      line-height: 1.25rem;
+      font-weight: 500;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      border: none;
+      cursor: pointer;
+    }
+    .btn-primary {
+      background: linear-gradient(to right, var(--primary), var(--primary-dark));
+      color: white;
+      box-shadow: 0 4px 6px -1px rgba(20, 184, 166, 0.25);
+    }
+    .btn-primary:hover {
+      background: linear-gradient(to right, var(--primary-dark), #0f766e);
+      box-shadow: 0 10px 15px -3px rgba(20, 184, 166, 0.3);
+    }
+    .live-dot {
+      position: relative;
+      display: inline-block;
+      height: 0.5rem;
+      width: 0.5rem;
+      border-radius: 9999px;
+      background-color: var(--primary);
+    }
+    .live-dot::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      border-radius: 9999px;
+      background-color: var(--primary-light);
+      animation: livePulse 1.8s ease-out infinite;
+    }
+    @keyframes livePulse {
+      0% { transform: scale(1); opacity: 0.7; }
+      to { transform: scale(2.6); opacity: 0; }
     }
   </style>
 </head>
@@ -73,14 +142,14 @@
   <nav class="fixed top-0 left-0 right-0 z-50 bg-[var(--bg-dark)] border-b border-[var(--border)]">
     <div class="container mx-auto px-6 h-16 flex items-center justify-between">
       <a href="/" class="flex items-center gap-3">
-        <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-green-500 to-teal-600 flex items-center justify-center text-xl">🚀</div>
+        <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-teal-500 to-teal-600 flex items-center justify-center text-xl">🚀</div>
         <span class="text-xl font-bold text-white">TokenGo</span>
       </a>
       <div class="flex items-center gap-6">
         <a href="/" class="nav-link">首页</a>
         <a href="/dashboard" class="nav-link">控制台</a>
         <a href="/help" class="nav-link" style="color: var(--primary)">使用帮助</a>
-        <a href="/login" class="px-4 py-2 bg-[var(--primary)] text-white rounded-lg text-sm font-medium">登录</a>
+        <a href="/login" class="btn btn-primary">登录</a>
       </div>
     </div>
   </nav>
@@ -90,7 +159,6 @@
       <h1 class="text-3xl font-bold text-white mb-8">使用帮助</h1>
 
       <div class="space-y-8">
-        <!-- 快速开始 -->
         <section>
           <h2 class="section-title">🚀 快速开始</h2>
           <div class="feature-item">
@@ -116,7 +184,6 @@
           </div>
         </section>
 
-        <!-- API 调用示例 -->
         <section>
           <h2 class="section-title">📡 API 调用示例</h2>
           
@@ -130,7 +197,7 @@
 
           <div id="tab-curl" class="tab-content">
             <h3 class="text-lg font-medium text-white mb-3">ChatGPT 风格调用</h3>
-            <div class="code-block">curl https://__PUBLIC_BASE_URL__/v1/chat/completions \
+            <div class="code-block">curl https://tokengo-d0cb.onrender.com/v1/chat/completions \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -d '{
@@ -145,7 +212,7 @@
 
 client = OpenAI(
     api_key="YOUR_API_KEY",
-    base_url="https://__PUBLIC_BASE_URL__/v1"
+    base_url="https://tokengo-d0cb.onrender.com/v1"
 )
 
 response = client.chat.completions.create(
@@ -162,7 +229,7 @@ print(response.choices[0].message.content)</div>
 
 const client = new OpenAI({
   apiKey: 'YOUR_API_KEY',
-  baseURL: 'https://__PUBLIC_BASE_URL__/v1'
+  baseURL: 'https://tokengo-d0cb.onrender.com/v1'
 });
 
 const response = await client.chat.completions.create({
@@ -174,13 +241,12 @@ console.log(response.choices[0].message.content);</div>
           </div>
         </section>
 
-        <!-- 支持的模型 -->
         <section>
           <h2 class="section-title">🤖 支持的模型</h2>
-          <div class="bg-[var(--bg-card)] rounded-xl p-6">
+          <div class="stat-card">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div class="p-4 bg-[var(--bg-dark)] rounded-lg">
-                <h4 class="font-semibold text-green-400 mb-2">GPT 系列</h4>
+              <div class="p-4 bg-slate-800/50 rounded-lg">
+                <h4 class="font-semibold text-teal-400 mb-2">GPT 系列</h4>
                 <ul class="text-sm text-[var(--text-secondary)] space-y-1">
                   <li>• gpt-5.6</li>
                   <li>• gpt-5.5</li>
@@ -189,24 +255,24 @@ console.log(response.choices[0].message.content);</div>
                   <li>• gpt-5.3-codex-spark</li>
                 </ul>
               </div>
-              <div class="p-4 bg-[var(--bg-dark)] rounded-lg">
-                <h4 class="font-semibold text-green-400 mb-2">Claude 系列</h4>
+              <div class="p-4 bg-slate-800/50 rounded-lg">
+                <h4 class="font-semibold text-teal-400 mb-2">Claude 系列</h4>
                 <ul class="text-sm text-[var(--text-secondary)] space-y-1">
                   <li>• claude-fable-5</li>
                   <li>• claude-sonnet-4.6</li>
                   <li>• claude-haiku-4.5</li>
                 </ul>
               </div>
-              <div class="p-4 bg-[var(--bg-dark)] rounded-lg">
-                <h4 class="font-semibold text-green-400 mb-2">图像生成</h4>
+              <div class="p-4 bg-slate-800/50 rounded-lg">
+                <h4 class="font-semibold text-teal-400 mb-2">图像生成</h4>
                 <ul class="text-sm text-[var(--text-secondary)] space-y-1">
                   <li>• gpt-image-1</li>
                   <li>• gpt-image-1.5</li>
                   <li>• gpt-image-2</li>
                 </ul>
               </div>
-              <div class="p-4 bg-[var(--bg-dark)] rounded-lg">
-                <h4 class="font-semibold text-green-400 mb-2">其他模型</h4>
+              <div class="p-4 bg-slate-800/50 rounded-lg">
+                <h4 class="font-semibold text-teal-400 mb-2">其他模型</h4>
                 <ul class="text-sm text-[var(--text-secondary)] space-y-1">
                   <li>• codex-auto-review</li>
                   <li>• Gemini 系列</li>
@@ -217,10 +283,9 @@ console.log(response.choices[0].message.content);</div>
           </div>
         </section>
 
-        <!-- 价格说明 -->
         <section>
           <h2 class="section-title">💰 价格说明</h2>
-          <div class="bg-[var(--bg-card)] rounded-xl p-6">
+          <div class="stat-card">
             <p class="text-[var(--text-secondary)] mb-4">TokenGo 按实际使用的 Token 数量计费，价格比官方更低：</p>
             <div class="overflow-x-auto">
               <table class="w-full text-sm">
@@ -234,23 +299,23 @@ console.log(response.choices[0].message.content);</div>
                 <tbody class="text-white">
                   <tr class="border-b border-[var(--border)]">
                     <td class="py-3 px-4">GPT-5.4-mini</td>
-                    <td class="py-3 px-4 text-right text-green-400">$0.001</td>
-                    <td class="py-3 px-4 text-right text-green-400">$0.004</td>
+                    <td class="py-3 px-4 text-right text-teal-400">$0.001</td>
+                    <td class="py-3 px-4 text-right text-teal-400">$0.004</td>
                   </tr>
                   <tr class="border-b border-[var(--border)]">
                     <td class="py-3 px-4">Claude-haiku-4.5</td>
-                    <td class="py-3 px-4 text-right text-green-400">$0.001</td>
-                    <td class="py-3 px-4 text-right text-green-400">$0.004</td>
+                    <td class="py-3 px-4 text-right text-teal-400">$0.001</td>
+                    <td class="py-3 px-4 text-right text-teal-400">$0.004</td>
                   </tr>
                   <tr class="border-b border-[var(--border)]">
                     <td class="py-3 px-4">Claude-fable-5</td>
-                    <td class="py-3 px-4 text-right text-green-400">$0.005</td>
-                    <td class="py-3 px-4 text-right text-green-400">$0.015</td>
+                    <td class="py-3 px-4 text-right text-teal-400">$0.005</td>
+                    <td class="py-3 px-4 text-right text-teal-400">$0.015</td>
                   </tr>
                   <tr>
                     <td class="py-3 px-4">GPT-Image-2</td>
-                    <td class="py-3 px-4 text-right text-green-400">$0.030</td>
-                    <td class="py-3 px-4 text-right text-green-400">$0.030</td>
+                    <td class="py-3 px-4 text-right text-teal-400">$0.030</td>
+                    <td class="py-3 px-4 text-right text-teal-400">$0.030</td>
                   </tr>
                 </tbody>
               </table>
@@ -258,33 +323,31 @@ console.log(response.choices[0].message.content);</div>
           </div>
         </section>
 
-        <!-- 常见问题 -->
         <section>
           <h2 class="section-title">❓ 常见问题</h2>
           <div class="space-y-4">
-            <details class="bg-[var(--bg-card)] rounded-xl p-4">
+            <details class="stat-card">
               <summary class="font-semibold text-white cursor-pointer">API Key 是什么？如何获取？</summary>
               <p class="mt-3 text-[var(--text-secondary)]">API Key 是您调用 AI 服务的凭证。登录后在控制台的「API 密钥」页面可以查看和管理您的密钥。</p>
             </details>
-            <details class="bg-[var(--bg-card)] rounded-xl p-4">
+            <details class="stat-card">
               <summary class="font-semibold text-white cursor-pointer">额度用完了怎么办？</summary>
               <p class="mt-3 text-[var(--text-secondary)]">您可以在控制台的「充值/订阅」页面购买额度，也可以使用卡密兑换。我们支持支付宝和微信支付。</p>
             </details>
-            <details class="bg-[var(--bg-card)] rounded-xl p-4">
+            <details class="stat-card">
               <summary class="font-semibold text-white cursor-pointer">如何确保 API 调用安全？</summary>
               <p class="mt-3 text-[var(--text-secondary)]">请妥善保管您的 API Key，不要在公开场合分享。建议定期更换密钥，如发现异常使用请联系客服。</p>
             </details>
-            <details class="bg-[var(--bg-card)] rounded-xl p-4">
+            <details class="stat-card">
               <summary class="font-semibold text-white cursor-pointer">支持流式输出吗？</summary>
               <p class="mt-3 text-[var(--text-secondary)]">是的，我们支持流式输出（Streaming）。在请求中添加 `"stream": true` 即可启用流式响应。</p>
             </details>
           </div>
         </section>
 
-        <!-- 联系我们 -->
         <section>
           <h2 class="section-title">📧 联系我们</h2>
-          <div class="bg-[var(--bg-card)] rounded-xl p-6 text-center">
+          <div class="stat-card text-center">
             <p class="text-[var(--text-secondary)] mb-4">遇到问题或有建议？</p>
             <p class="text-lg text-white">📧 commecy2014@gmail.com</p>
           </div>
@@ -317,14 +380,14 @@ console.log(response.choices[0].message.content);</div>
             document.querySelector('nav').innerHTML = `
               <div class="container mx-auto px-6 h-16 flex items-center justify-between">
                 <a href="/" class="flex items-center gap-3">
-                  <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-green-500 to-teal-600 flex items-center justify-center text-xl">🚀</div>
+                  <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-teal-500 to-teal-600 flex items-center justify-center text-xl">🚀</div>
                   <span class="text-xl font-bold text-white">TokenGo</span>
                 </a>
                 <div class="flex items-center gap-6">
                   <a href="/" class="nav-link">首页</a>
                   <a href="/dashboard" class="nav-link">控制台</a>
                   <a href="/help" class="nav-link" style="color: var(--primary)">使用帮助</a>
-                  <a href="/dashboard" class="px-4 py-2 bg-[var(--primary)] text-white rounded-lg text-sm font-medium">${user.username || user.email}</a>
+                  <a href="/dashboard" class="btn btn-primary">${user.username || user.email}</a>
                 </div>
               </div>
             `;

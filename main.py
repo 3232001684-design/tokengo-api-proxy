@@ -1777,16 +1777,37 @@ def admin_create_coupons(body: CardGenerate, authorization: Optional[str] = Head
 
 
 async def keep_alive():
+    interval = 30
+    retries = 0
     while True:
         try:
             url = get_public_url()
             if url and url.startswith("http"):
-                async with httpx.AsyncClient(timeout=10.0) as client:
-                    await client.get(f"{url}/health")
-                    print(f"[保活] 已 ping {url}/health")
+                async with httpx.AsyncClient(timeout=15.0) as client:
+                    for attempt in range(3):
+                        try:
+                            response = await client.get(f"{url}/health", timeout=10.0)
+                            if response.status_code == 200:
+                                print(f"[保活] ✓ 成功 ping {url}/health")
+                                retries = 0
+                                break
+                            else:
+                                print(f"[保活] ✗ ping 返回 {response.status_code}")
+                        except httpx.TimeoutException:
+                            print(f"[保活] ⏱️ 第{attempt+1}次超时，重试中...")
+                            await asyncio.sleep(2)
+                        except Exception as e2:
+                            print(f"[保活] ✗ 第{attempt+1}次失败: {e2}")
+                            await asyncio.sleep(2)
+                    else:
+                        retries += 1
+                        print(f"[保活] ⚠️ 连续失败 {retries} 次")
         except Exception as e:
-            print(f"[保活] ping 失败: {e}")
-        await asyncio.sleep(600)
+            print(f"[保活] ✗ 错误: {e}")
+            retries += 1
+        
+        sleep_time = interval * (1.5 ** min(retries, 5))
+        await asyncio.sleep(min(sleep_time, 300))
 
 
 @app.on_event("startup")

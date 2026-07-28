@@ -5,9 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>TokenGo - 卡密兑换</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --primary: #10a37f;
+      --primary: #14b8a6;
+      --primary-light: #2dd4bf;
+      --primary-dark: #0d9488;
       --bg-dark: #0f172a;
       --bg-card: #1e293b;
       --text-primary: #f1f5f9;
@@ -17,7 +22,7 @@
     body {
       background-color: var(--bg-dark);
       color: var(--text-primary);
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
       min-height: 100vh;
       display: flex;
       flex-direction: column;
@@ -30,45 +35,59 @@
     .nav-link:hover {
       color: var(--primary);
     }
-    .card {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
+    .stat-card {
+      background: linear-gradient(180deg, rgba(15, 24, 43, 0.94) 0%, rgba(6, 13, 24, 0.94) 100%);
+      border: 1px solid rgba(20, 184, 166, 0.16);
+      box-shadow: inset 0 1px rgba(45, 212, 191, 0.06), 0 6px 24px rgba(0, 0, 0, 0.36);
+      backdrop-filter: blur(10px);
       border-radius: 1rem;
-      padding: 2rem;
+      padding: 1.75rem;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .stat-card:hover {
+      border-color: rgba(45, 212, 191, 0.56);
+      box-shadow: inset 0 1px rgba(45, 212, 191, 0.12), 0 0 26px rgba(20, 184, 166, 0.18), 0 10px 34px rgba(0, 0, 0, 0.4);
     }
     .input-field {
       width: 100%;
-      padding: 0.875rem 1rem;
+      padding: 0.75rem 1rem;
       border: 1px solid var(--border);
-      border-radius: 0.5rem;
-      font-size: 1rem;
+      border-radius: 0.75rem;
+      font-size: 0.875rem;
       background: var(--bg-dark);
       color: var(--text-primary);
-      transition: all 0.2s;
+      transition: all 0.2s ease;
     }
     .input-field:focus {
       outline: none;
       border-color: var(--primary);
-      box-shadow: 0 0 0 3px rgba(16, 163, 127, 0.1);
+      box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.1);
     }
     .input-field::placeholder {
       color: var(--text-secondary);
     }
-    .btn-primary {
-      background: var(--primary);
-      color: white;
-      padding: 0.875rem 1.5rem;
-      border-radius: 0.5rem;
-      font-weight: 600;
-      font-size: 1rem;
-      transition: all 0.2s;
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      border-radius: 0.75rem;
+      padding: 0.625rem 1.25rem;
+      font-size: 0.875rem;
+      line-height: 1.25rem;
+      font-weight: 500;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
       border: none;
       cursor: pointer;
-      width: 100%;
+    }
+    .btn-primary {
+      background: linear-gradient(to right, var(--primary), var(--primary-dark));
+      color: white;
+      box-shadow: 0 4px 6px -1px rgba(20, 184, 166, 0.25);
     }
     .btn-primary:hover {
-      background: #0d8a6a;
-      transform: translateY(-1px);
+      background: linear-gradient(to right, var(--primary-dark), #0f766e);
+      box-shadow: 0 10px 15px -3px rgba(20, 184, 166, 0.3);
     }
     .btn-primary:disabled {
       opacity: 0.7;
@@ -79,34 +98,38 @@
       background: transparent;
       border: 1px solid var(--border);
       color: var(--text-primary);
-      padding: 0.875rem 1.5rem;
-      border-radius: 0.5rem;
-      font-weight: 500;
-      font-size: 1rem;
-      transition: all 0.2s;
-      cursor: pointer;
-      text-align: center;
-      text-decoration: none;
-      display: inline-block;
+      box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
     }
     .btn-secondary:hover {
       background: var(--bg-card);
+      border-color: var(--text-secondary);
     }
     .live-dot {
-      width: 8px;
-      height: 8px;
-      background: #10b981;
-      border-radius: 50%;
-      animation: pulse 2s infinite;
+      position: relative;
       display: inline-block;
+      height: 0.5rem;
+      width: 0.5rem;
+      border-radius: 9999px;
+      background-color: var(--primary);
     }
-    @keyframes pulse {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.5; }
+    .live-dot::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      border-radius: 9999px;
+      background-color: var(--primary-light);
+      animation: livePulse 1.8s ease-out infinite;
+    }
+    @keyframes livePulse {
+      0% { transform: scale(1); opacity: 0.7; }
+      to { transform: scale(2.6); opacity: 0; }
     }
     .alert {
       padding: 1rem;
-      border-radius: 0.5rem;
+      border-radius: 0.75rem;
       margin-bottom: 1rem;
       display: none;
     }
@@ -123,7 +146,7 @@
     .card-icon {
       width: 64px;
       height: 64px;
-      background: linear-gradient(135deg, #10a37f, #059669);
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
       border-radius: 1rem;
       display: flex;
       align-items: center;
@@ -137,21 +160,21 @@
   <nav class="bg-[var(--bg-dark)] border-b border-[var(--border)]">
     <div class="container mx-auto px-6 h-16 flex items-center justify-between">
       <a href="/" class="flex items-center gap-3">
-        <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-green-500 to-teal-600 flex items-center justify-center text-xl">🚀</div>
+        <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-teal-500 to-teal-600 flex items-center justify-center text-xl">🚀</div>
         <span class="text-xl font-bold text-white">TokenGo</span>
       </a>
       <div class="flex items-center gap-6">
         <a href="/" class="nav-link">首页</a>
         <a href="/dashboard" class="nav-link">控制台</a>
         <a href="/help" class="nav-link">使用帮助</a>
-        <a href="/login" class="px-4 py-2 bg-[var(--primary)] text-white rounded-lg text-sm font-medium">登录</a>
+        <a href="/login" class="btn btn-primary">登录</a>
       </div>
     </div>
   </nav>
 
   <main class="flex-1 flex items-center justify-center py-12">
     <div class="container mx-auto px-6 max-w-md">
-      <div class="card text-center">
+      <div class="stat-card text-center">
         <div class="card-icon">🎫</div>
         <h1 class="text-2xl font-bold text-white mb-2">卡密兑换</h1>
         <p class="text-[var(--text-secondary)] mb-6">输入您的卡密，兑换 API 额度</p>
@@ -190,7 +213,7 @@
             />
           </div>
 
-          <button type="submit" id="redeemBtn" class="btn-primary mb-4">
+          <button type="submit" id="redeemBtn" class="btn btn-primary w-full mb-4">
             🎫 立即兑换
           </button>
 
@@ -208,7 +231,7 @@
       </div>
 
       <div class="mt-6 text-center">
-        <a href="/" class="btn-secondary">← 返回首页</a>
+        <a href="/" class="btn btn-secondary">← 返回首页</a>
       </div>
     </div>
   </main>
@@ -231,14 +254,14 @@
             document.querySelector('nav').innerHTML = `
               <div class="container mx-auto px-6 h-16 flex items-center justify-between">
                 <a href="/" class="flex items-center gap-3">
-                  <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-green-500 to-teal-600 flex items-center justify-center text-xl">🚀</div>
+                  <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-teal-500 to-teal-600 flex items-center justify-center text-xl">🚀</div>
                   <span class="text-xl font-bold text-white">TokenGo</span>
                 </a>
                 <div class="flex items-center gap-6">
                   <a href="/" class="nav-link">首页</a>
                   <a href="/dashboard" class="nav-link">控制台</a>
                   <a href="/help" class="nav-link">使用帮助</a>
-                  <a href="/dashboard" class="px-4 py-2 bg-[var(--primary)] text-white rounded-lg text-sm font-medium">${user.username || user.email}</a>
+                  <a href="/dashboard" class="btn btn-primary">${user.username || user.email}</a>
                 </div>
               </div>
             `;
