@@ -1617,6 +1617,27 @@ def api_me(authorization: Optional[str] = Header(None)):
     }
 
 
+@app.post("/api/auth/refresh-key")
+def api_refresh_key(authorization: Optional[str] = Header(None)):
+    user = require_user(authorization)
+    conn = get_db()
+    c = conn.cursor()
+    
+    old_token = user.get("token_id")
+    if old_token:
+        c.execute("DELETE FROM tokens WHERE id=?", (old_token,))
+    
+    new_token_id = "sk-tg-" + secrets.token_hex(16)
+    c.execute('''INSERT INTO tokens(id,name,quota,used,expire_at,allowed_models,created_at,status)
+                 VALUES(?,?,?,?,?,?,?,?)''',
+              (new_token_id, f"{user['username']} 的密钥", 0.0, 0.0, 0, "all", int(time.time()), "active"))
+    c.execute("UPDATE users SET token_id=? WHERE id=?", (new_token_id, user["id"]))
+    conn.commit()
+    conn.close()
+    
+    return {"api_key": new_token_id}
+
+
 @app.post("/api/auth/logout")
 def api_logout(authorization: Optional[str] = Header(None)):
     user = get_user_by_session(authorization)
