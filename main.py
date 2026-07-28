@@ -1340,6 +1340,33 @@ def admin_all_orders(authorization: Optional[str] = Header(None)):
     return rows
 
 
+@app.put("/api/auth/profile")
+def update_profile(body: dict, authorization: Optional[str] = Header(None)):
+    user = require_user(authorization)
+    username = body.get("username")
+    email = body.get("email")
+    password = body.get("password")
+    
+    conn = get_db()
+    c = conn.cursor()
+    
+    if username:
+        c.execute("UPDATE users SET username=? WHERE id=?", (username, user["id"]))
+    if email and email != user["email"]:
+        c.execute("SELECT id FROM users WHERE email=? AND id!=?", (email.lower(), user["id"]))
+        if c.fetchone():
+            conn.close()
+            raise HTTPException(status_code=400, detail="该邮箱已被使用")
+        c.execute("UPDATE users SET email=? WHERE id=?", (email.lower(), user["id"]))
+    if password:
+        hashed = hash_password(password)
+        c.execute("UPDATE users SET password=? WHERE id=?", (hashed, user["id"]))
+    
+    conn.commit()
+    conn.close()
+    return {"ok": True, "message": "资料更新成功"}
+
+
 @app.get("/api/payment/config")
 def get_payment_config(authorization: Optional[str] = Header(None)):
     user = get_user_by_session(authorization)
